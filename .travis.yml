@@ -1,0 +1,33 @@
+language: python
+sudo: required
+dist: trusty
+cache:
+  directories:
+  - "$HOME/lxc"
+  pip: true
+env:
+- LXC_DISTRO=debian LXC_RELEASE=jessie
+- LXC_DISTRO=ubuntu LXC_RELEASE=xenial
+before_cache:
+- sudo mkdir $HOME/lxc && sudo tar cf $HOME/lxc/cache.tar /var/cache/lxc/ && sudo
+  chown $USER. $HOME/lxc/cache.tar
+install:
+- sudo tar xf $HOME/lxc/cache.tar -C / || true
+- sudo apt-get install -y expect-dev
+- pip install ansible
+- ansible --version
+- printf '[defaults]\nroles_path=../\ncallback_whitelist=profile_tasks' >ansible.cfg
+- ansible-galaxy install lae.travis-lxc
+- ansible-playbook -vvv tests/install.yml -i tests/inventory
+script:
+- ansible-playbook tests/test.yml -i tests/inventory --syntax-check
+- ansible-playbook tests/test.yml -i tests/inventory
+- unbuffer ansible-playbook -vvv tests/test.yml -i tests/inventory >/tmp/idempotency.log
+  2>&1
+- 'grep -A1 "PLAY RECAP" /tmp/idempotency.log | grep -qP "changed=0.*failed=0" &&
+  (echo "Idempotence: PASS"; exit 0) || (echo "Idempotence: FAIL"; cat /tmp/idempotency.log;
+  exit 1)'
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/
+  slack:
+    secure: WD8cuUbQ8T3lejhBRLw721AGIrhei0THlm3czx2AGzf7gwsF1Kgw5TOZQMRkfDFAaJnXBf2jh8zpAlw6Tdt45KIoCztzaQBE5qaKspGwvY0RTu2Ieu1+/JEMGw7cEEpdyHqMbNJWfAChkNBcG2sNT5FV2YTygsP2Fc/BUGZy55eWnWEaXk6pxRLgDhH4F1+XOwXgod45cMG+XnxzgHVpWK/HfpWTXYGA00+dXxGtWaUumfe6bRPFzsZ8JYTS3b5JpR6rrIwGvf8zXUm+zBcnPWjPMKBR1ob8vhuBK6bdnVSy8fndQQLZpdodYpklSU6W34ydSfMi0Ov5YcwKWMwaYCsY9ANuEa5GlSI7fbVSXPtN+Hus5pmw1I0n0e/T1UTDWifPzxBYVbqlp+mlkPTiqt+HR3UvMo0Ka5O483GkEvcO93TcD0kCuoKtz4oNmD02zoT0fMwGDSE4+a/mLTYgRwgSddjrl42YSEvC9NK4g+dIvZA105xS3Rd7v3DEOhEaLkFAUOA0HYnpFo9WcWd/Wvv1ERqxviMIY96YxPdJ+PyCeVUsJNd7GxQRtTJD/NjGcBc9iMwNN4rxF6BWfwP96DRSKFXwbU+/zk6C1S955WhhfIb51Cj5NRANXJM4/v5J1Bs9rxLN2X+j0QiLCmHZp+qxptNy/02xacNBhONFbUU=

@@ -1,0 +1,13 @@
+---
+- name: ensure installation scenario is selected
+  fail:
+    msg: "please choose either the stable or git scenario"
+  when:
+    - not netbox_stable
+    - not netbox_git
+
+- name: ensure only one scenario is enabled
+  fail:
+    msg: "please select only one scenario"
+  when:
+    - netbox_stable or netbox_git

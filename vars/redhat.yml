@@ -1,0 +1,17 @@
+---
+netbox_packages:
+  - gcc
+  - libxml2-devel
+  - libxslt-devel
+  - libffi-devel
+  - graphviz
+  - libpq-dev
+  - openssl-devel
+netbox_python2_packages:
+  - python2
+  - python-devel
+  - python-pip
+netbox_python3_packages:
+  - python3
+  - python3-devel
+  - python3-pip

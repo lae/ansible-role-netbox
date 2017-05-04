@@ -1,0 +1,5 @@
+[proxmox]
+test01.lxc
+
+[all:vars]
+ansible_ssh_user=root

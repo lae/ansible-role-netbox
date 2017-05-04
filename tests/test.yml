@@ -1,0 +1,7 @@
+---
+- hosts: all
+  become: True
+  roles:
+    - ansible-role-netbox
+  vars:
+    netbox_stable: true

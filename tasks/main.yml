@@ -1,0 +1,43 @@
+---
+# tasks file for lae.netbox
+- include: check_mandatory_vars.yml
+
+- name: Gather OS specific variables
+  include_vars: '{{ item }}'
+  with_first_found:
+    - '{{ ansible_distribution|lower }}-{{ ansible_distribution_version }}.yml'
+    - '{{ ansible_distribution|lower }}-{{ ansible_distribution_major_version }}.yml'
+    - '{{ ansible_distribution|lower }}.yml'
+    - '{{ ansible_os_family|lower }}.yml'
+
+- name: Install NetBox dependencies
+  package:
+    name: "{{ item }}"
+    state: installed
+  with_items: "{{ netbox_packages }}"
+
+- name: Install Python 2
+  package:
+    name: "{{ item }}"
+    state: installed
+  with_items: "{{ netbox_python2_packages }}"
+  when: "{{ netbox_python == 2 }}"
+
+- name: Install Python 3
+  package:
+    name: "{{ item }}"
+    state: installed
+  with_items: "{{ netbox_python3_packages }}"
+  when: "{{ netbox_python == 3 }}"
+
+- include: check_mandatory_vars.yml
+
+- name: Configure netbox group
+  group:
+    name: "{{ netbox_group }}"
+
+- name: Configure netbox user
+  user:
+    name: "{{ netbox_user }}"
+    group: "{{ netbox_group }}"
+    home: "{{ netbox_home }}"
