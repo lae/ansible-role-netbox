@@ -16,4 +16,11 @@ netbox_git_path: "{{ netbox_releases_path }}/git"
 netbox_current_path: "{{ netbox_home }}/current"
 netbox_shared_path: "{{ netbox_home }}/shared"
 
+netbox_database: netbox
+netbox_database_user: netbox
+#netbox_database_password: changeme
+#netbox_database_host: localhost
+netbox_database_port: 5432
+#netbox_database_socket: /var/run/postgresql
+
 netbox_python: 3
