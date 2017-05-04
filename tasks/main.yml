@@ -3,18 +3,18 @@
 - include: check_mandatory_vars.yml
 
 - name: Gather OS specific variables
-  include_vars: '{{ item }}'
+  include_vars: "{{ item }}"
   with_first_found:
-    - '{{ ansible_distribution|lower }}-{{ ansible_distribution_version }}.yml'
-    - '{{ ansible_distribution|lower }}-{{ ansible_distribution_major_version }}.yml'
-    - '{{ ansible_distribution|lower }}.yml'
-    - '{{ ansible_os_family|lower }}.yml'
+    - "{{ ansible_distribution|lower }}-{{ ansible_distribution_version }}.yml"
+    - "{{ ansible_distribution|lower }}-{{ ansible_distribution_major_version }}.yml"
+    - "{{ ansible_distribution|lower }}.yml"
+    - "{{ ansible_os_family|lower }}.yml"
 
 - name: Configure EPEL
   yum:
     name: epel-release
     state: latest
-  when: "ansible_pkg_mgr == 'yum'"
+  when: ansible_pkg_mgr == "yum"
 
 - name: Install NetBox dependencies
   package:
@@ -27,14 +27,14 @@
     name: "{{ item }}"
     state: installed
   with_items: "{{ netbox_python2_packages }}"
-  when: "{{ netbox_python == 2 }}"
+  when: netbox_python == 2
 
 - name: Install Python 3
   package:
     name: "{{ item }}"
     state: installed
   with_items: "{{ netbox_python3_packages }}"
-  when: "{{ netbox_python == 3 }}"
+  when: netbox_python == 3
 
 - include: check_mandatory_vars.yml
 
