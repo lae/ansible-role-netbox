@@ -8,6 +8,7 @@ cache:
 env:
 - LXC_DISTRO=debian LXC_RELEASE=jessie
 - LXC_DISTRO=ubuntu LXC_RELEASE=xenial
+- LXC_DISTRO=centos LXC_RELEASE=7
 before_cache:
 - sudo mkdir $HOME/lxc && sudo tar cf $HOME/lxc/cache.tar /var/cache/lxc/ && sudo
   chown $USER. $HOME/lxc/cache.tar

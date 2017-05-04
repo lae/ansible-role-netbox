@@ -10,6 +10,12 @@
     - '{{ ansible_distribution|lower }}.yml'
     - '{{ ansible_os_family|lower }}.yml'
 
+- name: Configure EPEL
+  yum:
+    name: epel-release
+    state: latest
+  when: "ansible_pkg_mgr == 'yum'"
+
 - name: Install NetBox dependencies
   package:
     name: "{{ item }}"
