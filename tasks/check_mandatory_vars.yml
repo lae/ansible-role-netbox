@@ -10,4 +10,4 @@
   fail:
     msg: "please select only one scenario"
   when:
-    - netbox_stable or netbox_git
+    - netbox_stable and netbox_git
