@@ -47,3 +47,26 @@
     name: "{{ netbox_user }}"
     group: "{{ netbox_group }}"
     home: "{{ netbox_home }}"
+
+- block:
+  - name: Ensure Postgres database exists (via socket)
+    postgresql_db:
+      name: "{{ netbox_database }}"
+      login_user: "{{ netbox_database_user }}"
+      login_unix_socket: "{{ netbox_database_socket }}"
+    become: True
+    become_user: "{{ netbox_database_user }}"
+  when:
+    - netbox_database_socket is defined
+    - netbox_database_host is not defined
+
+- name: Ensure Postgres database exists (via TCP)
+  postgresql_db:
+    name: "{{ netbox_database }}"
+    login_host: "{{ netbox_database_host }}"
+    login_port: "{{ netbox_database_port }}"
+    login_user: "{{ netbox_database_user }}"
+    login_password: "{{ netbox_database_password }}"
+  when:
+    - netbox_database_socket is not defined
+    - netbox_database_host is not defined
