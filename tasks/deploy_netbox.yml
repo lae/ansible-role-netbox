@@ -1,0 +1,30 @@
+---
+- name: Create Directories
+  file: 
+    path: "{{ netbox_home }}/{{ item }}" 
+    state: directory
+    owner: "{{ netbox_user }}"
+    group: "{{ netbox_group }}"
+  with_items:
+    - releases
+    - current
+    - shared
+
+- name: Download and untar netbox tarball
+  unarchive:
+    src: "{{ netbox_stable_uri }}"
+    dest: "{{ netbox_releases_path }}"
+    copy: no
+    owner: "{{ netbox_user }}"
+    group: "{{ netbox_group }}"
+  when: netbox_stable == true
+
+- name: Create a link to active release
+  file: 
+    src: "{{ netbox_releases_path }}/{{ netbox_stable_release }}"
+    dest: "{{ netbox_current_path }}/netbox"
+    state: link
+
+- name: Install Requirement Python Packages
+  shell: pip3 install -r "{{ netbox_current_path }}/netbox/requirements.txt"
+

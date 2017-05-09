@@ -1,0 +1,20 @@
+---
+- name: Install git package
+  apt: 
+    name: git
+    state: latest
+
+- name: Clone Netbox from Github
+  shell: git clone -b master https://github.com/digitalocean/netbox.git "{{ netbox_git_path }}" 
+  when: not p.stat.exists
+
+- name: Create a link to active release
+  file:
+    src: "{{ netbox_git_path }}"
+    dest: "{{ netbox_current_path }}/netbox"
+    state: link
+
+- name: Install Requirement Python Packages
+  shell: pip3 install -r "{{ netbox_current_path }}/netbox/requirements.txt"
+
+
