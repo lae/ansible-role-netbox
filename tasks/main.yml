@@ -48,7 +48,16 @@
     group: "{{ netbox_group }}"
     home: "{{ netbox_home }}"
 
-- include: deploy_netbox.yml
+- name: Create Directories
+  file: 
+    path: "{{ item }}" 
+    state: directory
+    owner: "{{ netbox_user }}"
+    group: "{{ netbox_group }}"
+  with_items:
+    - "{{ netbox_releases_path }}"
+    - "{{ netbox_shared_path }}"
 
-#- include: deploy_netbox_via_git.yml
+- include: deploy_netbox.yml
+  when: netbox_stable == true
 
