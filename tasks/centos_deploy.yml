@@ -1,4 +1,15 @@
 ---
+- name: Install OS Requirement Packages
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+    - epel-release
+    - ca-certificates
+    - sudo
+    - python-virtualenv
+    - tar 
+
 - name: Download and untar netbox tarball
   unarchive:
     src: "{{ netbox_stable_uri }}"
@@ -13,10 +24,13 @@
     dest: "{{ netbox_current_path }}"
     state: link
 
-- name: Install Python virtualenv
-  apt: 
-    name: python-virtualenv
-    state: latest
+- name: Install pip3 
+  shell: /usr/bin/easy_install-3.4 pip
+
+- name: Install virtualenv module for pip3
+  pip: 
+    name: virtualenv
+    state: present
 
 - name: Install Requirement Python Packages
   pip: 
