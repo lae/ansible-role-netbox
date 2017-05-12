@@ -7,6 +7,7 @@ netbox_packages:
   - libpq-dev
   - libssl-dev
   - libjpeg62-turbo-dev
+  - git
 netbox_python2_packages:
   - python2.7
   - python-dev
