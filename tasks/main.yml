@@ -48,7 +48,30 @@
     group: "{{ netbox_group }}"
     home: "{{ netbox_home }}"
 
-- name: Create Directories
+- block:
+  - name: Ensure Postgres database exists (via socket)
+    postgresql_db:
+      name: "{{ netbox_database }}"
+      login_user: "{{ netbox_database_user }}"
+      login_unix_socket: "{{ netbox_database_socket }}"
+    become: True
+    become_user: "{{ netbox_database_user }}"
+  when:
+    - netbox_database_socket is defined
+    - netbox_database_host is not defined
+
+- name: Ensure Postgres database exists (via TCP)
+  postgresql_db:
+    name: "{{ netbox_database }}"
+    login_host: "{{ netbox_database_host }}"
+    login_port: "{{ netbox_database_port }}"
+    login_user: "{{ netbox_database_user }}"
+    login_password: "{{ netbox_database_password }}"
+  when:
+    - netbox_database_socket is not defined
+    - netbox_database_host is not defined
+
+- name: Create Directories for NetBox deployment
   file: 
     path: "{{ item }}" 
     state: directory
@@ -58,6 +81,8 @@
     - "{{ netbox_releases_path }}"
     - "{{ netbox_shared_path }}"
 
+- include: download_netbox_tarball.yml
+
 - include: debian_deploy.yml
   when: ansible_os_family == "Debian"
 
@@ -66,6 +91,3 @@
 
 - include: centos_deploy_netbox.yml
   when: ansible_os_family == "CentOS"
-
-#- include: debian_deploy_via_git.yml
-#  when: 

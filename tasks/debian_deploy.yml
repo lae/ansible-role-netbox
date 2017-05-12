@@ -1,35 +1,12 @@
 ---
-- name: Install python-virtualenv
-  apt:
-    name: python-virtualenv
-    state: latest
-
-- name: Download and untar netbox tarball
-  unarchive:
-    src: "{{ netbox_stable_uri }}"
-    dest: "{{ netbox_releases_path }}"
-    copy: no
-    owner: "{{ netbox_user }}"
-    group: "{{ netbox_group }}"
-
-- name: Create a link to active release
-  file: 
-    src: "{{ netbox_releases_path }}/netbox-{{ netbox_stable_release }}"
-    dest: "{{ netbox_current_path }}"
-    state: link
-
 - name: Install pyparsing and appdirs modules via pip
   pip:
-    virtualenv: "{{ netbox_current_path }}/venv"
-    virtualenv_python: python3
+    virtualenv: "{{ netbox_current_path }}/venv-py{{ netbox_python }}"
+    virtualenv_python: "/usr/bin/python{{ netbox_python }}"
     name: "{{ item }}"
     state: present
   with_items:
     - pyparsing
     - appdirs
 
-- name: Install Requirement Python Packages
-  pip: 
-    requirements: "{{ netbox_current_path }}/requirements.txt"
-    virtualenv: "{{ netbox_current_path }}/venv"
-    virtualenv_python: python3
+- include: install_py_deps_inside_venv.yml
