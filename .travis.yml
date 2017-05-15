@@ -6,9 +6,12 @@ cache:
   - "$HOME/lxc"
   pip: true
 env:
-- LXC_DISTRO=debian LXC_RELEASE=jessie
-- LXC_DISTRO=ubuntu LXC_RELEASE=xenial
-- LXC_DISTRO=centos LXC_RELEASE=7
+- LXC_DISTRO=debian LXC_RELEASE=jessie SCENARIO=stable
+- LXC_DISTRO=ubuntu LXC_RELEASE=xenial SCENARIO=stable
+- LXC_DISTRO=centos LXC_RELEASE=7 SCENARIO=stable
+- LXC_DISTRO=debian LXC_RELEASE=jessie SCENARIO=git
+- LXC_DISTRO=ubuntu LXC_RELEASE=xenial SCENARIO=git
+- LXC_DISTRO=centos LXC_RELEASE=7 SCENARIO=git
 before_cache:
 - sudo mkdir $HOME/lxc && sudo tar cf $HOME/lxc/cache.tar /var/cache/lxc/ && sudo
   chown $USER. $HOME/lxc/cache.tar
@@ -21,9 +24,9 @@ install:
 - ansible-galaxy install lae.travis-lxc geerlingguy.postgresql
 - ansible-playbook -vvv tests/install.yml -i tests/inventory
 script:
-- ansible-playbook tests/test.yml -i tests/inventory --syntax-check
-- ansible-playbook tests/test.yml -i tests/inventory
-- unbuffer ansible-playbook -vvv tests/test.yml -i tests/inventory >/tmp/idempotency.log
+- ansible-playbook tests/test-$SCENARIO.yml -i tests/inventory --syntax-check
+- ansible-playbook tests/test-$SCENARIO.yml -i tests/inventory
+- unbuffer ansible-playbook -vvv tests/test-$SCENARIO.yml -i tests/inventory >/tmp/idempotency.log
   2>&1
 - 'grep -A1 "PLAY RECAP" /tmp/idempotency.log | grep -qP "changed=0.*failed=0" &&
   (echo "Idempotence: PASS"; exit 0) || (echo "Idempotence: FAIL"; cat /tmp/idempotency.log;
