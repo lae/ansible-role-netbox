@@ -1,5 +1,5 @@
 ---
--name: Install pip3 
+- name: Install pip3 
    shell: /usr/bin/easy_install-3.4 pip
  
 - name: Install virtualenv module for pip3
