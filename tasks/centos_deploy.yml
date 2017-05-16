@@ -1,3 +1,9 @@
 ---
 - name: Install pip3 
   shell: /usr/bin/easy_install-3.4 pip
+
+- name: Install virtualenv modude using pip
+  pip: 
+    name: virtualenv
+    state: present
+
