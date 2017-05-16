@@ -86,6 +86,7 @@
   when: netbox_stable == true
 
 - include: debian_deploy.yml
+  when: ansible_distribution == "Debian"
 
 - name: Install Netbox python dependencies inside active virtualenv
   pip:
