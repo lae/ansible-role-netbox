@@ -80,18 +80,14 @@
   with_items:
     - "{{ netbox_releases_path }}"
     - "{{ netbox_shared_path }}"
+    - "{{ netbox_git_path }}"
 
 - include: download_netbox_tarball.yml
   when: netbox_stable == true
 
-- include: deploy_netbox_git.yml
-  when: netbox_git == true
+- name: Install Netbox python dependencies inside active virtualenv
+  pip:
+    requirements: "{{ netbox_current_path }}/requirements.txt"
+    virtualenv: "{{ netbox_current_path }}/venv-py{{ netbox_python }}"
+    virtualenv_python: "/usr/bin/python{{ netbox_python }}"
 
-- include: debian_deploy.yml
-  when: ansible_os_family == "Debian"
-
-- include: ubuntu_deploy.yml
-  when: ansible_distribution == "Ubuntu"
-
-- include: centos_deploy_netbox.yml
-  when: ansible_os_family == "CentOS"

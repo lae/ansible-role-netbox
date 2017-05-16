@@ -1,5 +1,0 @@
-- name: Install Netbox python dependencies inside active virtualenv
-  pip:
-    requirements: "{{ netbox_current_path }}/requirements.txt"
-    virtualenv: "{{ netbox_current_path }}/venv-py{{ netbox_python }}"
-    virtualenv_python: "/usr/bin/python{{ netbox_python }}"
