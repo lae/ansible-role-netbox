@@ -85,6 +85,8 @@
 - include: download_netbox_tarball.yml
   when: netbox_stable == true
 
+- include: debian_deploy.yml
+
 - name: Install Netbox python dependencies inside active virtualenv
   pip:
     requirements: "{{ netbox_current_path }}/requirements.txt"
