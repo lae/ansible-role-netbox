@@ -85,9 +85,6 @@
 - include: download_netbox_tarball.yml
   when: netbox_stable == true
 
-- include: deploy_netbox_git.yml
-  when: netbox_git == true
-
 - include: debian_deploy.yml
   when: ansible_distribution == "Debian"
 
