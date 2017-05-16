@@ -4,7 +4,7 @@
   roles:
     - { name: lae.travis-lxc }
   vars:
-    host_quantity: 1
+    host_quantity: 4
 
 # Run the following within the containers in the inventory
 - hosts: all
