@@ -16,5 +16,3 @@ netbox_python3_packages:
   - python34
   - python34-devel
   - python34-setuptools
-  - python-virtualenv
-

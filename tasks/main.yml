@@ -92,7 +92,7 @@
   when: ansible_distribution == "Debian"
 
 - include: centos_deploy.yml
-  when: ansible_os_family == "CentOS"
+  when: ansible_distribution == "CentOS"
 
 - name: Install Netbox python dependencies inside active virtualenv
   pip:
