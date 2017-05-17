@@ -1,5 +1,13 @@
-[proxmox]
-test01.lxc
+[netbox:children]
+netbox-stable
+netbox-git
 
-[all:vars]
-ansible_ssh_user=root
+[netbox-stable]
+test[01:02].lxc
+
+[netbox-git]
+test[03:04].lxc
+
+[netbox-python2]
+test02.lxc
+test04.lxc
