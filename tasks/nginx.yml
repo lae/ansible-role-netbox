@@ -1,0 +1,37 @@
+---
+- name: Write netbox nginx configuration
+  template: 
+    src: templates/nginx.conf.j2
+    dest: /etc/nginx/sites-available/netbox.conf
+  notify: restart nginx
+
+- name: Enable netbox in nginx
+  file: 
+    src: /etc/nginx/sites-available/netbox.conf
+    dest: /etc/nginx/sites-enabled/netbox.conf
+    state: link
+  notify: restart nginx
+
+- name: Remove nginx default site
+  file: 
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+
+- name: Make SSL cert and key readable by nginx
+  file:
+    path: "{{ item }}"
+    state: file
+    group: "{{ netbox_web_group }}"
+    mode: g+r
+  with_items:
+    - "{{ netbox_ssl_cert }}"
+    - "{{ netbox_ssl_key }}"
+  when: netbox_https_port is defined
+
+- name: Enable nginx
+  service:
+    name: nginx
+    state: started
+    enabled: yes
+
+

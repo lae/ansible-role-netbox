@@ -1,6 +1,6 @@
 ---
 # defaults file for lae.netbox
-netbox_stable: true
+netbox_stable: false
 netbox_stable_release: 1.9.6
 netbox_stable_uri: "https://github.com/digitalocean/netbox/archive/v{{ netbox_stable_release }}.tar.gz"
 
@@ -25,3 +25,5 @@ netbox_database_port: 5432
 
 netbox_python: 3
 
+netbox_ssl_cert: /etc/nginx/ssl/netbox.crt
+netbox_ssl_key: /etc/nginx/ssl/netbox.key

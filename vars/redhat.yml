@@ -8,6 +8,7 @@ netbox_packages:
   - graphviz
   - openssl-devel
   - git
+  - tar
 netbox_python2_packages:
   - python2
   - python-devel
