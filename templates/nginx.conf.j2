@@ -9,7 +9,7 @@ server {
     ssl_certificate_key {{ netbox_ssl_key }};
     {% endif %}
 
-    server_name 10.11.110.72;
+    server_name {{ netbox_allowed_hosts | join(' ') }};
 
     access_log off;
 

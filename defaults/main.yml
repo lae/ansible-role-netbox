@@ -25,17 +25,18 @@ netbox_database_port: 5432
 
 netbox_python: 3
 
-netbox_ssl_cert: /etc/nginx/ssl/netbox.crt
-netbox_ssl_key: /etc/nginx/ssl/netbox.key
-
 netbox_allowed_hosts:
   - netbox
   - netbox.localdomain
 
-netbox_nginx_path: /etc/nginx
-netbox_gunicorn_port: 8001
+netbox_ssl_cert: /etc/nginx/ssl/netbox.crt
+netbox_ssl_key: /etc/nginx/ssl/netbox.key
 
+netbox_nginx_path: /etc/nginx
 netbox_web_user: www-data
 netbox_web_group: www-data
+
 netbox_venv_path: "{{ netbox_current_path }}/venv-py{{ netbox_python }}/bin"
+
+netbox_gunicorn_port: 8001
 
