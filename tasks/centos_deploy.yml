@@ -1,6 +1,6 @@
 ---
 - name: Install pip3 
-  shell: /usr/bin/easy_install-3.4 pip 
+  shell: /usr/bin/easy_install-3.4 pip creates=/usr/bin/pip
 
 - name: Install virtualenv module via pip
   pip:

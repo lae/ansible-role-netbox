@@ -99,6 +99,7 @@
 
 - Name: Configuration Nginx for Debian and Ubuntu
   include: nginx.yml
+  when: ansible_distribution == "Debian" or ansible_distribution == "Ubuntu"
 
 - name: Configuration gunicorn and supervisord
   include: gunicorn.yml
