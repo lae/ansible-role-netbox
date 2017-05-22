@@ -1,27 +1,39 @@
-server {
-    {% if netbox_http_port is defined -%}
-    listen {{ netbox_http_port }};
-    {% endif %}
+worker_processes  3;
 
-    {% if netbox_https_port is defined -%}
-    listen {{ netbox_https_port }} ssl;
-    ssl_certificate {{ netbox_ssl_cert }};
-    ssl_certificate_key {{ netbox_ssl_key }};
-    {% endif %}
+events {
+    worker_connections  1024;
+}
 
-    server_name {{ netbox_allowed_hosts | join(' ') }};
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+    sendfile        on;
+    keepalive_timeout  65;
 
-    access_log off;
+    server {
+        {% if netbox_http_port is defined -%}
+        listen {{ netbox_http_port }};
+        {% endif %}
+   
+        {% if netbox_https_port is defined -%}
+        listen {{ netbox_https_port }} ssl;
+        ssl_certificate {{ netbox_ssl_cert }};
+        ssl_certificate_key {{ netbox_ssl_key }};
+        {% endif %}
 
-    location /static/ {
-        alias {{ netbox_current_path }}/netbox/static/;
-    }
+        server_name  {{ netbox_allowed_hosts | join(' ') }};
 
-    location / {
-        proxy_pass http://127.0.0.1:{{ netbox_gunicorn_port }};
-        proxy_set_header X-Forwarded-Host $server_name;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-Proto $scheme;
-        add_header P3P 'CP="ALL DSP COR PSAa PSDa OUR NOR ONL UNI COM NAV"';
+        location /static {
+            alias {{ netbox_current_path }}/netbox/static/;
+        }
+
+        location = / {
+            proxy_pass http://127.0.0.1:{{ netbox_gunicorn_port }};
+            proxy_set_header X-Forwarded-Host $server_name;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            add_header P3P 'CP="ALL DSP COR PSAa PSDa OUR NOR ONL UNI COM NAV"';
+        }
     }
 }
+

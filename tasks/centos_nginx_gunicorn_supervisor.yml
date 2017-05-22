@@ -43,8 +43,8 @@
 - name: Modify /etc/supervisord.conf file
   replace:
     dest: /etc/supervisord.conf 
-    regexp: '/etc/supervisord.d/*.ini'
-    replace: '/etc/supervisord.d*.conf'
+    regexp: 'supervisord.d/\*.ini'
+    replace: 'supervisord.d/*.conf'
     backup: yes
   notify: restart supervisor
 
