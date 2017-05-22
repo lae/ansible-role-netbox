@@ -1,0 +1,27 @@
+server {
+    {% if netbox_http_port is defined -%}
+    listen {{ netbox_http_port }};
+    {% endif %}
+
+    {% if netbox_https_port is defined -%}
+    listen {{ netbox_https_port }} ssl;
+    ssl_certificate {{ netbox_ssl_cert }};
+    ssl_certificate_key {{ netbox_ssl_key }};
+    {% endif %}
+
+    server_name {{ netbox_allowed_hosts | join(' ') }};
+
+    access_log off;
+
+    location /static/ {
+        alias {{ netbox_current_path }}/netbox/static/;
+    }
+
+    location / {
+        proxy_pass http://127.0.0.1:{{ netbox_gunicorn_port }};
+        proxy_set_header X-Forwarded-Host $server_name;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        add_header P3P 'CP="ALL DSP COR PSAa PSDa OUR NOR ONL UNI COM NAV"';
+    }
+}
