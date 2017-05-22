@@ -35,8 +35,8 @@ netbox_ssl_key: /etc/nginx/ssl/netbox.key
 netbox_nginx_path: /etc/nginx
 netbox_web_user: www-data
 netbox_web_group: www-data
+netbox_https_port: 80
 
 netbox_venv_path: "{{ netbox_current_path }}/venv-py{{ netbox_python }}/bin"
-
 netbox_gunicorn_port: 8001
 
