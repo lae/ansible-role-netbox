@@ -1,0 +1,62 @@
+---
+- name: Write netbox nginx configuration
+  template: 
+    src: templates/centos_nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+  notify: restart nginx
+
+- name: Enable Netbox in nginx
+  file: 
+    src: /etc/nginx/netbox.conf
+    dest: /etc/nginx/nginx.conf
+    state: link
+  notify: restart nginx
+
+- name: Make SSL cert and key readable by nginx
+  file:
+    path: "{{ item }}"
+    state: file
+    group: "{{ netbox_web_group }}"
+    mode: g+r
+  with_items:
+    - "{{ netbox_ssl_cert }}"
+    - "{{ netbox_ssl_key }}"
+  when: netbox_https_port is defined
+
+- name: Install gunicorn
+  pip:
+    name: gunicorn
+    virtualenv: "{{ netbox_current_path }}/venv-py{{ netbox_python }}"
+
+- name: Write gunicorn config
+  template:
+    src: templates/centos_gunicorn_config.py.j2
+    dest: "{{ netbox_current_path }}/netbox/gunicorn_config.py"
+  notify: restart supervisor
+
+- name: Write supervisord config
+  template:
+    src: templates/centos_supervisor.conf.j2
+    dest: /etc/supervisord.d/netbox.conf
+  notify: restart supervisor
+
+- name: Modify /etc/supervisord.conf file
+  replace:
+    dest: /etc/supervisord.conf 
+    regexp: '/etc/supervisord.d/*.ini'
+    replace: '/etc/supervisord.d*.conf'
+    backup: yes
+  notify: restart supervisor
+
+- name: Enable nginx
+  service:
+    name: nginx
+    state: started
+    enabled: yes
+
+- name: Enable supervisord
+  service:
+    name: supervisord
+    state: restarted
+    enabled: yes
+

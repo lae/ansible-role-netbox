@@ -28,9 +28,32 @@
     - "{{ netbox_ssl_key }}"
   when: netbox_https_port is defined
 
+- name: Install gunicorn
+  pip:
+    name: gunicorn
+    virtualenv: "{{ netbox_current_path }}/venv-py{{ netbox_python }}"
+
+- name: Write gunicorn config
+  template:
+    src: templates/gunicorn_config.py.j2
+    dest: "{{ netbox_current_path }}/netbox/gunicorn_config.py"
+  notify: restart supervisor
+
+- name: Write supervisord config
+  template:
+    src: templates/supervisor.conf.j2
+    dest: /etc/supervisor/conf.d/netbox.conf
+  notify: restart supervisor
+
 - name: Enable nginx
   service:
     name: nginx
+    state: started
+    enabled: yes
+
+- name: Enable supervisord
+  service:
+    name: supervisor
     state: started
     enabled: yes
 

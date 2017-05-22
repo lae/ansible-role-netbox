@@ -85,10 +85,12 @@
 - include: download_netbox_tarball.yml
   when: netbox_stable == true
 
-- include: debian_deploy.yml
+- name: Deploy Netbox on Debian or Ubuntu
+  include: debian_deploy.yml
   when: ansible_distribution == "Debian"
 
-- include: centos_deploy.yml
+- name: Deploy Netbox on CentOS
+  include: centos_deploy.yml
   when: ansible_distribution == "CentOS"
 
 - name: Install Netbox python dependencies inside active virtualenv
@@ -97,14 +99,11 @@
     virtualenv: "{{ netbox_current_path }}/venv-py{{ netbox_python }}"
     virtualenv_python: "/usr/bin/python{{ netbox_python }}"
 
-- Name: Configuration Nginx for Debian and Ubuntu
-  include: nginx.yml
+- Name: Configuration Nginx, gunicorn, and supervisor for Debian and Ubuntu
+  include: nginx_gunicorn_supervisor.yml
   when: ansible_distribution == "Debian" or ansible_distribution == "Ubuntu"
 
-- name: Configuration gunicorn and supervisord
-  include: gunicorn.yml
-
-- name: Configuration Nginx on CentOS
-  include: centos_nginx.yml
+- name: Configuration Nginx, gunicorn, and supervisor on CentOS
+  include: centos_nginx_gunicorn_supervisor.yml
   when: ansible_distribution == "CentOS" 
 
