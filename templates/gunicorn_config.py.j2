@@ -1,0 +1,5 @@
+command = '{{ netbox_venv_path }}/gunicorn'
+pythonpath = '{{ netbox_current_path }}/netbox'
+bind = '127.0.0.1:{{ netbox_gunicorn_port }}'
+workers = 3
+user = '{{ netbox_web_user }}'

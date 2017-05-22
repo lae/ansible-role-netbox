@@ -24,4 +24,4 @@ netbox_ldap_packages:
   - libsasl2-dev
 netbox_web_user: www-data
 netbox_web_group: www-data
-
+netbox_venv_path: "{{ netbox_current_path }}/venv-py{{ netbox_python }}/bin"
