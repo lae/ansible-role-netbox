@@ -7,6 +7,8 @@ netbox_packages:
   - libpq-dev
   - libssl-dev
   - git
+  - nginx
+  - supervisor
 netbox_python2_packages:
   - python2.7
   - python-dev

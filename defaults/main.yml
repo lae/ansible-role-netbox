@@ -35,4 +35,7 @@ netbox_allowed_hosts:
 netbox_nginx_path: /etc/nginx
 netbox_gunicorn_port: 8001
 
-netbox_gunicorn_path: /usr/bin
+netbox_web_user: www-data
+netbox_web_group: www-data
+netbox_venv_path: "{{ netbox_current_path }}/venv-py{{ netbox_python }}/bin"
+
