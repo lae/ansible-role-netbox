@@ -1,9 +1,6 @@
 ---
 - name: Install pip3 
-  shell: /usr/bin/easy_install-3.4 pip
-  changed_when: false
-  failed_when: false
-  always_run: true
+  shell: /usr/bin/easy_install-3.4 pip 
 
 - name: Install virtualenv module via pip
   pip:
