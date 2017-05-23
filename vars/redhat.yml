@@ -9,7 +9,6 @@ netbox_packages:
   - openssl-devel
   - git
   - tar
-  - nginx
   - supervisor
 netbox_python2_packages:
   - python2
