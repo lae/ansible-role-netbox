@@ -1,6 +1,4 @@
 ---
-# handlers file for lae.netbox
-
 - name: Restart supervisor
   service: 
     name: supervisor
