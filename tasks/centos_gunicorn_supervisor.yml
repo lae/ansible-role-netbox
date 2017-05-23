@@ -8,13 +8,11 @@
   template:
     src: templates/centos_gunicorn_config.py.j2
     dest: "{{ netbox_current_path }}/netbox/gunicorn_config.py"
-  notify: restart supervisord
 
 - name: Write supervisord config
   template:
     src: templates/centos_supervisor.conf.j2
     dest: /etc/supervisord.d/netbox.conf
-  notify: restart supervisord
 
 - name: Modify /etc/supervisord.conf file
   replace:
@@ -22,7 +20,6 @@
     regexp: 'supervisord.d/\*.ini'
     replace: 'supervisord.d/*.conf'
     backup: yes
-  notify: restart supervisord
 
 - name: Restart and Enable supervisord
   service:

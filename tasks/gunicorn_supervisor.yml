@@ -14,9 +14,8 @@
     src: templates/supervisor.conf.j2
     dest: /etc/supervisor/conf.d/netbox.conf
 
-- name: Enable supervisord
+- name: Restart and Enable supervisord
   service:
     name: supervisor
-    state: started
+    state: restarted
     enabled: yes
-

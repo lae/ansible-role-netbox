@@ -1,7 +1,0 @@
----
-- name: Restart supervisord
-  service:
-    name: supervisord
-    state: restarted
-  when: ansible_distribution == "CentOS"
- 
