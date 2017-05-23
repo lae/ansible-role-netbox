@@ -99,11 +99,11 @@
     virtualenv: "{{ netbox_current_path }}/venv-py{{ netbox_python }}"
     virtualenv_python: "/usr/bin/python{{ netbox_python }}"
 
-- Name: Configuration Nginx, gunicorn, and supervisor for Debian and Ubuntu
-  include: nginx_gunicorn_supervisor.yml
+- Name: Configuration gunicorn and supervisor for Debian and Ubuntu
+  include: gunicorn_supervisor.yml
   when: ansible_distribution == "Debian" or ansible_distribution == "Ubuntu"
 
-- name: Configuration Nginx, gunicorn, and supervisor on CentOS
-  include: centos_nginx_gunicorn_supervisor.yml
+- name: Configuration gunicorn and supervisor on CentOS
+  include: centos_gunicorn_supervisor.yml
   when: ansible_distribution == "CentOS" 
 

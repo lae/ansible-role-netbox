@@ -1,7 +1,2 @@
 ---
 # handlers file for lae.netbox
-- name: restart supervisor
-  service:
-    name: supervisor
-    state: restarted
-
