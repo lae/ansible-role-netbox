@@ -1,4 +1,4 @@
 [program:netbox]
 command = {{ netbox_venv_path }}/gunicorn -c {{ netbox_current_path }}/netbox/gunicorn_config.py netbox.wsgi
 directory = {{ netbox_current_path }}/netbox
-user = nginx
+user = netbox
