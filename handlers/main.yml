@@ -1,2 +1,15 @@
 ---
 # handlers file for lae.netbox
+
+- name: Restart supervisor
+  service: 
+    name: supervisor
+    state: restarted
+  when: ansible_distribution == "Debian" or ansible_distribution == "Ubuntu"
+
+- name: Restart supervisord
+  service:
+    name: supervisord
+    state: restarted
+  when: ansible_distribution == "CentOS"
+ 
