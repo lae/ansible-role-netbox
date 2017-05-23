@@ -8,13 +8,11 @@
   template:
     src: templates/gunicorn_config.py.j2
     dest: "{{ netbox_current_path }}/netbox/gunicorn_config.py"
-  notify: restart supervisor
 
 - name: Write supervisord config
   template:
     src: templates/supervisor.conf.j2
     dest: /etc/supervisor/conf.d/netbox.conf
-  notify: restart supervisor
 
 - name: Enable supervisord
   service:
