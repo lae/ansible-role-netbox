@@ -1,0 +1,11 @@
+---
+- name: restart supervisor
+  service:
+    name: supervisor
+    state: restarted
+
+- name: restart supervisord for CentOS
+  service: 
+    name: supervisord
+    state: restarted
+  when: ansible_distribution == "CentOS"
