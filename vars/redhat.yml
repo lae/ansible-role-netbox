@@ -8,12 +8,15 @@ netbox_packages:
   - graphviz
   - openssl-devel
   - git
+  - python-virtualenv
 netbox_python2_packages:
   - python2
   - python-devel
   - python-pip
+netbox_python2_binary: /usr/bin/python2.7
 netbox_python3_packages:
   - python35u
   - python35u-devel
   - python35u-setuptools
   - python35u-pip
+netbox_python3_binary: /usr/bin/python3.5

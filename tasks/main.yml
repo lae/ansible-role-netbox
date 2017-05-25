@@ -10,10 +10,12 @@
     - "{{ ansible_distribution|lower }}.yml"
     - "{{ ansible_os_family|lower }}.yml"
 
+- include: check_mandatory_vars.yml
+
 - name: Configure IUS Repository
   yum:
     name: "https://{{ (ansible_distribution == 'CentOS') | ternary('centos', 'rhel') }}{{ ansible_distribution_major_version }}.iuscommunity.org/ius-release.rpm"
-    state: latest
+    state: installed
   when:
     - ansible_pkg_mgr == "yum"
     - netbox_python == 3
@@ -37,8 +39,6 @@
     state: installed
   with_items: "{{ netbox_python3_packages }}"
   when: netbox_python == 3
-
-- include: check_mandatory_vars.yml
 
 - name: Configure netbox group
   group:
@@ -73,7 +73,7 @@
     - netbox_database_socket is not defined
     - netbox_database_host is not defined
 
-- name: Create Directories for NetBox deployment
+- name: Create directories for NetBox deployment
   file: 
     path: "{{ item }}" 
     state: directory
@@ -94,5 +94,4 @@
   pip:
     requirements: "{{ netbox_current_path }}/requirements.txt"
     virtualenv: "{{ netbox_current_path }}/venv-py{{ netbox_python }}"
-    virtualenv_python: "/usr/bin/python{{ netbox_python }}"
-
+    virtualenv_python: "{{ netbox_python3_binary if (netbox_python == 3) else netbox_python2_binary }}"
