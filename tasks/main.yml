@@ -12,9 +12,9 @@
 
 - include: check_mandatory_vars.yml
 
-- name: Configure IUS Repository
+- name: Install EPEL repository
   yum:
-    name: "https://{{ (ansible_distribution == 'CentOS') | ternary('centos', 'rhel') }}{{ ansible_distribution_major_version }}.iuscommunity.org/ius-release.rpm"
+    name: epel-release
     state: installed
   when:
     - ansible_pkg_mgr == "yum"
@@ -92,10 +92,6 @@
 
 - include: download_netbox_tarball.yml
   when: netbox_stable == true
-
-# temporary disable
-#- include: debian_deploy.yml
-#  when: ansible_distribution == "Debian"
 
 - name: Install Netbox python dependencies inside active virtualenv
   pip:

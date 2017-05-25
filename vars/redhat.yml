@@ -15,9 +15,9 @@ netbox_python2_packages:
 netbox_python2_binary: /usr/bin/python2
 netbox_pip2_binary: /usr/bin/pip2
 netbox_python3_packages:
-  - python35u
-  - python35u-devel
-  - python35u-setuptools
-  - python35u-pip
-netbox_python3_binary: /usr/bin/python3.5
-netbox_pip3_binary: /usr/bin/pip3.5
+  - python34
+  - python34-devel
+  - python34-setuptools
+  - python34-pip
+netbox_python3_binary: /usr/bin/python3.4
+netbox_pip3_binary: /usr/bin/pip3
