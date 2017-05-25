@@ -1,9 +1,0 @@
----
-- name: Install pip3 
-  shell: /usr/bin/easy_install-3.4 pip creates=/usr/bin/pip
-  when: netbox_python == 3
-
-- name: Install virtualenv module via pip
-  pip:
-    name: virtualenv
-    state: present

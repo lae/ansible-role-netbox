@@ -13,6 +13,7 @@ netbox_python2_packages:
   - python-devel
   - python-pip
 netbox_python3_packages:
-  - python34
-  - python34-devel
-  - python34-setuptools
+  - python35u
+  - python35u-devel
+  - python35u-setuptools
+  - python35u-pip

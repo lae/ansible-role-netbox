@@ -10,11 +10,13 @@
     - "{{ ansible_distribution|lower }}.yml"
     - "{{ ansible_os_family|lower }}.yml"
 
-- name: Configure EPEL
+- name: Configure IUS Repository
   yum:
-    name: epel-release
+    name: "https://{{ (ansible_distribution == 'CentOS') | ternary('centos', 'rhel') }}{{ ansible_distribution_major_version }}.iuscommunity.org/ius-release.rpm"
     state: latest
-  when: ansible_pkg_mgr == "yum"
+  when:
+    - ansible_pkg_mgr == "yum"
+    - netbox_python == 3
 
 - name: Install NetBox dependencies
   package:
@@ -87,9 +89,6 @@
 
 - include: debian_deploy.yml
   when: ansible_distribution == "Debian"
-
-- include: centos_deploy.yml
-  when: ansible_distribution == "CentOS"
 
 - name: Install Netbox python dependencies inside active virtualenv
   pip:
