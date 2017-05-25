@@ -40,6 +40,12 @@
   with_items: "{{ netbox_python3_packages }}"
   when: netbox_python == 3
 
+- name: Install virtualenv via pip
+  pip:
+    name: virtualenv
+    state: latest
+    executable: "{{ netbox_pip3_binary if (netbox_python == 3) else netbox_pip2_binary }}"
+
 - name: Configure netbox group
   group:
     name: "{{ netbox_group }}"
@@ -87,11 +93,13 @@
 - include: download_netbox_tarball.yml
   when: netbox_stable == true
 
-- include: debian_deploy.yml
-  when: ansible_distribution == "Debian"
+# temporary disable
+#- include: debian_deploy.yml
+#  when: ansible_distribution == "Debian"
 
 - name: Install Netbox python dependencies inside active virtualenv
   pip:
     requirements: "{{ netbox_current_path }}/requirements.txt"
     virtualenv: "{{ netbox_current_path }}/venv-py{{ netbox_python }}"
     virtualenv_python: "{{ netbox_python3_binary if (netbox_python == 3) else netbox_python2_binary }}"
+  when: netbox_stable
