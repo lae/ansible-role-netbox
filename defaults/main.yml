@@ -24,3 +24,4 @@ netbox_database_port: 5432
 #netbox_database_socket: /var/run/postgresql
 
 netbox_python: 3
+

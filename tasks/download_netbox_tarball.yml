@@ -1,0 +1,14 @@
+---
+- name: Download and untar netbox tarball
+  unarchive:
+    src: "{{ netbox_stable_uri }}"
+    dest: "{{ netbox_releases_path }}"
+    copy: no
+    owner: "{{ netbox_user }}"
+    group: "{{ netbox_group }}"
+
+- name: Create a link to active release
+  file:
+    src: "{{ netbox_releases_path }}/netbox-{{ netbox_stable_release }}"
+    dest: "{{ netbox_current_path }}"
+    state: link
