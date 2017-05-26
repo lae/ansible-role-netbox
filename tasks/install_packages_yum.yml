@@ -1,0 +1,16 @@
+---
+- name: Install EPEL repository
+  yum:
+    name: epel-release
+    state: installed
+  when:
+    - netbox_python == 3
+
+- name: Install NetBox dependencies and selected Python version
+  yum:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
+  with_items:
+    - "{{ netbox_python3_packages if (netbox_python == 3) else netbox_python2_packages }}"
+    - "{{ netbox_packages }}"

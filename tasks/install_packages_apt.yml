@@ -1,0 +1,10 @@
+---
+- name: Install NetBox dependencies and selected Python version
+  apt:
+    name: "{{ item }}"
+    state: latest
+    cache_valid_time: 3600
+    update_cache: yes
+  with_items:
+    - "{{ netbox_python3_packages if (netbox_python == 3) else netbox_python2_packages }}"
+    - "{{ netbox_packages }}"

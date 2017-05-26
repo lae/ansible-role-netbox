@@ -10,35 +10,7 @@
     - "{{ ansible_distribution|lower }}.yml"
     - "{{ ansible_os_family|lower }}.yml"
 
-- include: check_mandatory_vars.yml
-
-- name: Install EPEL repository
-  yum:
-    name: epel-release
-    state: installed
-  when:
-    - ansible_pkg_mgr == "yum"
-    - netbox_python == 3
-
-- name: Install NetBox dependencies
-  package:
-    name: "{{ item }}"
-    state: installed
-  with_items: "{{ netbox_packages }}"
-
-- name: Install Python 2
-  package:
-    name: "{{ item }}"
-    state: installed
-  with_items: "{{ netbox_python2_packages }}"
-  when: netbox_python == 2
-
-- name: Install Python 3
-  package:
-    name: "{{ item }}"
-    state: installed
-  with_items: "{{ netbox_python3_packages }}"
-  when: netbox_python == 3
+- include: "install_packages_{{ ansible_pkg_mgr }}.yml"
 
 - name: Install virtualenv via pip
   pip:
@@ -46,16 +18,38 @@
     state: latest
     executable: "{{ netbox_pip3_binary if (netbox_python == 3) else netbox_pip2_binary }}"
 
-- name: Configure netbox group
+- name: Create NetBox user group
   group:
     name: "{{ netbox_group }}"
 
-- name: Configure netbox user
+- name: Create NetBox user and home directory
   user:
     name: "{{ netbox_user }}"
     group: "{{ netbox_group }}"
     home: "{{ netbox_home }}"
 
+- name: Create NetBox deployment directories
+  file: 
+    path: "{{ item }}" 
+    state: directory
+    owner: "{{ netbox_user }}"
+    group: "{{ netbox_group }}"
+  with_items:
+    - "{{ netbox_releases_path }}"
+    - "{{ netbox_shared_path }}"
+    - "{{ netbox_git_path }}"
+
+- include: download_netbox_tarball.yml
+  when: netbox_stable == true
+
+- name: Install Netbox python dependencies inside active virtualenv
+  pip:
+    requirements: "{{ netbox_current_path }}/requirements.txt"
+    virtualenv: "{{ netbox_current_path }}/venv-py{{ netbox_python }}"
+    virtualenv_python: "{{ netbox_python3_binary if (netbox_python == 3) else netbox_python2_binary }}"
+  when: netbox_stable
+
+# This is inside a block to be able to use become_user correctly
 - block:
   - name: Ensure Postgres database exists (via socket)
     postgresql_db:
@@ -77,25 +71,4 @@
     login_password: "{{ netbox_database_password }}"
   when:
     - netbox_database_socket is not defined
-    - netbox_database_host is not defined
-
-- name: Create directories for NetBox deployment
-  file: 
-    path: "{{ item }}" 
-    state: directory
-    owner: "{{ netbox_user }}"
-    group: "{{ netbox_group }}"
-  with_items:
-    - "{{ netbox_releases_path }}"
-    - "{{ netbox_shared_path }}"
-    - "{{ netbox_git_path }}"
-
-- include: download_netbox_tarball.yml
-  when: netbox_stable == true
-
-- name: Install Netbox python dependencies inside active virtualenv
-  pip:
-    requirements: "{{ netbox_current_path }}/requirements.txt"
-    virtualenv: "{{ netbox_current_path }}/venv-py{{ netbox_python }}"
-    virtualenv_python: "{{ netbox_python3_binary if (netbox_python == 3) else netbox_python2_binary }}"
-  when: netbox_stable
+    - netbox_database_host is defined
