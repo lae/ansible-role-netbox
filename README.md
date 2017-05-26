@@ -58,3 +58,8 @@ installing NetBox on to authenticate with it over TCP:
          netbox_database_user: netbox_prod_user
          netbox_database_password: "very_secure_password_for_prod"
 
+Authors
+-------
+
+Musee "lae" Ullah <lae@lae.is>
+Benjamin "blemagicleap" Le <ben.le@fireeye.com>
