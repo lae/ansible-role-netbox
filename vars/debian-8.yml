@@ -1,0 +1,21 @@
+---
+netbox_packages:
+  - libxml2-dev
+  - libxslt1-dev
+  - libffi-dev
+  - graphviz
+  - libpq-dev
+  - libssl-dev
+  - git
+netbox_python2_packages:
+  - python2.7
+  - python-dev
+  - python-pip
+netbox_python2_binary: /usr/bin/python2.7
+netbox_pip2_binary: /usr/bin/pip2
+netbox_python3_packages:
+  - python3.4
+  - python3.4-dev
+  - python3-pip
+netbox_python3_binary: /usr/bin/python3.4
+netbox_pip3_binary: /usr/bin/pip3

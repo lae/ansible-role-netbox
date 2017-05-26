@@ -1,14 +1,14 @@
 ---
-- name: ensure installation scenario is selected
+- name: Ensure installation scenario is selected
   fail:
-    msg: "please choose either the stable or git scenario"
+    msg: "Please choose either the stable or git scenario."
   when:
     - not netbox_stable
     - not netbox_git
 
-- name: ensure only one scenario is enabled
+- name: Ensure only one scenario is enabled
   fail:
-    msg: "please select only one scenario"
+    msg: "Please select only one scenario."
   when:
     - netbox_stable and netbox_git
 
@@ -24,3 +24,9 @@
     msg: "Please define only one database connection method."
   when:
     - netbox_database_socket is defined and netbox_database_host is defined
+
+- name: Ensure Python version is valid
+  fail:
+    msg: "Please set netbox_python to either 2 or 3."
+  when:
+    - netbox_python not in [2, 3]
