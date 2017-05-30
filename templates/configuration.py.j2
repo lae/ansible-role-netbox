@@ -7,6 +7,8 @@ DATABASE = {
     'PASSWORD': '{{ netbox_database_password }}',       # PostgreSQL password
     'HOST':  '{{ netbox_database_host }}',              # Database server
     'PORT': '{{ netbox_database_port }}',               # Database port (leave blank for default)
+{% else %} 
+    'HOST': '{{ netbox_database_socket }}',
 {% endif %}
 }
 
