@@ -1,7 +1,7 @@
 ---
 # defaults file for lae.netbox
 netbox_stable: false
-netbox_stable_release: 1.9.6
+netbox_stable_release: 2.0.4
 netbox_stable_uri: "https://github.com/digitalocean/netbox/archive/v{{ netbox_stable_release }}.tar.gz"
 
 netbox_git: false
@@ -37,4 +37,3 @@ netbox_base_path:
 netbox_paginate_count: 50
 netbox_timezone: UTC
 netbox_prefer_ipv4: false
-
