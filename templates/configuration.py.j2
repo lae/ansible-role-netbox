@@ -1,0 +1,26 @@
+ALLOWED_HOSTS =  {{ netbox_allowed_hosts | to_json }}
+
+DATABASE = {
+    'NAME': '{{ netbox_database }}',                    # Database name
+    'USER': '{{ netbox_database_user }}',               # PostgreSQL username
+{% if netbox_database_host is defined %}
+    'PASSWORD': '{{ netbox_database_password }}',       # PostgreSQL password
+    'HOST':  '{{ netbox_database_host }}',              # Database server
+    'PORT': '{{ netbox_database_port }}',               # Database port (leave blank for default)
+{% else %} 
+    'HOST': '{{ netbox_database_socket }}',
+{% endif %}
+}
+
+SECRET_KEY = '{{ netbox_secret_key }}'
+
+LOGIN_REQUIRED = {{ "True" if netbox_login_required else "False" }}
+
+BASE_PATH = '{{ netbox_current_path}}/netbox'
+         
+PAGINATE_COUNT = '{{ netbox_paginate_count }}'
+         
+TIME_ZONE = '{{ netbox_timezone }}'
+
+PREFER_IPV4 = '{{ "True" if netbox_prefer_ipv4 else "False" }}'
+

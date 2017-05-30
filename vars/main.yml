@@ -1,2 +1,4 @@
 ---
 # vars file for lae.netbox
+
+netbox_config_path: "{{ netbox_current_path }}/netbox/netbox"
