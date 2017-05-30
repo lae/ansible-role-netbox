@@ -39,15 +39,13 @@
     - "{{ netbox_shared_path }}"
     - "{{ netbox_git_path }}"
 
-- include: download_netbox_tarball.yml
-  when: netbox_stable == true
+- include: download_netbox.yml
 
 - name: Install Netbox python dependencies inside active virtualenv
   pip:
     requirements: "{{ netbox_current_path }}/requirements.txt"
     virtualenv: "{{ netbox_current_path }}/venv-py{{ netbox_python }}"
     virtualenv_python: "{{ netbox_python3_binary if (netbox_python == 3) else netbox_python2_binary }}"
-  when: netbox_stable
 
 # This is inside a block to be able to use become_user correctly
 - block:
@@ -75,4 +73,3 @@
 
 - name: Postgres template and configuration 
   include: configuration.yml
-  when: netbox_stable
