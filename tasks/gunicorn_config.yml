@@ -1,0 +1,24 @@
+---
+- name: Install gunicorn
+  pip:
+    name: gunicorn
+    virtualenv: "{{ netbox_current_path }}/venv-py{{ netbox_python }}"
+
+- name: Write gunicorn config
+  template:
+    src: templates/gunicorn_config.py.j2
+    dest: "{{ netbox_current_path }}/netbox/gunicorn_config.py"
+
+- name: Write Netbox service for gunicorn
+  template:
+    src: templates/netbox.service
+    dest: /lib/systemd/system
+    owner: root
+    mode: 0644
+  notify: restart netbox.service
+
+- name: Enable netbox.service via systemd
+  systemd:
+    name: netbox.service
+    state: started
+    enabled: yes

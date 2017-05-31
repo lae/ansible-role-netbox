@@ -2,3 +2,5 @@
 # vars file for lae.netbox
 
 netbox_config_path: "{{ netbox_current_path }}/netbox/netbox"
+netbox_venv_path: "{{ netbox_current_path }}//venv-py{{ netbox_python }}/bin"
+netbox_gunicorn_port: 8001

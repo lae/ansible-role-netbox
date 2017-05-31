@@ -73,3 +73,7 @@
 
 - name: Postgres template and configuration 
   include: configuration.yml
+
+- name: Configure gunicorn 
+  include: gunicorn_config.yml
+
