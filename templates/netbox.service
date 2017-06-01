@@ -4,7 +4,7 @@ Documentation=https://github.com/lae/ansible-role-netbox
 After=network.target
 
 [Service]
-ExecStart={{ netbox_venv_path }}/gunicorn -c {{ netbox_current_path }}/netbox/gunicorn_config.py netbox.wsgi
+ExecStart={{ netbox_venv_path }}/bin/gunicorn -c {{ netbox_current_path }}/netbox/gunicorn_config.py netbox.wsgi
 Restart=always
 KillMode=process
 

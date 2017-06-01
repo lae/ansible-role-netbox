@@ -44,7 +44,7 @@
 - name: Install Netbox python dependencies inside active virtualenv
   pip:
     requirements: "{{ netbox_current_path }}/requirements.txt"
-    virtualenv: "{{ netbox_current_path }}/venv-py{{ netbox_python }}"
+    virtualenv: "{{ netbox_venv_path }}"
     virtualenv_python: "{{ netbox_python3_binary if (netbox_python == 3) else netbox_python2_binary }}"
 
 # This is inside a block to be able to use become_user correctly
@@ -76,4 +76,5 @@
 
 - name: Configure gunicorn 
   include: gunicorn_config.yml
+
 
