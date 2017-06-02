@@ -1,22 +1,6 @@
 ---
 # vars file for lae.netbox
 
-netbox_ldap_enabled: true
-netbox_ldap_uri: ldaps://localhost
-netbox_ldap_service_dn: cn=netbox,ou=users,dc=example,dc=com
-netbox_ldap_service_pass: changeme
-netbox_ldap_ignore_cert_errors: false
-netbox_ldap_user_base: ou=users,dc=example,dc=com
-netbox_ldap_group_base: ou=groups,dc=example,dc=com
-netbox_ldap_group_filter: (objectClass=group)
-netbox_ldap_require_group: cn=netbox,ou=groups,dc=example,dc=com
-netbox_ldap_find_group_perms: true
-netbox_ldap_cache_groups: true
-netbox_ldap_group_cache_timeout: 3600
-netbox_ldap_group_flags:
-   is_active: cn=active,ou=groups,dc=example,dc=com
-netbox_ldap_attr_map:
-   first_name: givenName
-   last_name: sn
-netbox_ldap_user_filter: (uid=%(user)s)
+netbox_config_path: "{{ netbox_current_path }}/netbox/netbox"
+netbox_venv_path: "{{ netbox_current_path }}/venv-py{{ netbox_python }}"
 
