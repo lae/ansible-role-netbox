@@ -1,0 +1,21 @@
+---
+- name: Install LDAP package dependencies
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ netbox_ldap_packages }}"
+
+- name: Install LDAP pip dependencies
+  pip:
+    name: django-auth-ldap
+    virtualenv: "{{ netbox_venv_path }}"
+
+- name: Write LDAP configuration
+  template:
+    src: templates/ldap_config.py.j2
+    dest: "{{ netbox_config_path }}/ldap_config.py"
+    owner: "{{ netbox_user }}"
+    group: "{{ netbox_group }}"
+    mode: 0600
+  notify: restart netbox.service
+

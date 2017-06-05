@@ -77,3 +77,6 @@
 - name: Configure gunicorn 
   include: gunicorn_config.yml
 
+- name: Configure LDAP (optional)
+  include: ldap_config.yml
+
