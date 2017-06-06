@@ -71,10 +71,6 @@
     - netbox_database_socket is not defined
     - netbox_database_host is defined
 
-- name: Postgres template and configuration 
-  include: configuration.yml
+- include: configuration.yml
 
-- name: Configure gunicorn 
-  include: gunicorn_config.yml
-
-
+- include: gunicorn_config.yml

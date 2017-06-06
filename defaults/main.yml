@@ -8,14 +8,6 @@ netbox_git: false
 netbox_git_version: develop
 netbox_git_uri: "https://github.com/digitalocean/netbox.git"
 
-netbox_user: netbox
-netbox_group: netbox
-netbox_home: /srv/netbox
-netbox_releases_path: "{{ netbox_home }}/releases"
-netbox_git_path: "{{ netbox_releases_path }}/git"
-netbox_current_path: "{{ netbox_home }}/current"
-netbox_shared_path: "{{ netbox_home }}/shared"
-
 netbox_database: netbox
 netbox_database_user: netbox
 #netbox_database_password: changeme
@@ -23,19 +15,23 @@ netbox_database_user: netbox
 netbox_database_port: 5432
 #netbox_database_socket: /var/run/postgresql
 
-netbox_python: 3
+netbox_secret_key: "V1kp=u-LvT^H_*IUa!J$8ElzS&sdMD#etw2qP6gcARi94)r7Wf"
+netbox_gunicorn_port: 8001
 
-# netbox_secret_key:  "Generate the secrec_key if defined"
-netbox_secret_key:  "V1kp=u-LvT^H_*IUa!J$8ElzS&sdMD#etw2qP6gcARi94)r7Wf"
-
-netbox_allowed_hosts: 
- - netbox
- - localhost
-
+netbox_allowed_hosts:
+  - netbox
+  - localhost
 netbox_login_required: false
 netbox_base_path:
 netbox_paginate_count: 50
 netbox_timezone: UTC
 netbox_prefer_ipv4: false
 
-netbox_gunicorn_port: 8001
+netbox_user: netbox
+netbox_group: netbox
+netbox_home: /srv/netbox
+netbox_releases_path: "{{ netbox_home }}/releases"
+netbox_git_path: "{{ netbox_releases_path }}/git"
+netbox_current_path: "{{ netbox_home }}/current"
+netbox_shared_path: "{{ netbox_home }}/shared"
+netbox_python: 3
