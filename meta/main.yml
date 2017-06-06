@@ -1,6 +1,6 @@
 galaxy_info:
   author: Musee Ullah
-  description: Installs and configures Netbox
+  description: Installs and configures NetBox
   license: MIT
   min_ansible_version: 2.1
   platforms:

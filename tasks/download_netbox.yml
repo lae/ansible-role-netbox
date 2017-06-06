@@ -1,5 +1,5 @@
 ---
-- name: Download and untar netbox tarball
+- name: Download and untar NetBox tarball
   unarchive:
     src: "{{ netbox_stable_uri }}"
     dest: "{{ netbox_releases_path }}"
@@ -27,4 +27,3 @@
     dest: "{{ netbox_current_path }}"
     state: link
   when: netbox_git
-

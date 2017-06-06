@@ -15,7 +15,7 @@
     dest: "{{ netbox_current_path }}/netbox/gunicorn_config.py"
     state: link
 
-- name: Write Netbox service for gunicorn
+- name: Write NetBox service for gunicorn
   template:
     src: netbox.service
     dest: /lib/systemd/system

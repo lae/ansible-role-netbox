@@ -41,7 +41,7 @@
 
 - include: download_netbox.yml
 
-- name: Install Netbox python dependencies inside active virtualenv
+- name: Install NetBox python dependencies inside active virtualenv
   pip:
     requirements: "{{ netbox_current_path }}/requirements.txt"
     virtualenv: "{{ netbox_venv_path }}"

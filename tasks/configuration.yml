@@ -1,5 +1,5 @@
 ---
-- name: Configure netbox
+- name: Configure NetBox
   template:
     src: templates/configuration.py.j2
     dest: "{{ netbox_shared_path }}/configuration.py"
