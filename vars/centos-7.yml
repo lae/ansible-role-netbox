@@ -7,7 +7,6 @@ netbox_packages:
   - libffi-devel
   - graphviz
   - openssl-devel
-  - git
 netbox_python2_packages:
   - python2
   - python-devel

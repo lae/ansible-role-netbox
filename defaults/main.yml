@@ -1,8 +1,8 @@
 ---
 # defaults file for lae.netbox
 netbox_stable: false
-netbox_stable_release: 2.0.4
-netbox_stable_uri: "https://github.com/digitalocean/netbox/archive/v{{ netbox_stable_release }}.tar.gz"
+netbox_stable_version: 2.0.4
+netbox_stable_uri: "https://github.com/digitalocean/netbox/archive/v{{ netbox_stable_version }}.tar.gz"
 
 netbox_git: false
 netbox_git_version: develop
@@ -32,6 +32,7 @@ netbox_group: netbox
 netbox_home: /srv/netbox
 netbox_releases_path: "{{ netbox_home }}/releases"
 netbox_git_path: "{{ netbox_releases_path }}/git"
+netbox_stable_path: "{{ netbox_releases_path }}/netbox-{{ netbox_stable_version }}"
 netbox_current_path: "{{ netbox_home }}/current"
 netbox_shared_path: "{{ netbox_home }}/shared"
 netbox_python: 3

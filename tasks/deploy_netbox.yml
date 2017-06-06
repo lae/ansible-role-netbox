@@ -1,0 +1,24 @@
+---
+- name: Create NetBox deployment directories
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ netbox_releases_path }}"
+    - "{{ netbox_git_path }}"
+    - "{{ netbox_shared_path }}"
+
+- include: install_via_stable.yml
+  when:
+    - netbox_stable
+
+- include: install_via_git.yml
+  when:
+    - netbox_git
+
+- name: Install NetBox python dependencies inside active virtualenv
+  pip:
+    requirements: "{{ netbox_current_path }}/requirements.txt"
+    virtualenv: "{{ netbox_venv_path }}"
+    virtualenv_python: "{{ netbox_python3_binary if (netbox_python == 3) else netbox_python2_binary }}"
+

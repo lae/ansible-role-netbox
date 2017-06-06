@@ -18,35 +18,6 @@
     state: latest
     executable: "{{ netbox_pip3_binary if (netbox_python == 3) else netbox_pip2_binary }}"
 
-- name: Create NetBox user group
-  group:
-    name: "{{ netbox_group }}"
-
-- name: Create NetBox user and home directory
-  user:
-    name: "{{ netbox_user }}"
-    group: "{{ netbox_group }}"
-    home: "{{ netbox_home }}"
-
-- name: Create NetBox deployment directories
-  file: 
-    path: "{{ item }}" 
-    state: directory
-    owner: "{{ netbox_user }}"
-    group: "{{ netbox_group }}"
-  with_items:
-    - "{{ netbox_releases_path }}"
-    - "{{ netbox_shared_path }}"
-    - "{{ netbox_git_path }}"
-
-- include: download_netbox.yml
-
-- name: Install NetBox python dependencies inside active virtualenv
-  pip:
-    requirements: "{{ netbox_current_path }}/requirements.txt"
-    virtualenv: "{{ netbox_venv_path }}"
-    virtualenv_python: "{{ netbox_python3_binary if (netbox_python == 3) else netbox_python2_binary }}"
-
 # This is inside a block to be able to use become_user correctly
 - block:
   - name: Ensure Postgres database exists (via socket)
@@ -71,6 +42,19 @@
     - netbox_database_socket is not defined
     - netbox_database_host is defined
 
-- include: configuration.yml
+- name: Create NetBox user group
+  group:
+    name: "{{ netbox_group }}"
 
+- name: Create NetBox user and home directory
+  user:
+    name: "{{ netbox_user }}"
+    group: "{{ netbox_group }}"
+    home: "{{ netbox_home }}"
+
+- include: deploy_netbox.yml
+  become: True
+  become_user: "{{ netbox_user }}"
+
+- include: configuration.yml
 - include: gunicorn_config.yml
