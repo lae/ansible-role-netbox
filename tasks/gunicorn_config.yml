@@ -1,0 +1,30 @@
+---
+- name: Install gunicorn
+  pip:
+    name: gunicorn
+    virtualenv: "{{ netbox_venv_path }}"
+
+- name: Write gunicorn config
+  template:
+    src: gunicorn_config.py.j2
+    dest: "{{ netbox_shared_path }}/gunicorn_config.py"
+
+- name: Create a link for gunicorn_config.py
+  file: 
+    src: "{{ netbox_shared_path }}/gunicorn_config.py"
+    dest: "{{ netbox_current_path }}/netbox/gunicorn_config.py"
+    state: link
+
+- name: Write Netbox service for gunicorn
+  template:
+    src: netbox.service
+    dest: /lib/systemd/system
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Enable netbox.service via systemd
+  systemd:
+    name: netbox.service
+    state: started
+    enabled: yes

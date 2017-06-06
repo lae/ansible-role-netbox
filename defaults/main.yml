@@ -37,3 +37,5 @@ netbox_base_path:
 netbox_paginate_count: 50
 netbox_timezone: UTC
 netbox_prefer_ipv4: false
+
+netbox_gunicorn_port: 8001

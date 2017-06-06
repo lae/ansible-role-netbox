@@ -21,3 +21,4 @@ netbox_python3_packages:
   - python34-pip
 netbox_python3_binary: /usr/bin/python3.4
 netbox_pip3_binary: /usr/bin/pip3
+
