@@ -1,0 +1,8 @@
+---
+- hosts: netbox
+  tasks:
+    - debug:
+        msg: "Environment: netbox_stable={{ netbox_stable }} netbox_git={{ netbox_git }} netbox_python={{ netbox_python }}"
+    - name: Ensure that NetBox returns a successful HTTP response.
+      uri:
+        url: "http://{{ netbox_bind_address }}"
