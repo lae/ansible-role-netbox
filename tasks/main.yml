@@ -59,6 +59,8 @@
     src: netbox.service.j2
     dest: /lib/systemd/system/netbox.service
     mode: 0644
+  notify:
+    - restart netbox
 
 - name: Start and enable NetBox
   systemd:

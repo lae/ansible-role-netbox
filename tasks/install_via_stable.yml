@@ -5,6 +5,8 @@
     dest: "{{ netbox_releases_path }}"
     creates: "{{ netbox_stable_path }}"
     remote_src: True
+  notify:
+    - restart netbox
 
 - name: Symlink stable release to current NetBox directory
   file:

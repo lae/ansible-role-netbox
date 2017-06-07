@@ -8,3 +8,5 @@
   template:
     src: gunicorn_config.py.j2
     dest: "{{ netbox_shared_path }}/gunicorn_config.py"
+  notify:
+    - restart netbox

@@ -24,6 +24,8 @@
     src: templates/configuration.py.j2
     dest: "{{ netbox_shared_path }}/configuration.py"
     mode: 0640
+  notify:
+    - restart netbox
 
 - name: Symlink NetBox configuration file into the active NetBox release
   file:
