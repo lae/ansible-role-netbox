@@ -15,7 +15,7 @@ netbox_database_user: netbox
 netbox_database_port: 5432
 #netbox_database_socket: /var/run/postgresql
 
-netbox_secret_key: "V1kp=u-LvT^H_*IUa!J$8ElzS&sdMD#etw2qP6gcARi94)r7Wf"
+#netbox_secret_key:
 netbox_bind_address: "127.0.0.1:8001"
 
 netbox_allowed_hosts:
