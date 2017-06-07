@@ -17,18 +17,18 @@
   django_manage:
     command: migrate
     app_path: "{{ netbox_current_path }}/netbox"
-    virtualenv: "{{ netbox_venv_path }}"
+    virtualenv: "{{ netbox_virtualenv_path }}"
   become_user: "{{ netbox_database_user }}"
 
 - name: Collect Static Files
   django_manage:
     command: collectstatic --no-input
     app_path: "{{ netbox_current_path }}/netbox"
-    virtualenv: "{{ netbox_venv_path }}"
+    virtualenv: "{{ netbox_virtualenv_path }}"
 
 - name: Load initial Data (optional)
   django_manage:
     command: loaddata initial_data
     app_path: "{{ netbox_current_path }}/netbox"
-    virtualenv: "{{ netbox_venv_path }}"
+    virtualenv: "{{ netbox_virtualenv_path }}"
   become_user: "{{ netbox_database_user }}"

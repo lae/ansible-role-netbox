@@ -2,7 +2,7 @@
 - name: Install gunicorn
   pip:
     name: gunicorn
-    virtualenv: "{{ netbox_venv_path }}"
+    virtualenv: "{{ netbox_virtualenv_path }}"
 
 - name: Write gunicorn config
   template:
