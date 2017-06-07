@@ -7,13 +7,7 @@
     - "{{ netbox_releases_path }}"
     - "{{ netbox_shared_path }}"
 
-- include: install_via_stable.yml
-  when:
-    - netbox_stable
-
-- include: install_via_git.yml
-  when:
-    - netbox_git
+- include: "install_via_{{ 'git' if netbox_git else 'stable' }}.yml"
 
 - include: generate_secret_key.yml
   when:
