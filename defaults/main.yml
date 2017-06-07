@@ -17,10 +17,9 @@ netbox_database_port: 5432
 
 #netbox_secret_key:
 netbox_bind_address: "127.0.0.1:8001"
-
 netbox_allowed_hosts:
-  - netbox
   - localhost
+  - 127.0.0.1
 netbox_login_required: false
 netbox_base_path:
 netbox_paginate_count: 50
