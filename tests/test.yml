@@ -11,3 +11,5 @@
     - name: Ensure that NetBox returns a successful HTTP response
       uri:
         url: "http://{{ netbox_bind_address }}"
+    - name: Print out NetBox/gunicorn log
+      shell: journalctl --no-pager -xu netbox.service
