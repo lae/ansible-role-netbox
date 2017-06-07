@@ -1,6 +1,8 @@
 ---
 ansible_ssh_user: root
-netbox_bind_address: "{{ ansible_default_ipv4.address }}:3030"
+netbox_bind_address: "{{ ansible_default_ipv4.address }}:8080"
+netbox_allowed_hosts:
+  - "{{ ansible_default_ipv4.address }}"
 netbox_database_socket: "{{ postgresql_unix_socket_directories[0] }}"
 postgresql_users:
   - name: "{{ netbox_database_user }}"
