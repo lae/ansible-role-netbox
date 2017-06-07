@@ -12,7 +12,7 @@ DATABASE = {
 }
 SECRET_KEY = '{{ netbox_secret_key }}'
 LOGIN_REQUIRED = {{ "True" if netbox_login_required else "False" }}
-BASE_PATH = '{{ netbox_current_path }}/netbox'
+BASE_PATH = '{{ netbox_base_path }}'
 PAGINATE_COUNT = '{{ netbox_paginate_count }}'
 TIME_ZONE = '{{ netbox_timezone }}'
 PREFER_IPV4 = '{{ "True" if netbox_prefer_ipv4 else "False" }}'
