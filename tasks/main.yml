@@ -56,7 +56,7 @@
 
 - name: Install systemd unit file for NetBox
   template:
-    src: netbox.service
+    src: netbox.service.j2
     dest: /lib/systemd/system
     mode: 0644
 
