@@ -1,0 +1,57 @@
+---
+- name: Create NetBox application directories
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ netbox_releases_path }}"
+    - "{{ netbox_shared_path }}"
+
+- include: "install_via_{{ 'git' if netbox_git else 'stable' }}.yml"
+
+- include: generate_secret_key.yml
+  when:
+    - netbox_secret_key is not defined
+
+- name: Create NetBox virtualenv and install needed Python dependencies
+  pip:
+    requirements: "{{ netbox_current_path }}/requirements.txt"
+    virtualenv: "{{ netbox_virtualenv_path }}"
+    virtualenv_python: "{{ netbox_python3_binary if (netbox_python == 3) else netbox_python2_binary }}"
+
+- name: Generate NetBox configuration file
+  template:
+    src: templates/configuration.py.j2
+    dest: "{{ netbox_shared_path }}/configuration.py"
+    mode: 0640
+  notify:
+    - restart netbox
+
+- name: Symlink NetBox configuration file into the active NetBox release
+  file:
+    src: "{{ netbox_shared_path }}/configuration.py"
+    dest: "{{ netbox_config_path }}/configuration.py"
+    state: link
+
+- name: Run database migrations for NetBox
+  django_manage:
+    command: migrate
+    app_path: "{{ netbox_current_path }}/netbox"
+    virtualenv: "{{ netbox_virtualenv_path }}"
+
+- name: Generate static assets for NetBox
+  django_manage:
+    command: collectstatic
+    app_path: "{{ netbox_current_path }}/netbox"
+    virtualenv: "{{ netbox_virtualenv_path }}"
+
+- name: Populate NetBox with initial data
+  django_manage:
+    command: loaddata
+    fixtures: initial_data
+    app_path: "{{ netbox_current_path }}/netbox"
+    virtualenv: "{{ netbox_virtualenv_path }}"
+  when:
+    - netbox_load_initial_data
+
+- include: configure_gunicorn.yml

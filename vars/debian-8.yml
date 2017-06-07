@@ -6,7 +6,6 @@ netbox_packages:
   - graphviz
   - libpq-dev
   - libssl-dev
-  - git
 netbox_python2_packages:
   - python2.7
   - python-dev

@@ -1,20 +1,15 @@
 ---
-- hosts: netbox-stable
-  become: true
-  any_errors_fatal: true
-  roles:
-    - geerlingguy.postgresql
-    - ansible-role-netbox
-  pre_tasks:
-    - debug:
-        msg: "THIS RUN DEPLOYS NETBOX VIA STABLE TARBALL ON PYTHON {{ netbox_python }}."
-
-- hosts: netbox-git
-  become: true
-  any_errors_fatal: true
-  roles:
-    - geerlingguy.postgresql
-    - ansible-role-netbox
-  pre_tasks:
-    - debug:
-        msg: "THIS RUN DEPLOYS NETBOX VIA GIT ON PYTHON {{ netbox_python }}."
+- hosts: netbox
+  tasks:
+    - name: Print out test environment definitions for each container
+      debug:
+        var: "{{ item }}"
+      with_items:
+        - netbox_stable
+        - netbox_git
+        - netbox_python
+    - name: Ensure that NetBox returns a successful HTTP response
+      uri:
+        url: "http://{{ netbox_bind_address }}"
+    - name: Print out NetBox/gunicorn log
+      shell: journalctl --no-pager -xu netbox.service

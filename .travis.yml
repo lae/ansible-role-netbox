@@ -21,13 +21,14 @@ install:
 - ansible-galaxy install lae.travis-lxc geerlingguy.postgresql
 - ansible-playbook -vvv tests/install.yml -i tests/inventory
 script:
-- ansible-playbook tests/test.yml -i tests/inventory --syntax-check
-- ansible-playbook tests/test.yml -i tests/inventory
-- unbuffer ansible-playbook -vvv tests/test.yml -i tests/inventory >/tmp/idempotency.log
+- ansible-playbook tests/deploy.yml -i tests/inventory --syntax-check
+- ansible-playbook tests/deploy.yml -i tests/inventory
+- unbuffer ansible-playbook -vvv tests/deploy.yml -i tests/inventory >/tmp/idempotency.log
   2>&1
 - 'grep -A1 "PLAY RECAP" /tmp/idempotency.log | grep -qP "changed=0.*failed=0" &&
   (echo "Idempotence: PASS"; exit 0) || (echo "Idempotence: FAIL"; cat /tmp/idempotency.log;
   exit 1)'
+- ansible-playbook tests/test.yml -i tests/inventory
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
   slack:

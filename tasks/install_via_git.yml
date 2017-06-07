@@ -1,0 +1,14 @@
+---
+- name: Clone specified NetBox git repository
+  git:
+    repo: "{{ netbox_git_uri }}"
+    dest: "{{ netbox_git_path }}"
+    version: "{{ netbox_git_version }}"
+  notify:
+    - restart netbox
+
+- name: Symlink git repository to current NetBox directory
+  file:
+    src: "{{ netbox_git_path }}"
+    dest: "{{ netbox_current_path }}"
+    state: link
