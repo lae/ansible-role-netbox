@@ -1,0 +1,12 @@
+[Unit]
+Description=NetBox datacenter management application
+Documentation=http://netbox.readthedocs.io/en/stable/
+After=network.target
+
+[Service]
+ExecStart={{ netbox_virtualenv_path }}/bin/gunicorn -c {{ netbox_shared_path }}/gunicorn_config.py netbox.wsgi
+Restart=always
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target

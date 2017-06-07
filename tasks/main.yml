@@ -54,4 +54,14 @@
   become: True
   become_user: "{{ netbox_user }}"
 
-- include: gunicorn_config.yml
+- name: Install systemd unit file for NetBox
+  template:
+    src: netbox.service
+    dest: /lib/systemd/system
+    mode: 0644
+
+- name: Start and enable NetBox
+  systemd:
+    name: netbox.service
+    state: started
+    enabled: yes
