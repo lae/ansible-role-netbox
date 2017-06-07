@@ -35,3 +35,5 @@ netbox_stable_path: "{{ netbox_releases_path }}/netbox-{{ netbox_stable_version 
 netbox_current_path: "{{ netbox_home }}/current"
 netbox_shared_path: "{{ netbox_home }}/shared"
 netbox_python: 3
+
+netbox_load_initial_data: false

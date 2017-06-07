@@ -56,5 +56,4 @@
   become: True
   become_user: "{{ netbox_user }}"
 
-- include: configuration.yml
 - include: gunicorn_config.yml
