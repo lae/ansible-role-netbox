@@ -1,6 +1,6 @@
 galaxy_info:
   author: Musee Ullah
-  description: Installs and configures NetBox
+  description: Installs and configures NetBox, a DCIM suite, in a production setting.
   license: MIT
   min_ansible_version: 2.1
   platforms:
@@ -17,4 +17,7 @@ galaxy_info:
         - 7
   galaxy_tags:
     - dcim
+    - ipam
+    - inventory-management
+    - web
 dependencies: []
