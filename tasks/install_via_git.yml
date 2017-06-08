@@ -5,7 +5,7 @@
     dest: "{{ netbox_git_path }}"
     version: "{{ netbox_git_version }}"
   notify:
-    - restart netbox
+    - reload netbox
 
 - name: Symlink git repository to current NetBox directory
   file:

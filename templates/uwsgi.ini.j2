@@ -1,0 +1,20 @@
+# {{ ansible_managed }}
+[uwsgi]
+master=true
+{% if netbox_behind_load_balancer %}
+protocol={{ netbox_uwsgi_protocol }}
+socket={{ netbox_uwsgi_socket }}
+{% else %}
+http={{ netbox_uwsgi_socket }}
+{% endif %}
+uid={{ netbox_user }}
+gid={{ netbox_group }}
+processes={{ netbox_uwsgi_processes }}
+module=netbox.wsgi
+virtualenv={{ netbox_virtualenv_path }}
+chdir={{ netbox_current_path }}/netbox
+static-map=/static={{ netbox_current_path }}/netbox/static
+logger={{ netbox_uwsgi_logger }}
+req-logger={{ netbox_uwsgi_req_logger }}
+
+# vim: ft=dosini

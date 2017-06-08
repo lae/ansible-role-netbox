@@ -1,15 +1,17 @@
 [Unit]
-Description=NetBox datacenter management application
+Description=NetBox datacenter management application using uWSGI
 Documentation=http://netbox.readthedocs.io/en/{{ 'latest' if netbox_git else 'stable' }}/
-After=network.target
+After=syslog.target
 
 [Service]
+ExecStart=/usr/bin/env uwsgi --ini {{ netbox_shared_path }}/uwsgi.ini
 User={{ netbox_user }}
 Group={{ netbox_group }}
-ExecStart={{ netbox_virtualenv_path }}/bin/gunicorn -c {{ netbox_shared_path }}/gunicorn_config.py netbox.wsgi
-WorkingDirectory={{ netbox_current_path }}/netbox
-Restart=always
-KillMode=process
+Restart=on-failure
+KillSignal=SIGQUIT
+Type=notify
+StandardError=syslog
+NotifyAccess=all
 
 [Install]
 WantedBy=multi-user.target

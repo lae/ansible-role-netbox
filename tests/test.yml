@@ -1,15 +1,24 @@
 ---
 - hosts: netbox
   tasks:
-    - name: Print out test environment definitions for each container
-      debug:
-        var: "{{ item }}"
-      with_items:
-        - netbox_stable
-        - netbox_git
-        - netbox_python
-    - name: Ensure that NetBox returns a successful HTTP response
-      uri:
-        url: "http://{{ netbox_bind_address }}"
-    - name: Print out NetBox/gunicorn log
-      shell: journalctl --no-pager -xu netbox.service
+    - block:
+        - name: Print out test environment definitions for each container
+          debug:
+            var: "{{ item }}"
+          with_items:
+            - netbox_stable
+            - netbox_git
+            - netbox_python
+        - name: Ensure that NetBox returns a successful HTTP response
+          uri:
+            url: "http://{{ inventory_hostname }}:8080"
+        - name: uWSGI/NetBox service status
+          shell: "systemctl status netbox.service"
+          changed_when: false
+        - name: uWSGI/NetBox service journal
+          shell: "journalctl --no-pager -xu netbox.service"
+          changed_when: false
+        - name: NetBox application log
+          shell: cat /srv/netbox/shared/application.log
+          changed_when: false
+      ignore_errors: yes

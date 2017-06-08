@@ -25,7 +25,7 @@
     dest: "{{ netbox_shared_path }}/configuration.py"
     mode: 0640
   notify:
-    - restart netbox
+    - reload netbox
 
 - name: Symlink NetBox configuration file into the active NetBox release
   file:
@@ -53,5 +53,3 @@
     virtualenv: "{{ netbox_virtualenv_path }}"
   when:
     - netbox_load_initial_data
-
-- include: configure_gunicorn.yml
