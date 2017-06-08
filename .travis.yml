@@ -28,7 +28,7 @@ script:
 - 'grep -A1 "PLAY RECAP" /tmp/idempotency.log | grep -qP "changed=0.*failed=0" &&
   (echo "Idempotence: PASS"; exit 0) || (echo "Idempotence: FAIL"; cat /tmp/idempotency.log;
   exit 1)'
-- ansible-playbook -v tests/test.yml -i tests/inventory
+- ANSIBLE_STDOUT_CALLBACK=debug ansible-playbook -v tests/test.yml -i tests/inventory
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
   slack:
