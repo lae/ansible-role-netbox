@@ -54,16 +54,28 @@
   become: True
   become_user: "{{ netbox_user }}"
 
-- name: Install systemd unit file for NetBox
+- name: Install uWSGI via pip
+  pip:
+    name: uwsgi
+    state: latest
+    executable: "{{ netbox_pip3_binary if (netbox_python == 3) else netbox_pip2_binary }}"
+
+- name: Configure uWSGI NetBox application
+  template:
+    src: uwsgi.ini.j2
+    dest: "{{ netbox_shared_path }}/uwsgi.ini"
+  notify:
+    - reload netbox
+
+- name: Install uWSGI/NetBox unit file
   template:
     src: netbox.service.j2
     dest: /lib/systemd/system/netbox.service
-    mode: 0644
   notify:
-    - restart netbox
+    - reload netbox and unit file
 
-- name: Start and enable NetBox
-  systemd:
-    name: netbox.service
+- name: Start and enable uWSGI/NetBox
+  service:
+    name: netbox
     state: started
     enabled: yes

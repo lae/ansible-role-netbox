@@ -1,3 +1,4 @@
+# {{ ansible_managed }}
 ALLOWED_HOSTS = {{ netbox_allowed_hosts | to_json }}
 DATABASE = {
     'NAME': '{{ netbox_database }}',

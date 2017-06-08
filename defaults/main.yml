@@ -8,6 +8,8 @@ netbox_git: false
 netbox_git_version: develop
 netbox_git_uri: "https://github.com/digitalocean/netbox.git"
 
+netbox_behind_load_balancer: false
+
 netbox_database: netbox
 netbox_database_user: netbox
 #netbox_database_password: changeme
@@ -16,7 +18,6 @@ netbox_database_port: 5432
 #netbox_database_socket: /var/run/postgresql
 
 #netbox_secret_key:
-netbox_bind_address: "127.0.0.1:8001"
 netbox_allowed_hosts:
   - localhost
   - 127.0.0.1
@@ -35,5 +36,11 @@ netbox_stable_path: "{{ netbox_releases_path }}/netbox-{{ netbox_stable_version 
 netbox_current_path: "{{ netbox_home }}/current"
 netbox_shared_path: "{{ netbox_home }}/shared"
 netbox_python: 3
+
+netbox_uwsgi_socket: "127.0.0.1:8000"
+netbox_uwsgi_protocol: uwsgi
+netbox_uwsgi_processes: "{{ ansible_processor_vcpus }}"
+netbox_uwsgi_logger: "file:{{ netbox_shared_path }}/application.log"
+netbox_uwsgi_req_logger: "file:{{ netbox_shared_path }}/requests.log"
 
 netbox_load_initial_data: false
