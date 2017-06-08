@@ -4,7 +4,11 @@
 lae.netbox
 =========
 
-Installs and configures DigitalOcean's NetBox.
+Installs and configures DigitalOcean's [NetBox](https://github.com/digitalocean/netbox).
+
+This role deploys NetBox inside of a virtualenv, uses uWSGI as its frontend
+(can be used standalone or behind a load balancer), works with both Python 2/3
+and has been tested across CentOS 7/Debian 8/Ubuntu 16.
 
 Requirements
 ------------
@@ -38,12 +42,20 @@ See the *Example Playbook* section for more information on configuring the DB.
 default) stored in `/srv/netbox/shared/generated_secret_key`. This will then be
 used by the role to configure NetBox unless `netbox_secret_key` is later defined.
 
-`netbox_bind_address` is the address Gunicorn will be configured to listen on.
-
 `netbox_allowed_hosts` is a list defining `ALLOWED_HOSTS`.
 
 To load the initial data shipped by NetBox, set `netbox_load_initial_data` to
 true. Otherwise, this role will deploy NetBox with an empty slate.
+
+Configure `netbox_uwsgi_socket` to either be a TCP address or UNIX socket to
+bind to. By default, this role will configure uWSGI to serve a full uWSGI HTTP
+web server. You can set `netbox_behind_load_balancer` to `true` to use an uWSGI
+socket (and you can also set `netbox_uwsgi_protocol` to `http` to configure
+uWSGI to use an HTTP-speaking socket instead).
+
+By default, NetBox will be configured to output to `/srv/netbox/shared/application.log`
+and `/srv/netbox/shared/requests.log`. You can override these with a valid
+uWSGI logger by setting `netbox_uwsgi_logger` and `netbox_uwsgi_req_logger`.
 
 
 Example Playbook
@@ -61,6 +73,7 @@ socket to authenticate with the Postgres server.
       vars:
          netbox_stable: true
          netbox_database_socket: "{{ postgresql_unix_socket_directories[0] }}"
+         netbox_uwsgi_socket: "0.0.0.0:80"
          netbox_allowed_hosts:
            - netbox.idolactiviti.es
          postgresql_users:
@@ -77,8 +90,9 @@ installing NetBox on to authenticate with it over TCP:
          - lae.netbox
       vars:
          netbox_stable: true
+         netbox_uwsgi_socket: "0.0.0.0:80"
          netbox_allowed_hosts:
-           - netbox.idolactiviti.es
+           - "{{ inventory_hostname }}"
          netbox_database_host: pg-netbox.idolactiviti.es
          netbox_database_port: 15432
          netbox_database_name: netbox_prod
