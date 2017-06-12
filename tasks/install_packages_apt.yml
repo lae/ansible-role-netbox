@@ -1,5 +1,5 @@
 ---
-- name: Install NetBox dependencies and selected Python version
+- name: Install required packages for selected NetBox configuration
   apt:
     name: "{{ item }}"
     state: latest
@@ -8,11 +8,5 @@
   with_items:
     - "{{ netbox_python3_packages if (netbox_python == 3) else netbox_python2_packages }}"
     - "{{ netbox_packages }}"
-    - "{{ netbox_ldap_packages if netbox_ldap_enabled }}"
-
-- name: Ensure git is installed
-  apt:
-    name: git
-    state: installed
-  when:
-    - netbox_git
+    - "{{ netbox_ldap_packages if netbox_ldap_enabled else [] }}"
+    - "{{ 'git' if netbox_git else [] }}"
