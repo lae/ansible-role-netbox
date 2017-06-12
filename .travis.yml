@@ -23,7 +23,7 @@ install:
 script:
 - ansible-playbook tests/deploy.yml -i tests/inventory --syntax-check
 - ansible-playbook tests/deploy.yml -i tests/inventory
-- unbuffer ansible-playbook -vv tests/deploy.yml -i tests/inventory >/tmp/idempotency.log 2>&1
+- ANSIBLE_STDOUT_CALLBACK=debug unbuffer ansible-playbook -vv tests/deploy.yml -i tests/inventory >/tmp/idempotency.log 2>&1
 - 'grep -A1 "PLAY RECAP" /tmp/idempotency.log | grep -qP "changed=0.*failed=0" &&
   (echo "Idempotence: PASS"; exit 0) || (echo "Idempotence: FAIL"; cat /tmp/idempotency.log;
   exit 1)'
