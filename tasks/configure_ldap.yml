@@ -1,10 +1,4 @@
 ---
-- name: Install LDAP package dependencies
-  package:
-    name: "{{ item }}"
-    state: present
-  with_items: "{{ netbox_ldap_packages }}"
-
 - name: Install LDAP pip dependencies
   pip:
     name: django-auth-ldap
