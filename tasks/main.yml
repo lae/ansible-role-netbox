@@ -28,34 +28,13 @@
     group: "{{ netbox_group }}"
     home: "{{ netbox_home }}"
 
-- name: Create NetBox deployment directories
-  file: 
-    path: "{{ item }}" 
-    state: directory
-    owner: "{{ netbox_user }}"
-    group: "{{ netbox_group }}"
-  with_items:
-    - "{{ netbox_releases_path }}"
-    - "{{ netbox_shared_path }}"
-    - "{{ netbox_git_path }}"
-
-- include: download_netbox.yml
-
-- name: Install Netbox python dependencies inside active virtualenv
-  pip:
-    requirements: "{{ netbox_current_path }}/requirements.txt"
-    virtualenv: "{{ netbox_current_path }}/venv-py{{ netbox_python }}"
-    virtualenv_python: "{{ netbox_python3_binary if (netbox_python == 3) else netbox_python2_binary }}"
-
-# This is inside a block to be able to use become_user correctly
-- block:
-  - name: Ensure Postgres database exists (via socket)
-    postgresql_db:
-      name: "{{ netbox_database }}"
-      login_user: "{{ netbox_database_user }}"
-      login_unix_socket: "{{ netbox_database_socket }}"
-    become: True
-    become_user: "{{ netbox_database_user }}"
+- name: Ensure Postgres database exists (via socket)
+  postgresql_db:
+    name: "{{ netbox_database }}"
+    login_user: "{{ netbox_database_user }}"
+    login_unix_socket: "{{ netbox_database_socket }}"
+  become: True
+  become_user: "{{ netbox_database_user }}"
   when:
     - netbox_database_socket is defined
     - netbox_database_host is not defined
@@ -71,12 +50,32 @@
     - netbox_database_socket is not defined
     - netbox_database_host is defined
 
-- name: Postgres template and configuration 
-  include: configuration.yml
+- include: deploy_netbox.yml
+  become: True
+  become_user: "{{ netbox_user }}"
 
-- name: Configure gunicorn 
-  include: gunicorn_config.yml
+- name: Install uWSGI via pip
+  pip:
+    name: uwsgi
+    state: latest
+    executable: "{{ netbox_pip3_binary if (netbox_python == 3) else netbox_pip2_binary }}"
 
-- name: Configure LDAP (optional)
-  include: ldap_config.yml
+- name: Configure uWSGI NetBox application
+  template:
+    src: uwsgi.ini.j2
+    dest: "{{ netbox_shared_path }}/uwsgi.ini"
+  notify:
+    - reload netbox
 
+- name: Install uWSGI/NetBox unit file
+  template:
+    src: netbox.service.j2
+    dest: /lib/systemd/system/netbox.service
+  notify:
+    - reload netbox and unit file
+
+- name: Start and enable uWSGI/NetBox
+  service:
+    name: netbox
+    state: started
+    enabled: yes

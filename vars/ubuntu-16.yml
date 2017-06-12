@@ -6,7 +6,6 @@ netbox_packages:
   - graphviz
   - libpq-dev
   - libssl-dev
-  - git
 netbox_python2_packages:
   - python2.7
   - python-dev
@@ -22,4 +21,3 @@ netbox_pip3_binary: /usr/bin/pip3
 netbox_ldap_packages:
   - libldap2-dev
   - libssl-dev
-

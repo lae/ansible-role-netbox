@@ -1,0 +1,32 @@
+# {{ ansible_managed }}
+[Unit]
+Description=NetBox IPAM/DCIM tool
+Documentation=http://netbox.readthedocs.io/en/{{ 'latest' if netbox_git else 'stable' }}/
+After=syslog.target
+
+[Service]
+ExecStart=/usr/bin/env uwsgi --ini {{ netbox_shared_path }}/uwsgi.ini
+ExecReload=/bin/kill -HUP $MAINPID
+ExecStop=/bin/kill -INT $MAINPID
+User={{ netbox_user }}
+Group={{ netbox_group }}
+Restart=on-failure
+SuccessExitStatus=15 17 29 30
+KillSignal=SIGQUIT
+Type=notify
+StandardError=syslog
+NotifyAccess=all
+PrivateTmp=yes
+ProtectSystem=full
+ReadWriteDirectories={{ netbox_shared_path }}
+{% if netbox_database_socket is defined %}
+ReadWriteDirectories={{ netbox_database_socket }}
+{% endif %}
+DeviceAllow=/dev/null rw
+DeviceAllow=/dev/urandom r
+DeviceAllow=/dev/zero r
+ProtectHome=yes
+NoNewPrivileges=yes
+
+[Install]
+WantedBy=multi-user.target
