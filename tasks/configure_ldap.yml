@@ -12,10 +12,8 @@
 
 - name: Write LDAP configuration
   template:
-    src: templates/ldap_config.py.j2
+    src: "{{ netbox_ldap_config_template }}"
     dest: "{{ netbox_config_path }}/ldap_config.py"
-    owner: "{{ netbox_user }}"
-    group: "{{ netbox_group }}"
     mode: 0600
   notify:
     - reload netbox
