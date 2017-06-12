@@ -27,14 +27,34 @@
   notify:
     - reload netbox
 
-- include: configure_ldap.yml
-  when: netbox_ldap_enabled
+- block:
+  - name: Install django-auth-ldap if LDAP is enabled
+    pip:
+      name: django-auth-ldap
+      virtualenv: "{{ netbox_virtualenv_path }}"
+
+  - name: Generate LDAP configuration for NetBox if enabled
+    template:
+      src: "{{ netbox_ldap_config_template }}"
+      dest: "{{ netbox_shared_path }}/ldap_config.py"
+      mode: 0600
+    notify:
+      - reload netbox
+  when:
+    - netbox_ldap_enabled
 
 - name: Symlink NetBox configuration file into the active NetBox release
   file:
     src: "{{ netbox_shared_path }}/configuration.py"
     dest: "{{ netbox_config_path }}/configuration.py"
     state: link
+
+- name: Symlink/Remove NetBox LDAP configuration file into/from the active NetBox release
+  file:
+    src: "{{ netbox_shared_path }}/ldap_config.py"
+    dest: "{{ netbox_config_path }}/ldap_config.py"
+    force: yes
+    state: "{{ 'absent' if netbox_ldap_enabled else 'link' }}"
 
 - name: Run database migrations for NetBox
   django_manage:
