@@ -57,6 +57,11 @@ By default, NetBox will be configured to output to `/srv/netbox/shared/applicati
 and `/srv/netbox/shared/requests.log`. You can override these with a valid
 uWSGI logger by setting `netbox_uwsgi_logger` and `netbox_uwsgi_req_logger`.
 
+Toggle `netbox_ldap_enabled` to `true` to configure LDAP authentication for
+NetBox. By default, Ansible will look for `netbox_ldap_config.py.j2` in your
+playbook's `templates/` directory - which you can find an example of in this
+role's `templates/` directory. You can set `netbox_ldap_config_template` to a
+different location if you have your template located somewhere else.
 
 Example Playbook
 ----------------

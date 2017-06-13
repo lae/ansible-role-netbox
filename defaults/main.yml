@@ -44,3 +44,6 @@ netbox_uwsgi_logger: "file:{{ netbox_shared_path }}/application.log"
 netbox_uwsgi_req_logger: "file:{{ netbox_shared_path }}/requests.log"
 
 netbox_load_initial_data: false
+
+netbox_ldap_enabled: false
+netbox_ldap_config_template: netbox_ldap_config.py.j2
