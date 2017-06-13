@@ -17,15 +17,11 @@ netbox_database_user: netbox
 netbox_database_port: 5432
 #netbox_database_socket: /var/run/postgresql
 
-#netbox_secret_key:
-netbox_allowed_hosts:
-  - localhost
-  - 127.0.0.1
-netbox_login_required: false
-netbox_base_path:
-netbox_paginate_count: 50
-netbox_timezone: UTC
-netbox_prefer_ipv4: false
+netbox_config:
+  #SECRET_KEY:
+  ALLOWED_HOSTS:
+    - localhost
+    - 127.0.0.1
 
 netbox_user: netbox
 netbox_group: netbox

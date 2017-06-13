@@ -11,7 +11,7 @@
 
 - include: generate_secret_key.yml
   when:
-    - netbox_secret_key is not defined
+    - netbox_config.SECRET_KEY is not defined
 
 - name: Create NetBox virtualenv and install needed Python dependencies
   pip:
