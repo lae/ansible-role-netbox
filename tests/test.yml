@@ -14,11 +14,10 @@
             url: "http://{{ inventory_hostname }}:8080"
         - name: uWSGI/NetBox service status
           shell: "systemctl status netbox.service"
-          changed_when: false
         - name: uWSGI/NetBox service journal
           shell: "journalctl --no-pager -xu netbox.service"
-          changed_when: false
         - name: NetBox application log
           shell: cat /srv/netbox/shared/application.log
-          changed_when: false
+        - name: NetBox configuration
+          shell: cat /srv/netbox/shared/configuration.py
       ignore_errors: yes
