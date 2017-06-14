@@ -62,6 +62,11 @@
     app_path: "{{ netbox_current_path }}/netbox"
     virtualenv: "{{ netbox_virtualenv_path }}"
 
+- name: Create a super user for NetBox
+  shell: "printf '{{ netbox_superuser_script }}' | {{ netbox_virtualenv_path }}/bin/python {{ netbox_current_path }}/netbox/manage.py shell"
+  register: __netbox_superuser_result
+  changed_when: "'changed' in __netbox_superuser_result.stdout"
+
 - name: Generate static assets for NetBox
   django_manage:
     command: collectstatic

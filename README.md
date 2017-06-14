@@ -75,6 +75,15 @@ balancer for the NetBox application. By setting this to `true`, this role will
 configure uWSGI to act as just an application server listening over WSGI.
 Toggle this when you're deploying multiple instances of NetBox.
 
+    netbox_superuser_username: admin
+    #netbox_superuser_password: changeme
+    netbox_superuser_email: admin@localhost
+
+It is **required** to set the superuser password. This role will create a new
+superuser if the user does not exist, or will modify an existing user if they're
+not a superuser/have a different email or password. (Yes, you can use this to 
+reset your superuser password if you forget it.)
+
     netbox_database: netbox
     netbox_database_user: netbox
     #netbox_database_password: changeme
@@ -85,6 +94,8 @@ Toggle this when you're deploying multiple instances of NetBox.
 It is **required** to configure either a socket directory (to communicate over
 UNIX sockets) or a host/password (to use TCP/IP). See the **Example Playbook**
 section for more information on configuring the database.
+
+Note that these are used to configure `DATABASE` in `configuration.py`.
 
     netbox_config:
       #SECRET_KEY:

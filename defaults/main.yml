@@ -8,6 +8,10 @@ netbox_git: false
 netbox_git_version: develop
 netbox_git_uri: "https://github.com/digitalocean/netbox.git"
 
+netbox_superuser_username: admin
+#netbox_superuser_password: changeme
+netbox_superuser_email: admin@localhost
+
 netbox_behind_load_balancer: false
 
 netbox_database: netbox
