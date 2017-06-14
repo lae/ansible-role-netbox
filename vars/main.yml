@@ -2,3 +2,21 @@
 # vars file for lae.netbox
 netbox_config_path: "{{ netbox_current_path }}/netbox/netbox"
 netbox_virtualenv_path: "{{ netbox_current_path }}/venv-py{{ netbox_python }}"
+
+netbox_superuser_script: |
+  from django.contrib.auth.models import User
+  from base64 import b64decode
+  password = b64decode("{{ netbox_superuser_password | b64encode }}").decode("UTF-8")
+  query = User.objects.filter(username="{{ netbox_superuser_username }}")
+  if not query.exists():
+      User.objects.create_superuser("{{ netbox_superuser_username }}", "{{ netbox_superuser_email }}", password)
+      print("changed")
+  else:
+      user = User.objects.get(username="{{ netbox_superuser_username }}")
+      if not user.is_superuser or user.email != "{{ netbox_superuser_email }}" or not user.check_password(password):
+          user.is_superuser = True
+          user.is_staff = True
+          user.email = "{{ netbox_superuser_email }}"
+          user.set_password(password)
+          user.save()
+          print("changed")
