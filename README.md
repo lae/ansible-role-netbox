@@ -172,18 +172,19 @@ socket to talk to the Postgres server with the default netbox database user.
     - hosts: netbox.idolactiviti.es
       become: yes
       roles:
-         - geerlingguy.postgresql
-         - lae.netbox
+        - geerlingguy.postgresql
+        - lae.netbox
       vars:
-         netbox_stable: true
-         netbox_database_socket: "{{ postgresql_unix_socket_directories[0] }}"
-         netbox_uwsgi_socket: "0.0.0.0:80"
-         netbox_config:
-           ALLOWED_HOSTS:
-             - netbox.idolactiviti.es
-         postgresql_users:
-           - name: "{{ netbox_database_user }}"
-             role_attr_flags: CREATEDB,NOSUPERUSER
+        netbox_stable: true
+        netbox_database_socket: "{{ postgresql_unix_socket_directories[0] }}"
+        netbox_superuser_password: netbox
+        netbox_uwsgi_socket: "0.0.0.0:80"
+        netbox_config:
+          ALLOWED_HOSTS:
+            - netbox.idolactiviti.es
+        postgresql_users:
+          - name: "{{ netbox_database_user }}"
+            role_attr_flags: CREATEDB,NOSUPERUSER
 
 Note the `CREATEDB` attribute.
 
@@ -194,18 +195,21 @@ installing NetBox on to authenticate with it over TCP:
     - hosts: netbox.idolactiviti.es
       become: yes
       roles:
-         - lae.netbox
+        - lae.netbox
       vars:
-         netbox_stable: true
-         netbox_uwsgi_socket: "0.0.0.0:80"
-         netbox_config:
-           ALLOWED_HOSTS:
-             - "{{ inventory_hostname }}"
-         netbox_database_host: pg-netbox.idolactiviti.es
-         netbox_database_port: 15432
-         netbox_database_name: netbox_prod
-         netbox_database_user: netbox_prod_user
-         netbox_database_password: "very_secure_password_for_prod"
+        netbox_stable: true
+        netbox_superuser_password: netbox
+        netbox_uwsgi_socket: "0.0.0.0:80"
+        netbox_config:
+          ALLOWED_HOSTS:
+            - "{{ inventory_hostname }}"
+        netbox_database_host: pg-netbox.idolactiviti.es
+        netbox_database_port: 15432
+        netbox_database_name: netbox_prod
+        netbox_database_user: netbox_prod_user
+        netbox_database_password: "very_secure_password_for_prod"
+
+See `examples/` for more.
 
 [NetBox]: https://github.com/digitalocean/netbox
 [Mandatory Settings]: http://netbox.readthedocs.io/en/stable/configuration/mandatory-settings/

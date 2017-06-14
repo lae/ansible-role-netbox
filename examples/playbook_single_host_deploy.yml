@@ -7,6 +7,7 @@
   vars:
     netbox_stable: true
     netbox_uwsgi_socket: "0.0.0.0:80"
+    netbox_superuser_password: netbox
     netbox_config:
       ALLOWED_HOSTS:
         - "{{ inventory_hostname }}"
