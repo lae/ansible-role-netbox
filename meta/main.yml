@@ -7,9 +7,12 @@ galaxy_info:
     - name: Ubuntu
       versions:
         - xenial
+        - yakkety
+        - zesty
+        - artful
     - name: Debian
       versions:
-        - etch
+        - stretch
         - jessie
         - sid
     - name: EL
