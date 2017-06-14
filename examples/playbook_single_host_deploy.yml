@@ -1,0 +1,21 @@
+---
+- hosts: all
+  become: yes
+  roles:
+    - geerlingguy.postgresql
+    - lae.netbox
+  vars:
+    netbox_stable: true
+    netbox_uwsgi_socket: "0.0.0.0:80"
+    netbox_config:
+      ALLOWED_HOSTS:
+        - "{{ inventory_hostname }}"
+    netbox_database_socket: "{{ postgresql_unix_socket_directories[0] }}"
+    postgresql_users:
+      - name: "{{ netbox_database_user }}"
+        role_attr_flags: CREATEDB,NOSUPERUSER
+
+# You can use this playbook as-is to setup a full NetBox server, just change
+# the FQDN below. It'll accept HTTP requests on specified FQDN.
+#
+# ansible-playbook -i netbox.example.com, playbook_single_host_deploy.yml
