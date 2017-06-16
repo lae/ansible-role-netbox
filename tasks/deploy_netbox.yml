@@ -53,8 +53,9 @@
   file:
     src: "{{ netbox_shared_path }}/ldap_config.py"
     dest: "{{ netbox_config_path }}/ldap_config.py"
-    force: yes
-    state: "{{ 'absent' if netbox_ldap_enabled else 'link' }}"
+    state: "{{ 'link' if netbox_ldap_enabled else 'absent' }}"
+  notify:
+    - reload netbox
 
 - name: Run database migrations for NetBox
   django_manage:
