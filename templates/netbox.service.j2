@@ -7,8 +7,8 @@ After=syslog.target
 
 [Service]
 ExecStart=/usr/bin/env uwsgi --ini {{ netbox_shared_path }}/uwsgi.ini
-ExecReload=/bin/kill -HUP $MAINPID
-ExecStop=/bin/kill -INT $MAINPID
+ExecReload=/bin/kill -1 $MAINPID
+ExecStop=/bin/kill -2 $MAINPID
 User={{ netbox_user }}
 Group={{ netbox_group }}
 Restart=on-failure
