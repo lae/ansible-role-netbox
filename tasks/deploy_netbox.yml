@@ -37,7 +37,7 @@
     template:
       src: "{{ netbox_ldap_config_template }}"
       dest: "{{ netbox_shared_path }}/ldap_config.py"
-      mode: 0600
+      mode: 0640
     notify:
       - reload netbox.service
   when:
