@@ -37,11 +37,11 @@ netbox_current_path: "{{ netbox_home }}/current"
 netbox_shared_path: "{{ netbox_home }}/shared"
 netbox_python: 3
 
-netbox_uwsgi_socket: "127.0.0.1:8000"
-netbox_uwsgi_protocol: uwsgi
-netbox_uwsgi_processes: "{{ ansible_processor_vcpus }}"
-netbox_uwsgi_logger: "file:{{ netbox_shared_path }}/application.log"
-netbox_uwsgi_req_logger: "file:{{ netbox_shared_path }}/requests.log"
+netbox_socket: "127.0.0.1:8000"
+netbox_protocol: http
+netbox_processes: "{{ ansible_processor_vcpus }}"
+netbox_application_log: "file:{{ netbox_shared_path }}/application.log"
+netbox_requests_log: "file:{{ netbox_shared_path }}/requests.log"
 
 netbox_load_initial_data: false
 

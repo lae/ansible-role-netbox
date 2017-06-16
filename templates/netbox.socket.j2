@@ -1,0 +1,11 @@
+# {{ ansible_managed }}
+[Unit]
+Description=Socket for NetBox IPAM/DCIM Tool
+
+[Socket]
+ListenStream={{ netbox_socket }}
+SocketUser={{ netbox_user }}
+SocketGroup={{ netbox_group }}
+
+[Install]
+WantedBy=sockets.target

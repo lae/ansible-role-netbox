@@ -59,23 +59,37 @@
     name: uwsgi
     state: latest
     executable: "{{ netbox_pip3_binary if (netbox_python == 3) else netbox_pip2_binary }}"
+  notify:
+    - reload netbox.service
 
 - name: Configure uWSGI NetBox application
   template:
     src: uwsgi.ini.j2
     dest: "{{ netbox_shared_path }}/uwsgi.ini"
+    owner: "{{ netbox_user }}"
+    group: "{{ netbox_group }}"
   notify:
-    - reload netbox
+    - reload netbox.service
 
-- name: Install uWSGI/NetBox unit file
+- name: Install NetBox socket unit file
+  template:
+    src: netbox.socket.j2
+    dest: /lib/systemd/system/netbox.socket
+  notify:
+    - restart netbox.socket
+
+- name: Install NetBox service unit file
   template:
     src: netbox.service.j2
     dest: /lib/systemd/system/netbox.service
   notify:
-    - reload netbox and unit file
+    - restart netbox.service after daemon-reload
 
-- name: Start and enable uWSGI/NetBox
-  service:
-    name: netbox
+- name: Start and enable NetBox' socket/service
+  systemd:
+    name: "{{ item }}"
     state: started
     enabled: yes
+  with_items:
+    - netbox.socket
+    - netbox.service

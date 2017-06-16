@@ -6,7 +6,7 @@
     creates: "{{ netbox_stable_path }}"
     remote_src: True
   notify:
-    - reload netbox
+    - reload netbox.service
 
 - name: Symlink stable release to current NetBox directory
   file:

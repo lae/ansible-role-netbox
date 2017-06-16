@@ -1,7 +1,8 @@
 # {{ ansible_managed }}
 [Unit]
-Description=NetBox IPAM/DCIM tool
+Description=NetBox IPAM/DCIM Tool
 Documentation=http://netbox.readthedocs.io/en/{{ 'latest' if netbox_git else 'stable' }}/
+Requires=netbox.socket
 After=syslog.target
 
 [Service]

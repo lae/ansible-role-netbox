@@ -25,7 +25,7 @@
     dest: "{{ netbox_shared_path }}/configuration.py"
     mode: 0640
   notify:
-    - reload netbox
+    - reload netbox.service
 
 - block:
   - name: Install django-auth-ldap if LDAP is enabled
@@ -39,7 +39,7 @@
       dest: "{{ netbox_shared_path }}/ldap_config.py"
       mode: 0600
     notify:
-      - reload netbox
+      - reload netbox.service
   when:
     - netbox_ldap_enabled
 
@@ -55,7 +55,7 @@
     dest: "{{ netbox_config_path }}/ldap_config.py"
     state: "{{ 'link' if netbox_ldap_enabled else 'absent' }}"
   notify:
-    - reload netbox
+    - reload netbox.service
 
 - name: Run database migrations for NetBox
   django_manage:

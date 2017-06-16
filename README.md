@@ -7,8 +7,8 @@ lae.netbox
 Deploys and configures DigitalOcean's [NetBox].
 
 This role will deploy NetBox within its own virtualenv either by release tarball
-or via git using Python 3 (or 2 if you're so inclined) and uWSGI as an HTTP
-server/frontend (default) or as a backend for a load balancer.
+or via git using Python 3 (or 2 if you're so inclined) and uWSGI as the
+application server.
 
 Tested and supported against CentOS 7/Debian 8/Ubuntu 16.
 
@@ -68,13 +68,6 @@ modify something in a release or are deploying while firewalled in your local ne
 `netbox_git_version` can be any valid ref within a git repository.
 `netbox_git_uri` can be used to point to e.g. an on-premise repo or a fork.
 
-    netbox_behind_load_balancer: false
-
-uWSGI, *by default*, will be configured to act as its own HTTP server/load
-balancer for the NetBox application. By setting this to `true`, this role will
-configure uWSGI to act as just an application server listening over WSGI.
-Toggle this when you're deploying multiple instances of NetBox.
-
     netbox_superuser_username: admin
     #netbox_superuser_password: changeme
     netbox_superuser_email: admin@localhost
@@ -92,7 +85,7 @@ reset your superuser password if you forget it.)
     #netbox_database_socket: /var/run/postgresql
 
 It is **required** to configure either a socket directory (to communicate over
-UNIX sockets) or a host/password (to use TCP/IP). See the **Example Playbook**
+UNIX sockets) or a host/password (to use TCP/IP). See the *Example Playbook*
 section for more information on configuring the database.
 
 Note that these are used to configure `DATABASE` in `configuration.py`.
@@ -135,20 +128,22 @@ content, like logs.
 
 If you wish to deploy using Python 2, set this to `2`.
 
-    netbox_uwsgi_socket: "127.0.0.1:8000"
-    netbox_uwsgi_protocol: uwsgi
-    netbox_uwsgi_processes: "{{ ansible_processor_vcpus }}"
+    netbox_socket: "127.0.0.1:8000"
+    netbox_protocol: http
+    netbox_processes: "{{ ansible_processor_vcpus }}"
 
-Configure `netbox_uwsgi_socket` to either be a TCP address or UNIX socket to
-bind to. If behind a load balancer, `netbox_uwsgi_protocol` defines what
-language the uWSGI application server speaks; set to `http` to configure
-uWSGI to use an HTTP-speaking socket instead.
+`netbox_socket` defines what the uWSGI service will bind to and can be set to
+any valid [ListenStream] address (systemd socket). Set `netbox_protocol` to
+`uwsgi` if you want uWSGI to speak WSGI (for instance if you're running nginx
+as a load balancer). `netbox_processes` defines how many NetBox workers uWSGI
+will bring up to serve requests.
 
-    netbox_uwsgi_logger: "file:{{ netbox_shared_path }}/application.log"
-    netbox_uwsgi_req_logger: "file:{{ netbox_shared_path }}/requests.log"
+    netbox_application_log: "file:{{ netbox_shared_path }}/application.log"
+    netbox_requests_log: "file:{{ netbox_shared_path }}/requests.log"
 
 These define where logs will be stored. You can use external logging facilities
-instead of local files if you wish.
+instead of local files if you wish, [as long as uWSGI supports it]. Application
+log correlates to `logger` and requests log to `req-logger`.
 
     netbox_load_initial_data: false
 
@@ -178,7 +173,7 @@ socket to talk to the Postgres server with the default netbox database user.
         netbox_stable: true
         netbox_database_socket: "{{ postgresql_unix_socket_directories[0] }}"
         netbox_superuser_password: netbox
-        netbox_uwsgi_socket: "0.0.0.0:80"
+        netbox_socket: "0.0.0.0:80"
         netbox_config:
           ALLOWED_HOSTS:
             - netbox.idolactiviti.es
@@ -199,7 +194,7 @@ installing NetBox on to authenticate with it over TCP:
       vars:
         netbox_stable: true
         netbox_superuser_password: netbox
-        netbox_uwsgi_socket: "0.0.0.0:80"
+        netbox_socket: "0.0.0.0:80"
         netbox_config:
           ALLOWED_HOSTS:
             - "{{ inventory_hostname }}"
@@ -214,3 +209,5 @@ See `examples/` for more.
 [NetBox]: https://github.com/digitalocean/netbox
 [Mandatory Settings]: http://netbox.readthedocs.io/en/stable/configuration/mandatory-settings/
 [Optional Settings]: http://netbox.readthedocs.io/en/stable/configuration/optional-settings/
+[ListenStream]: https://www.freedesktop.org/software/systemd/man/systemd.socket.html#ListenStream=
+[as long as uWSGI supports it]: http://uwsgi-docs.readthedocs.io/en/latest/Logging.html#pluggable-loggers

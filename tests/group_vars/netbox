@@ -1,6 +1,6 @@
 ---
 ansible_ssh_user: root
-netbox_uwsgi_socket: "0.0.0.0:8080"
+netbox_socket: "0.0.0.0:8080"
 netbox_config:
   ALLOWED_HOSTS:
     - "{{ inventory_hostname }}"
