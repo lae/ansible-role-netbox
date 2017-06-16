@@ -83,7 +83,7 @@
     src: netbox.service.j2
     dest: /lib/systemd/system/netbox.service
   notify:
-    - restart netbox.service after daemon-reload
+    - restart netbox.service
 
 - name: Start and enable NetBox' socket/service
   systemd:

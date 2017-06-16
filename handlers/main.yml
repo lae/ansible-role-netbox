@@ -4,8 +4,9 @@
   systemd:
     name: netbox.socket
     state: restarted
+    daemon_reload: yes
 
-- name: restart netbox.service after daemon-reload
+- name: restart netbox.service
   systemd:
     name: netbox.service
     state: restarted
