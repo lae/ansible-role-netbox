@@ -5,13 +5,13 @@
     name: netbox.socket
     state: restarted
 
-- name: reload netbox.service
-  systemd:
-    name: netbox.service
-    state: reloaded
-
 - name: restart netbox.service after daemon-reload
   systemd:
     name: netbox.service
     state: restarted
     daemon_reload: yes
+
+- name: reload netbox.service
+  systemd:
+    name: netbox.service
+    state: reloaded
