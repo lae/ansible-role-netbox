@@ -20,4 +20,5 @@ netbox_python3_binary: /usr/bin/python3.5
 netbox_pip3_binary: /usr/bin/pip3
 netbox_ldap_packages:
   - libldap2-dev
+  - libsasl2-dev
   - libssl-dev
