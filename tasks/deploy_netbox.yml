@@ -41,7 +41,7 @@
     notify:
       - reload netbox.service
   when:
-    - netbox_ldap_enabled
+    - not netbox_ldap_enabled
 
 - name: Symlink NetBox configuration file into the active NetBox release
   file:
