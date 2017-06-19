@@ -41,7 +41,7 @@
     notify:
       - reload netbox.service
   when:
-    - not netbox_ldap_enabled
+    - netbox_ldap_enabled
 
 - name: Symlink NetBox configuration file into the active NetBox release
   file:
@@ -68,7 +68,7 @@
   register: __netbox_superuser_result
   changed_when: "'changed' in __netbox_superuser_result.stdout"
   when:
-    - netbox_ldap_enabled
+    - not netbox_ldap_enabled
 
 - name: Generate static assets for NetBox
   django_manage:
