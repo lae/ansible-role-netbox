@@ -2,13 +2,26 @@
 - name: Clone specified NetBox git repository
   git:
     repo: "{{ netbox_git_uri }}"
-    dest: "{{ netbox_git_path }}"
+    dest: "{{ netbox_git_repo_path }}"
     version: "{{ netbox_git_version }}"
+  register: __netbox_git_repo
+
+- name: Create git deployment directory for NetBox
+  file:
+    path: "{{ netbox_git_deploy_path }}"
+    state: directory
+
+- name: Archive and extract snapshot of git repository
+  shell: 'git archive "{{ netbox_git_version }}" | tar -x -C "{{ netbox_git_deploy_path }}"'
+  args:
+    chdir: "{{ netbox_git_repo_path }}"
   notify:
     - reload netbox.service
+  when:
+    - __netbox_git_repo | changed
 
 - name: Symlink git repository to current NetBox directory
   file:
-    src: "{{ netbox_git_path }}"
+    src: "{{ netbox_git_deploy_path }}"
     dest: "{{ netbox_current_path }}"
     state: link
