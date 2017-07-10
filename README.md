@@ -110,17 +110,20 @@ if you are deploying multiple NetBox instances behind one load balancer.
     netbox_group: netbox
     netbox_home: /srv/netbox
     netbox_releases_path: "{{ netbox_home }}/releases"
-    netbox_git_path: "{{ netbox_releases_path }}/git"
+    netbox_git_repo_path: "{{ netbox_releases_path }}/git-repo"
+    netbox_git_deploy_path: "{{ netbox_releases_path }}/git-deploy"
     netbox_stable_path: "{{ netbox_releases_path }}/netbox-{{ netbox_stable_version }}"
     netbox_current_path: "{{ netbox_home }}/current"
     netbox_shared_path: "{{ netbox_home }}/shared"
 
 These are all deployment details that you can modify to change the application
 user and application storage locations. `netbox_releases_path` stores all NetBox
-releases you've ever deployed. `netbox_git_path` is where the Git repository
-will be cloned to, and `netbox_stable_path` is the extracted folder from a
-tarball. `netbox_current_path` will be symlinked to the selected release and
-used in service/configuration files as the location NetBox is installed.
+releases you've ever deployed. `netbox_git_repo_path` is where the Git repository
+will be cloned to and should remain untouched - whilst `netbox_git_deploy_path`
+is where a `git archive` using the ref `netbox_git_version` will be extracted to.
+`netbox_stable_path` is the extracted folder from a release tarball.
+`netbox_current_path` will be symlinked to the selected release and used in
+service/configuration files as the location NetBox is installed.
 `netbox_shared_path` is intended to store configuration files and other "shared"
 content, like logs.
 
