@@ -16,3 +16,4 @@
     - "{{ netbox_packages }}"
     - "{{ netbox_ldap_packages if netbox_ldap_enabled else [] }}"
     - "{{ 'git' if netbox_git else [] }}"
+    - python-psycopg2

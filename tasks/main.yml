@@ -43,7 +43,7 @@
   postgresql_db:
     name: "{{ netbox_database }}"
     login_host: "{{ netbox_database_host }}"
-    login_port: "{{ netbox_database_port }}"
+    port: "{{ netbox_database_port }}"
     login_user: "{{ netbox_database_user }}"
     login_password: "{{ netbox_database_password }}"
   when:

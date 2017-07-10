@@ -200,7 +200,7 @@ installing NetBox on to authenticate with it over TCP:
             - "{{ inventory_hostname }}"
         netbox_database_host: pg-netbox.idolactiviti.es
         netbox_database_port: 15432
-        netbox_database_name: netbox_prod
+        netbox_database: netbox_prod
         netbox_database_user: netbox_prod_user
         netbox_database_password: "very_secure_password_for_prod"
 
