@@ -6,6 +6,7 @@
   with_items:
     - "{{ netbox_releases_path }}"
     - "{{ netbox_shared_path }}"
+    - "{{ netbox_shared_path }}/media/image-attachments"
 
 - include: "install_via_{{ 'git' if netbox_git else 'stable' }}.yml"
 
@@ -54,6 +55,15 @@
     src: "{{ netbox_shared_path }}/ldap_config.py"
     dest: "{{ netbox_config_path }}/ldap_config.py"
     state: "{{ 'link' if netbox_ldap_enabled else 'absent' }}"
+  notify:
+    - reload netbox.service
+
+- name: Set MEDIA_ROOT to shared media directory
+  lineinfile:
+    path: "{{ netbox_config_path }}/settings.py"
+    regexp: '^MEDIA_ROOT\s*='
+    line: 'MEDIA_ROOT = "{{ netbox_shared_path }}/media/"'
+    state: present
   notify:
     - reload netbox.service
 
