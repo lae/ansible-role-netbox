@@ -26,6 +26,8 @@ netbox_config:
   ALLOWED_HOSTS:
     - localhost
     - 127.0.0.1
+  #NETBOX_USERNAME:
+  #NETBOX_PASSWORD:
 
 netbox_user: netbox
 netbox_group: netbox
@@ -48,3 +50,5 @@ netbox_load_initial_data: false
 
 netbox_ldap_enabled: false
 netbox_ldap_config_template: netbox_ldap_config.py.j2
+
+netbox_napalm_enabled: false

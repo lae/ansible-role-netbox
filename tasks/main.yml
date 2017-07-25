@@ -1,6 +1,6 @@
 ---
 # tasks file for lae.netbox
-- include: check_mandatory_vars.yml
+- include: validate_variables.yml
 
 - name: Gather OS specific variables
   include_vars: "{{ item }}"

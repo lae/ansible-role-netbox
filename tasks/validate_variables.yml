@@ -30,3 +30,9 @@
     msg: "Please set netbox_python to either 2 or 3."
   when:
     - netbox_python not in [2, 3]
+
+- name: Ensure NETBOX_USERNAME/PASSWORD is defined for NAPALM integration
+  fail:
+    msg: "Please define NETBOX_USERNAME and NETBOX_PASSWORD in netbox_config to use NAPALM."
+  when:
+    - netbox_napalm_enabled and ("NETBOX_USERNAME" not in netbox_config or "NETBOX_PASSWORD" not in netbox_config)

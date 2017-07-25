@@ -44,6 +44,11 @@
   when:
     - netbox_ldap_enabled
 
+- name: Install napalm if NAPALM integration is enabled
+  pip:
+    name: napalm
+    virtualenv: "{{ netbox_virtualenv_path }}"
+
 - name: Symlink NetBox configuration file into the active NetBox release
   file:
     src: "{{ netbox_shared_path }}/configuration.py"
