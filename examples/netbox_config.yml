@@ -31,8 +31,8 @@ netbox_config:
   MAX_PAGE_SIZE: 500
   PAGINATE_COUNT: 100
   PREFER_IPV4: False
-  NETBOX_USERNAME: netbox
-  NETBOX_PASSWORD: NetBox42
+  NAPALM_USERNAME: netbox
+  NAPALM_PASSWORD: NetBox42
   TIME_ZONE: UTC
   DATE_FORMAT: N j, Y
   # quotes aren't necessary as you can see - but in my opinion quotes make this more readable

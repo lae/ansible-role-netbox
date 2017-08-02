@@ -1,7 +1,7 @@
 ---
 # defaults file for lae.netbox
 netbox_stable: false
-netbox_stable_version: 2.1.0
+netbox_stable_version: 2.1.1
 netbox_stable_uri: "https://github.com/digitalocean/netbox/archive/v{{ netbox_stable_version }}.tar.gz"
 
 netbox_git: false
@@ -26,8 +26,8 @@ netbox_config:
   ALLOWED_HOSTS:
     - localhost
     - 127.0.0.1
-  #NETBOX_USERNAME:
-  #NETBOX_PASSWORD:
+  #NAPALM_USERNAME:
+  #NAPALM_PASSWORD:
 
 netbox_user: netbox
 netbox_group: netbox
