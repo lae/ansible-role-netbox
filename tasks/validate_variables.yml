@@ -36,3 +36,9 @@
     msg: "Please define NAPALM_USERNAME and NAPALM_PASSWORD in netbox_config to use NAPALM."
   when:
     - netbox_napalm_enabled and ("NAPALM_USERNAME" not in netbox_config or "NAPALM_PASSWORD" not in netbox_config)
+
+- name: Ensure MEDIA_ROOT is defined
+  fail:
+    msg: "Please define MEDIA_ROOT in netbox_config."
+  when:
+    - netbox_stable and netbox_stable_version | version_compare('2.1.4', '<') and "MEDIA_ROOT" not in netbox_config

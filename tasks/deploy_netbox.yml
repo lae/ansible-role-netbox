@@ -63,7 +63,7 @@
   notify:
     - reload netbox.service
 
-- name: Set MEDIA_ROOT to shared media directory
+- name: Set MEDIA_ROOT to shared media directory (will be deprecated - if this is not skipped please update your NetBox)
   lineinfile:
     path: "{{ netbox_config_path }}/settings.py"
     regexp: '^MEDIA_ROOT\s*='
@@ -71,6 +71,8 @@
     state: present
   notify:
     - reload netbox.service
+  when:
+    - (netbox_stable and netbox_stable_version | version_compare('2.1.4', '<')) or (netbox_git and __netbox_git_contains_media_root_change.rc == 1)
 
 - name: Run database migrations for NetBox
   django_manage:
