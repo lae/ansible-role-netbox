@@ -13,6 +13,7 @@ matrix:
   fast_finish: true
 env:
 - LXC_DISTRO=debian LXC_RELEASE=jessie
+- LXC_DISTRO=debian LXC_RELEASE=stretch
 - LXC_DISTRO=ubuntu LXC_RELEASE=xenial
 - LXC_DISTRO=centos LXC_RELEASE=7
 before_cache:
@@ -27,7 +28,7 @@ install:
 - sudo apt-get install -y expect-dev
 - pip install ansible
 - ansible --version
-- printf '[defaults]\nroles_path=../\ncallback_whitelist=profile_tasks' >ansible.cfg
+- printf '[defaults]\nroles_path=../\ncallback_whitelist=profile_tasks\nforks=10\npipelining=True' >ansible.cfg
 - ansible-galaxy install lae.travis-lxc
 - ansible-playbook -vvv tests/install.yml -i tests/inventory
 script:
