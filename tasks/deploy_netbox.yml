@@ -48,6 +48,8 @@
   pip:
     name: napalm
     virtualenv: "{{ netbox_virtualenv_path }}"
+  when:
+    - netbox_napalm_enabled
 
 - name: Symlink NetBox configuration file into the active NetBox release
   file:
