@@ -11,6 +11,20 @@
     path: "{{ netbox_git_deploy_path }}"
     state: directory
 
+- name: Check existence of commit 643f64d, affecting MEDIA_ROOT
+  shell: 'git log --format=%H "{{ netbox_git_version }}" | grep ^643f64df3f02912957c2faf1a7555876fe00e2bc'
+  args:
+    chdir: "{{ netbox_git_repo_path }}"
+  register: __netbox_git_contains_media_root_change
+  changed_when: False
+  failed_when: "__netbox_git_contains_media_root_change.rc not in [0, 1]"
+
+- name: Ensure MEDIA_ROOT is defined if commit 643f64d exists
+  fail:
+    msg: "Please define MEDIA_ROOT in netbox_config."
+  when:
+    - __netbox_git_contains_media_root_change.rc == 0 and "MEDIA_ROOT" not in netbox_config
+
 - name: Archive and extract snapshot of git repository
   shell: 'git archive "{{ netbox_git_version }}" | tar -x -C "{{ netbox_git_deploy_path }}"'
   args:
