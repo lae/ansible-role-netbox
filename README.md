@@ -10,7 +10,7 @@ This role will deploy NetBox within its own virtualenv either by release tarball
 or via git using Python 3 (or 2 if you're so inclined) and uWSGI as the
 application server.
 
-Tested and supported against CentOS 7/Debian 8/Ubuntu 16.
+Tested and supported against CentOS 7/Debian 8 and 9/Ubuntu 16.
 
 Note that this role is slightly opinionated and differs from installation
 instructions from the NetBox documentation. The main differences are:
@@ -55,7 +55,7 @@ tells the role to deploy by extracting tarball releases from GitHub, while
 `netbox_git` tells the role to clone a NetBox git repository - they're mutually
 exclusive.
 
-    netbox_stable_version: 2.1.3
+    netbox_stable_version: 2.1.4
     netbox_stable_uri: "https://github.com/digitalocean/netbox/archive/v{{ netbox_stable_version }}.tar.gz"
 
 These can be configured to pin a version (e.g. increment to trigger an upgrade)
@@ -95,6 +95,7 @@ Note that these are used to configure `DATABASE` in `configuration.py`.
       ALLOWED_HOSTS:
         - localhost
         - 127.0.0.1
+      MEDIA_ROOT: "{{ netbox_shared_path }}/media"
 
 This is a dictionary of settings used to template NetBox's `configuration.py`.
 See [Mandatory Settings] and [Optional Settings] from the NetBox documentation
@@ -105,6 +106,10 @@ create one for you and store it in `{{ netbox_shared_path }}/generated_secret_ke
 The `SECRET_KEY` will then be read from this file on subsequent runs, unless you
 later do set this in your playbook. Note that you should define the `SECRET_KEY`
 if you are deploying multiple NetBox instances behind one load balancer.
+
+`MEDIA_ROOT`, while not mandatory in the NetBox documentation, is mandatory in
+this role. It should be set to a directory that is permanent and not lost on
+upgrade (the default, listed above, can be used without issue).
 
     netbox_user: netbox
     netbox_group: netbox
@@ -160,6 +165,12 @@ NetBox. `netbox_ldap_config_template` should be the path to your template - by
 default, Ansible will search your playbook's `templates/` directory for this.
 You can find an example in `examples/`.
 
+    netbox_napalm_enabled: false
+
+Toggle this to enable NAPALM integration in NetBox. You must define
+`NAPALM_USERNAME` and `NAPALM_PASSWORD` in the `netbox_config` variable to be
+able to use NAPALM.
+
 Example Playbook
 ----------------
 
@@ -180,6 +191,7 @@ socket to talk to the Postgres server with the default netbox database user.
         netbox_config:
           ALLOWED_HOSTS:
             - netbox.idolactiviti.es
+          MEDIA_ROOT: "{{ netbox_shared_path }}/media"
         postgresql_users:
           - name: "{{ netbox_database_user }}"
             role_attr_flags: CREATEDB,NOSUPERUSER
@@ -201,6 +213,7 @@ installing NetBox on to authenticate with it over TCP:
         netbox_config:
           ALLOWED_HOSTS:
             - "{{ inventory_hostname }}"
+          MEDIA_ROOT: "{{ netbox_shared_path }}/media"
         netbox_database_host: pg-netbox.idolactiviti.es
         netbox_database_port: 15432
         netbox_database: netbox_prod

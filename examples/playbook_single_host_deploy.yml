@@ -11,6 +11,7 @@
     netbox_config:
       ALLOWED_HOSTS:
         - "{{ inventory_hostname }}"
+      MEDIA_ROOT: "{{ netbox_shared_path }}/media"
     netbox_database_socket: "{{ postgresql_unix_socket_directories[0] }}"
     postgresql_users:
       - name: "{{ netbox_database_user }}"
