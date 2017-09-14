@@ -30,7 +30,8 @@ ansible-galaxy install geerlingguy.postgresql lae.netbox
 ansible-playbook -i your.server.fqdn, /etc/ansible/roles/lae.netbox/examples/playbook_single_host_deploy.yml -K
 ```
 
-Modify accordingly. Read below for more insight.
+This will deploy NetBox and PostgreSQL on `your.server.fqdn`; once complete it
+should be accessible on port 80. Modify if needed. Read below for more insight.
 
 Prerequisites
 -------------
