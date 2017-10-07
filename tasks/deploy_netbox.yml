@@ -14,6 +14,14 @@
   when:
     - netbox_config.SECRET_KEY is not defined
 
+- name: Pin Django REST Framework dependency to under 3.7.0 for NetBox 2.1.5 and below
+  replace:
+    path: "{{ netbox_current_path }}/requirements.txt"
+    regexp: '^(djangorestframework.*)'
+    replace: '\1,<3.7.0'
+  when:
+    - (netbox_stable and netbox_stable_version | version_compare('2.1.5', '<=')) or (netbox_git and __netbox_git_contains_issue_1563_fix.rc == 1)
+
 - name: Create NetBox virtualenv and install needed Python dependencies
   pip:
     requirements: "{{ netbox_current_path }}/requirements.txt"
