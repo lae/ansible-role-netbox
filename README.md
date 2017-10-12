@@ -42,6 +42,8 @@ This role does not setup a PostgreSQL server (but will create a database if
 needed), so you'll need to setup a PostgreSQL server and create a database user
 separate from this role. Take a look at the *Example Playbook* section.
 
+Please note that as of v2.2, NetBox requires PostgreSQL 9.4 or higher.
+
 Role Variables
 --------------
 
@@ -56,7 +58,7 @@ tells the role to deploy by extracting tarball releases from GitHub, while
 `netbox_git` tells the role to clone a NetBox git repository - they're mutually
 exclusive.
 
-    netbox_stable_version: 2.1.5
+    netbox_stable_version: 2.2.1
     netbox_stable_uri: "https://github.com/digitalocean/netbox/archive/v{{ netbox_stable_version }}.tar.gz"
 
 These can be configured to pin a version (e.g. increment to trigger an upgrade)
