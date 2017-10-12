@@ -1,6 +1,9 @@
 ---
 - hosts: netbox
   tasks:
+    - name: Ensure that NetBox returns a successful HTTP response
+      uri:
+        url: "http://{{ inventory_hostname }}:8080"
     - block:
         - name: Print out test environment definitions for each container
           debug:
@@ -9,15 +12,16 @@
             - netbox_stable
             - netbox_git
             - netbox_python
-        - name: Ensure that NetBox returns a successful HTTP response
-          uri:
-            url: "http://{{ inventory_hostname }}:8080"
         - name: uWSGI/NetBox service status
           shell: "systemctl status netbox.service"
+          changed_when: False
         - name: uWSGI/NetBox service journal
           shell: "journalctl --no-pager -xu netbox.service"
+          changed_when: False
         - name: NetBox application log
           shell: cat /srv/netbox/shared/application.log
+          changed_when: False
         - name: NetBox configuration
           shell: cat /srv/netbox/shared/configuration.py
+          changed_when: False
       ignore_errors: yes
