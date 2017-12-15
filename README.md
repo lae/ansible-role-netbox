@@ -27,7 +27,7 @@ Provided you have Ansible installed and are using defaults:
 
 ```
 ansible-galaxy install geerlingguy.postgresql lae.netbox
-ansible-playbook -i your.server.fqdn, /etc/ansible/roles/lae.netbox/examples/playbook_single_host_deploy.yml -K
+ansible-playbook -i your.server.fqdn, ~/.ansible/roles/lae.netbox/examples/playbook_single_host_deploy.yml -K
 ```
 
 This will deploy NetBox and PostgreSQL on `your.server.fqdn`; once complete it
