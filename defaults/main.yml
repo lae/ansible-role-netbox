@@ -1,7 +1,7 @@
 ---
 # defaults file for lae.netbox
 netbox_stable: false
-netbox_stable_version: 2.2.8
+netbox_stable_version: 2.2.9
 netbox_stable_uri: "https://github.com/digitalocean/netbox/archive/v{{ netbox_stable_version }}.tar.gz"
 
 netbox_git: false
