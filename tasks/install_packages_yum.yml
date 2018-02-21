@@ -3,8 +3,6 @@
   yum:
     name: epel-release
     state: installed
-  when:
-    - netbox_python == 3
 
 - name: Install required packages for selected NetBox configuration
   yum:
