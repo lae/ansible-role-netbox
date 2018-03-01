@@ -29,6 +29,7 @@ netbox_config:
   #NAPALM_USERNAME:
   #NAPALM_PASSWORD:
   MEDIA_ROOT: "{{ netbox_shared_path }}/media"
+  REPORTS_ROOT: "{{ netbox_shared_path }}/reports"
 
 netbox_user: netbox
 netbox_group: netbox
