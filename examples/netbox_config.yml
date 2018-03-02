@@ -18,6 +18,8 @@ netbox_config:
   # you probably won't need this, but you can reference other variables like above
   BASE_PATH: netbox/
   CORS_ORIGIN_ALLOW_ALL: false
+  CORS_ORIGIN_WHITELIST:
+    - hostname.domain.example
   DEBUG: yes
   # yes, no, false, true, False, True are all valid booleans in Ansible - they will be inserted correctly in configuration.py
   EMAIL:
@@ -27,6 +29,18 @@ netbox_config:
     PASSWORD: password
     TIMEOUT: 10
     FROM_EMAIL: notifications@localhost
+  ENFORCE_GLOBAL_UNIQUE: False
+  LOGGING:
+    version: 1
+    disable_existing_loggers: False
+    handlers:
+      console:
+        class: logging.StreamHandler
+    loggers:
+      django:
+        handlers:
+          - console
+        level: INFO
   LOGIN_REQUIRED: yes
   MAINTENANCE_MODE: False
   MAX_PAGE_SIZE: 500
@@ -34,6 +48,9 @@ netbox_config:
   PREFER_IPV4: False
   NAPALM_USERNAME: netbox
   NAPALM_PASSWORD: NetBox42
+  NAPALM_TIMEOUT: 30
+  NAPALM_ARGS:
+    keepalive: 60
   TIME_ZONE: UTC
   DATE_FORMAT: N j, Y
   # quotes aren't necessary as you can see - but in my opinion quotes make this more readable
