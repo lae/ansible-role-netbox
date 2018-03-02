@@ -99,6 +99,7 @@ Note that these are used to configure `DATABASE` in `configuration.py`.
         - localhost
         - 127.0.0.1
       MEDIA_ROOT: "{{ netbox_shared_path }}/media"
+      REPORTS_ROOT: "{{ netbox_shared_path }}/reports"
 
 This is a dictionary of settings used to template NetBox's `configuration.py`.
 See [Mandatory Settings] and [Optional Settings] from the NetBox documentation
@@ -110,9 +111,10 @@ The `SECRET_KEY` will then be read from this file on subsequent runs, unless you
 later do set this in your playbook. Note that you should define the `SECRET_KEY`
 if you are deploying multiple NetBox instances behind one load balancer.
 
-`MEDIA_ROOT`, while not mandatory in the NetBox documentation, is mandatory in
-this role. It should be set to a directory that is permanent and not lost on
-upgrade (the default, listed above, can be used without issue).
+`MEDIA_ROOT`/`REPORTS_ROOT`, while not mandatory in the NetBox documentation,
+is mandatory in this role in order to prevent missing files. It should be set to
+a directory that is permanent and not lost on upgrade (the default, listed
+above, can be used without issue).
 
     netbox_user: netbox
     netbox_group: netbox
@@ -195,6 +197,7 @@ socket to talk to the Postgres server with the default netbox database user.
           ALLOWED_HOSTS:
             - netbox.idolactiviti.es
           MEDIA_ROOT: "{{ netbox_shared_path }}/media"
+          REPORTS_ROOT: "{{ netbox_shared_path }}/reports"
         postgresql_users:
           - name: "{{ netbox_database_user }}"
             role_attr_flags: CREATEDB,NOSUPERUSER
@@ -217,6 +220,7 @@ installing NetBox on to authenticate with it over TCP:
           ALLOWED_HOSTS:
             - "{{ inventory_hostname }}"
           MEDIA_ROOT: "{{ netbox_shared_path }}/media"
+          REPORTS_ROOT: "{{ netbox_shared_path }}/reports"
         netbox_database_host: pg-netbox.idolactiviti.es
         netbox_database_port: 15432
         netbox_database: netbox_prod

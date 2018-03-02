@@ -43,3 +43,4 @@ netbox_config:
   DATETIME_FORMAT: 'N j, Y g:i a'
   SHORT_DATETIME_FORMAT: 'Y-m-d H:i'
   MEDIA_ROOT: /srv/netbox_media
+  REPORTS_ROOT: /srv/netbox_reports
