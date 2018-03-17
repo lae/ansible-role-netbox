@@ -8,7 +8,12 @@ processes={{ netbox_processes }}
 module=netbox.wsgi
 virtualenv={{ netbox_virtualenv_path }}
 chdir={{ netbox_current_path }}/netbox
-static-map=/static={{ netbox_current_path }}/netbox/static
+{% if netbox_config.BASE_PATH is defined %}
+{% set _base_path = netbox_config.BASE_PATH.strip('/') ~ '/' %}
+{% else %}
+{% set _base_path = '' %}
+{% endif %}
+static-map=/{{ _base_path }}static={{ netbox_current_path }}/netbox/static
 logger={{ netbox_application_log }}
 req-logger={{ netbox_requests_log }}
 
