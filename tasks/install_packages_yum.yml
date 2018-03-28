@@ -15,3 +15,4 @@
     - "{{ netbox_ldap_packages if netbox_ldap_enabled else [] }}"
     - "{{ 'git' if netbox_git else [] }}"
     - python-psycopg2
+    - "{{ 'acl' if ('SUDO_USER' in ansible_env and ansible_env.SUDO_USER != 'root') else [] }}"
