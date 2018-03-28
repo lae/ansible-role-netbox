@@ -4,12 +4,16 @@
     src: "{{ netbox_stable_uri }}"
     dest: "{{ netbox_releases_path }}"
     creates: "{{ netbox_stable_path }}"
+    owner: "{{ netbox_user }}"
+    group: "{{ netbox_group }}"
     remote_src: True
 
 - name: Symlink stable release to current NetBox directory
   file:
     src: "{{ netbox_stable_path }}"
     dest: "{{ netbox_current_path }}"
+    owner: "{{ netbox_user }}"
+    group: "{{ netbox_group }}"
     state: link
   notify:
     - reload netbox.service
