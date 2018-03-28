@@ -51,8 +51,6 @@
     - netbox_database_host is defined
 
 - include: deploy_netbox.yml
-  become: True
-  become_user: "{{ netbox_user }}"
 
 - name: Install uWSGI via pip
   pip:

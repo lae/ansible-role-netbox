@@ -5,10 +5,14 @@
     dest: "{{ netbox_git_repo_path }}"
     version: "{{ netbox_git_version }}"
   register: __netbox_git_repo
+  become: True
+  become_user: "{{ netbox_user }}"
 
 - name: Create git deployment directory for NetBox
   file:
     path: "{{ netbox_git_deploy_path }}"
+    owner: "{{ netbox_user }}"
+    group: "{{ netbox_group }}"
     state: directory
 
 - name: Check existence of commit 643f64d, affecting MEDIA_ROOT
@@ -41,9 +45,13 @@
     - reload netbox.service
   when:
     - __netbox_git_repo | changed
+  become: True
+  become_user: "{{ netbox_user }}"
 
 - name: Symlink git repository to current NetBox directory
   file:
     src: "{{ netbox_git_deploy_path }}"
     dest: "{{ netbox_current_path }}"
+    owner: "{{ netbox_user }}"
+    group: "{{ netbox_group }}"
     state: link

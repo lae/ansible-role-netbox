@@ -3,6 +3,8 @@
   file:
     path: "{{ item }}"
     state: directory
+    owner: "{{ netbox_user }}"
+    group: "{{ netbox_group }}"
   with_items:
     - "{{ netbox_releases_path }}"
     - "{{ netbox_shared_path }}"
@@ -28,11 +30,15 @@
     requirements: "{{ netbox_current_path }}/requirements.txt"
     virtualenv: "{{ netbox_virtualenv_path }}"
     virtualenv_python: "{{ netbox_python3_binary if (netbox_python == 3) else netbox_python2_binary }}"
+  become: True
+  become_user: "{{ netbox_user }}"
 
 - name: Generate NetBox configuration file
   template:
     src: templates/configuration.py.j2
     dest: "{{ netbox_shared_path }}/configuration.py"
+    owner: "{{ netbox_user }}"
+    group: "{{ netbox_group }}"
     mode: 0640
   notify:
     - reload netbox.service
@@ -42,11 +48,15 @@
     pip:
       name: django-auth-ldap
       virtualenv: "{{ netbox_virtualenv_path }}"
+    become: True
+    become_user: "{{ netbox_user }}"
 
   - name: Generate LDAP configuration for NetBox if enabled
     template:
       src: "{{ netbox_ldap_config_template }}"
       dest: "{{ netbox_shared_path }}/ldap_config.py"
+      owner: "{{ netbox_user }}"
+      group: "{{ netbox_group }}"
       mode: 0640
     notify:
       - reload netbox.service
@@ -59,17 +69,23 @@
     virtualenv: "{{ netbox_virtualenv_path }}"
   when:
     - netbox_napalm_enabled
+  become: True
+  become_user: "{{ netbox_user }}"
 
 - name: Symlink NetBox configuration file into the active NetBox release
   file:
     src: "{{ netbox_shared_path }}/configuration.py"
     dest: "{{ netbox_config_path }}/configuration.py"
+    owner: "{{ netbox_user }}"
+    group: "{{ netbox_group }}"
     state: link
 
 - name: Symlink/Remove NetBox LDAP configuration file into/from the active NetBox release
   file:
     src: "{{ netbox_shared_path }}/ldap_config.py"
     dest: "{{ netbox_config_path }}/ldap_config.py"
+    owner: "{{ netbox_user }}"
+    group: "{{ netbox_group }}"
     state: "{{ 'link' if netbox_ldap_enabled else 'absent' }}"
   notify:
     - reload netbox.service
@@ -85,30 +101,34 @@
   when:
     - (netbox_stable and netbox_stable_version | version_compare('2.1.4', '<')) or (netbox_git and __netbox_git_contains_media_root_change.rc == 1)
 
-- name: Run database migrations for NetBox
-  django_manage:
-    command: migrate
-    app_path: "{{ netbox_current_path }}/netbox"
-    virtualenv: "{{ netbox_virtualenv_path }}"
+- block:
+  - name: Run database migrations for NetBox
+    django_manage:
+      command: migrate
+      app_path: "{{ netbox_current_path }}/netbox"
+      virtualenv: "{{ netbox_virtualenv_path }}"
 
-- name: Create a super user for NetBox
-  shell: "printf '{{ netbox_superuser_script }}' | {{ netbox_virtualenv_path }}/bin/python {{ netbox_current_path }}/netbox/manage.py shell"
-  register: __netbox_superuser_result
-  changed_when: "'changed' in __netbox_superuser_result.stdout"
-  when:
-    - not netbox_ldap_enabled
+  - name: Create a super user for NetBox
+    shell: "printf '{{ netbox_superuser_script }}' | {{ netbox_virtualenv_path }}/bin/python {{ netbox_current_path }}/netbox/manage.py shell"
+    register: __netbox_superuser_result
+    changed_when: "'changed' in __netbox_superuser_result.stdout"
+    when:
+      - not netbox_ldap_enabled
 
-- name: Generate static assets for NetBox
-  django_manage:
-    command: collectstatic
-    app_path: "{{ netbox_current_path }}/netbox"
-    virtualenv: "{{ netbox_virtualenv_path }}"
+  - name: Generate static assets for NetBox
+    django_manage:
+      command: collectstatic
+      app_path: "{{ netbox_current_path }}/netbox"
+      virtualenv: "{{ netbox_virtualenv_path }}"
 
-- name: Populate NetBox with initial data
-  django_manage:
-    command: loaddata
-    fixtures: initial_data
-    app_path: "{{ netbox_current_path }}/netbox"
-    virtualenv: "{{ netbox_virtualenv_path }}"
-  when:
-    - netbox_load_initial_data
+  - name: Populate NetBox with initial data
+    django_manage:
+      command: loaddata
+      fixtures: initial_data
+      app_path: "{{ netbox_current_path }}/netbox"
+      virtualenv: "{{ netbox_virtualenv_path }}"
+    when:
+      - netbox_load_initial_data
+
+  become: True
+  become_user: "{{ netbox_user }}"
