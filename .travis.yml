@@ -14,7 +14,7 @@ matrix:
 env:
 # The following default to Debian Stretch
 - ANSIBLE_VERSION='git+https://github.com/ansible/ansible.git@devel' # 2.6 DEVEL
-- ANSIBLE_VERSION='ansible>=2.5.0,<2.6.0' # 2.5.x
+- ANSIBLE_VERSION='ansible>=2.5.0,<2.6.0,!=2.5.1' # 2.5.x
 - ANSIBLE_VERSION='ansible>=2.4.0,<2.5.0' # 2.4.x
 - ANSIBLE_VERSION='ansible>=2.3.0,<2.4.0' # 2.3.x
 - LXC_DISTRO=debian LXC_RELEASE=jessie
