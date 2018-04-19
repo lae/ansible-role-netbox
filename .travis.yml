@@ -31,7 +31,7 @@ install:
 - sudo tar xf $HOME/lxc/cache.tar -C / || true
 - sudo apt-get install -y expect-dev
 - pip install ansible
-- ansible --version
+- if [ "$ANSIBLE_VERSION" ]; then pip install $ANSIBLE_VERSION; else pip install ansible; fi
 - printf '[defaults]\nroles_path=../\ncallback_whitelist=profile_tasks\nforks=10\npipelining=True' >ansible.cfg
 - ansible-galaxy install lae.travis-lxc
 - ansible-playbook -vvv tests/install.yml -i tests/inventory
