@@ -1,3 +1,2 @@
 ---
 netbox_git: true
-__deploy_description: "NETBOX IS DEPLOYED VIA GIT WITH PYTHON {{ netbox_python }} ON THIS HOST."

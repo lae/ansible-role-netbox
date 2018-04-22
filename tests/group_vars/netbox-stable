@@ -1,3 +1,2 @@
 ---
 netbox_stable: true
-__deploy_description: "NETBOX IS DEPLOYED VIA STABLE TARBALL WITH PYTHON {{ netbox_python }} ON THIS HOST."

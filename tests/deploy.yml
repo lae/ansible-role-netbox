@@ -3,7 +3,4 @@
   become: true
   any_errors_fatal: true
   roles:
-    - ansible-role-netbox
-  pre_tasks:
-    - debug:
-        msg: "{{ __deploy_description }}"
+    - lae.netbox

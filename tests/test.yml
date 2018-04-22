@@ -5,13 +5,6 @@
       uri:
         url: "http://{{ inventory_hostname }}:8080"
     - block:
-        - name: Print out test environment definitions for each container
-          debug:
-            var: "{{ item }}"
-          with_items:
-            - netbox_stable
-            - netbox_git
-            - netbox_python
         - name: uWSGI/NetBox service status
           shell: "systemctl status netbox.service"
           changed_when: False
