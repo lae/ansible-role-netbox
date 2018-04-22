@@ -2,10 +2,15 @@
 - hosts: localhost
   connection: local
   roles:
-    - { name: lae.travis-lxc }
+    - lae.travis-lxc
   vars:
-    host_quantity: 4
-
-# Run the following within the containers in the inventory
-- hosts: all
-  tasks: []
+    test_profiles:
+      - profile: debian-stretch
+      - profile: debian-jessie
+      - profile: ubuntu-xenial
+      - profile: centos-7
+    test_host_suffixes:
+      - py3-stable
+      - py2-stable
+      - py3-git
+      - py2-git

@@ -3,11 +3,23 @@ netbox-stable
 netbox-git
 
 [netbox-stable]
-test[01:02].lxc
+debian-stretch-py[2:3]-stable
+debian-jessie-py[2:3]-stable
+ubuntu-xenial-py[2:3]-stable
+centos-7-py[2:3]-stable
 
 [netbox-git]
-test[03:04].lxc
+debian-stretch-py[2:3]-git
+debian-jessie-py[2:3]-git
+ubuntu-xenial-py[2:3]-git
+centos-7-py[2:3]-git
 
 [netbox-python2]
-test02.lxc
-test04.lxc
+debian-stretch-py2-stable
+debian-jessie-py2-stable
+ubuntu-xenial-py2-stable
+centos-7-py2-stable
+debian-stretch-py2-git
+debian-jessie-py2-git
+ubuntu-xenial-py2-git
+centos-7-py2-git
