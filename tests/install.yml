@@ -6,7 +6,6 @@
   vars:
     test_profiles:
       - profile: debian-stretch
-      - profile: debian-jessie
       - profile: ubuntu-xenial
       - profile: centos-7
     test_host_suffixes:
