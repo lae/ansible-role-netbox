@@ -33,7 +33,7 @@ before_script:
 - cd tests/
 script:
 - ansible-playbook -i inventory deploy.yml --syntax-check
-- ansible-playbook -i inventory -v deploy.yml
+- ansible-playbook -i inventory deploy.yml
 - 'ANSIBLE_STDOUT_CALLBACK=debug unbuffer ansible-playbook -i inventory -vv
   deploy.yml > idempotency.log 2>&1 || (e=$?; cat idempotency.log; exit $e)'
 - 'grep -A1 "PLAY RECAP" idempotency.log | grep -qP "changed=0 .*failed=0 .*" &&
