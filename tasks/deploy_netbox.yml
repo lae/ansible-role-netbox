@@ -40,6 +40,7 @@
     owner: "{{ netbox_user }}"
     group: "{{ netbox_group }}"
     mode: 0640
+    validate: "{{ netbox_virtualenv_path }}/bin/python -c \"import py_compile,os; f=r'%s'; c='/tmp/' + os.path.basename(os.path.dirname(f)) + '-' + os.path.basename(f) + 'c'; py_compile.compile(f, c); os.remove(c)\""
   notify:
     - reload netbox.service
 
@@ -58,6 +59,7 @@
       owner: "{{ netbox_user }}"
       group: "{{ netbox_group }}"
       mode: 0640
+      validate: "{{ netbox_virtualenv_path }}/bin/python -c \"import py_compile,os; f=r'%s'; c='/tmp/' + os.path.basename(os.path.dirname(f)) + '-' + os.path.basename(f) + 'c'; py_compile.compile(f, c); os.remove(c)\""
     notify:
       - reload netbox.service
   when:
