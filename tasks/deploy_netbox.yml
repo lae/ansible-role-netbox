@@ -29,7 +29,7 @@
   pip:
     requirements: "{{ netbox_current_path }}/requirements.txt"
     virtualenv: "{{ netbox_virtualenv_path }}"
-    virtualenv_python: "{{ netbox_python3_binary if (netbox_python == 3) else netbox_python2_binary }}"
+    virtualenv_python: "{{ netbox_python_binary }}"
   become: True
   become_user: "{{ netbox_user }}"
 

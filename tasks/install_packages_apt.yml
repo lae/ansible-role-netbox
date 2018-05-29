@@ -6,10 +6,8 @@
     cache_valid_time: 3600
     update_cache: yes
   with_items:
-    - "{{ netbox_python3_packages if (netbox_python == 3) else netbox_python2_packages }}"
+    - "{{ netbox_python_packages }}"
     - "{{ netbox_packages }}"
     - "{{ netbox_ldap_packages if netbox_ldap_enabled else [] }}"
     - "{{ 'git' if netbox_git else [] }}"
-    - "{{ 'python-psycopg2' if (ansible_python_version | version_compare('3.0.0', '<')) else 'python3-psycopg2' }}"
     - "{{ 'acl' if ('SUDO_USER' in ansible_env and ansible_env.SUDO_USER != 'root') else [] }}"
-

@@ -16,7 +16,7 @@
   pip:
     name: virtualenv
     state: latest
-    executable: "{{ netbox_pip3_binary if (netbox_python == 3) else netbox_pip2_binary }}"
+    executable: "{{ netbox_pip_binary }}"
 
 - name: Create NetBox user group
   group:
@@ -56,7 +56,7 @@
   pip:
     name: uwsgi
     state: latest
-    executable: "{{ netbox_pip3_binary if (netbox_python == 3) else netbox_pip2_binary }}"
+    executable: "{{ netbox_pip_binary }}"
   notify:
     - reload netbox.service
 

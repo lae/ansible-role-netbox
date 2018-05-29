@@ -1,7 +1,7 @@
 ---
 # vars file for lae.netbox
 netbox_config_path: "{{ netbox_current_path }}/netbox/netbox"
-netbox_virtualenv_path: "{{ netbox_current_path }}/venv-py{{ netbox_python }}"
+netbox_virtualenv_path: "{{ netbox_current_path }}/venv-py3"
 
 netbox_superuser_script: |
   from django.contrib.auth.models import User

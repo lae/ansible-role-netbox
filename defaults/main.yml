@@ -40,7 +40,6 @@ netbox_git_deploy_path: "{{ netbox_releases_path }}/git-deploy"
 netbox_stable_path: "{{ netbox_releases_path }}/netbox-{{ netbox_stable_version }}"
 netbox_current_path: "{{ netbox_home }}/current"
 netbox_shared_path: "{{ netbox_home }}/shared"
-netbox_python: 3
 
 netbox_socket: "127.0.0.1:8000"
 netbox_protocol: http

@@ -25,12 +25,6 @@
   when:
     - netbox_database_socket is defined and netbox_database_host is defined
 
-- name: Ensure Python version is valid
-  fail:
-    msg: "Please set netbox_python to either 2 or 3."
-  when:
-    - netbox_python not in [2, 3]
-
 - name: Ensure NAPALM_USERNAME/PASSWORD is defined for NAPALM integration
   fail:
     msg: "Please define NAPALM_USERNAME and NAPALM_PASSWORD in netbox_config to use NAPALM."
