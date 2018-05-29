@@ -2,7 +2,7 @@ galaxy_info:
   author: Musee Ullah
   description: Installs and configures NetBox, a DCIM suite, in a production setting.
   license: MIT
-  min_ansible_version: 2.1
+  min_ansible_version: 2.4
   platforms:
     - name: Ubuntu
       versions:
