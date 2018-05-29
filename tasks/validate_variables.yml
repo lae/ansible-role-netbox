@@ -25,6 +25,11 @@
   when:
     - netbox_database_socket is defined and netbox_database_host is defined
 
+- name: Ensure ALLOWED_HOSTS is defined
+  fail:
+    msg: "Please define ALLOWED_HOSTS in netbox_config."
+  when: "'ALLOWED_HOSTS' not in netbox_config"
+
 - name: Ensure NAPALM_USERNAME/PASSWORD is defined for NAPALM integration
   fail:
     msg: "Please define NAPALM_USERNAME and NAPALM_PASSWORD in netbox_config to use NAPALM."
@@ -34,5 +39,9 @@
 - name: Ensure MEDIA_ROOT is defined
   fail:
     msg: "Please define MEDIA_ROOT in netbox_config."
-  when:
-    - netbox_stable and netbox_stable_version | version_compare('2.1.4', '<') and "MEDIA_ROOT" not in netbox_config
+  when: "'MEDIA_ROOT' not in netbox_config"
+
+- name: Ensure REPORTS_ROOT is defined
+  fail:
+    msg: "Please define REPORTS_ROOT in netbox_config."
+  when: "'REPORTS_ROOT' not in netbox_config"

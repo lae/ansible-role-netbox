@@ -17,14 +17,6 @@
   when:
     - netbox_config.SECRET_KEY is not defined
 
-- name: Pin Django REST Framework dependency to under 3.7.0 for NetBox 2.1.5 and below
-  replace:
-    path: "{{ netbox_current_path }}/requirements.txt"
-    regexp: '^(djangorestframework>=\d+\.\d+(\.\d+)?)$'
-    replace: '\1,<3.7.0'
-  when:
-    - (netbox_stable and netbox_stable_version | version_compare('2.1.5', '<=')) or (netbox_git and __netbox_git_contains_issue_1563_fix.rc == 1)
-
 - name: Create NetBox virtualenv and install needed Python dependencies
   pip:
     requirements: "{{ netbox_current_path }}/requirements.txt"
@@ -89,17 +81,6 @@
     state: "{{ 'link' if netbox_ldap_enabled else 'absent' }}"
   notify:
     - reload netbox.service
-
-- name: Set MEDIA_ROOT to shared media directory (will be deprecated - if this is not skipped please update your NetBox)
-  lineinfile:
-    path: "{{ netbox_config_path }}/settings.py"
-    regexp: '^MEDIA_ROOT\s*='
-    line: 'MEDIA_ROOT = "{{ netbox_shared_path }}/media/"'
-    state: present
-  notify:
-    - reload netbox.service
-  when:
-    - (netbox_stable and netbox_stable_version | version_compare('2.1.4', '<')) or (netbox_git and __netbox_git_contains_media_root_change.rc == 1)
 
 - block:
   - name: Run database migrations for NetBox
