@@ -1,12 +1,5 @@
 [netbox:children]
-netbox-stable
 netbox-git
-
-[netbox-stable]
-debian-stretch-stable
-ubuntu-bionic-stable
-ubuntu-xenial-stable
-centos-7-stable
 
 [netbox-git]
 debian-stretch-git
