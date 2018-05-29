@@ -6,15 +6,12 @@ galaxy_info:
   platforms:
     - name: Ubuntu
       versions:
+        - bionic
         - xenial
-        - yakkety
-        - zesty
-        - artful
     - name: Debian
       versions:
         - stretch
         - jessie
-        - sid
     - name: EL
       versions:
         - 7

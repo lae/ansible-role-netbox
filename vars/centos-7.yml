@@ -5,6 +5,7 @@ netbox_packages:
   - libxml2-devel
   - libxslt-devel
   - libffi-devel
+  - libjpeg-devel
   - graphviz
   - openssl-devel
 netbox_python_packages:

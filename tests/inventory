@@ -4,10 +4,12 @@ netbox-git
 
 [netbox-stable]
 debian-stretch-stable
+ubuntu-bionic-stable
 ubuntu-xenial-stable
 centos-7-stable
 
 [netbox-git]
 debian-stretch-git
+ubuntu-bionic-git
 ubuntu-xenial-git
 centos-7-git

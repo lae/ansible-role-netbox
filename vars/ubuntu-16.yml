@@ -3,6 +3,7 @@ netbox_packages:
   - libxml2-dev
   - libxslt1-dev
   - libffi-dev
+  - libjpeg-dev
   - graphviz
   - libpq-dev
   - libssl-dev
