@@ -25,6 +25,14 @@
   when:
     - (netbox_stable and netbox_stable_version | version_compare('2.1.5', '<=')) or (netbox_git and __netbox_git_contains_issue_1563_fix.rc == 1)
 
+- name: Pin django-filter dependency to under 2.0.0 for NetBox 2.3.5 and below
+  replace:
+    path: "{{ netbox_current_path }}/requirements.txt"
+    regexp: '^(django-filter>=\d+\.\d+(\.\d+)?)$'
+    replace: '\1,<2.0.0'
+  when:
+    - (netbox_stable and netbox_stable_version | version_compare('2.3.5', '<=')) or (netbox_git and __netbox_git_contains_issue_2239_fix.rc == 1)
+
 - name: Create NetBox virtualenv and install needed Python dependencies
   pip:
     requirements: "{{ netbox_current_path }}/requirements.txt"
