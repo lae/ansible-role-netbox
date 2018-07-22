@@ -11,6 +11,7 @@ galaxy_info:
         - yakkety
         - zesty
         - artful
+        - bionic
     - name: Debian
       versions:
         - stretch
