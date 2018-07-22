@@ -7,6 +7,7 @@
     test_profiles:
       - profile: debian-stretch
       - profile: ubuntu-xenial
+      - profile: ubuntu-bionic
       - profile: centos-7
     test_host_suffixes:
       - py3-stable
