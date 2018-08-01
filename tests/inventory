@@ -4,18 +4,22 @@ netbox-git
 
 [netbox-stable]
 debian-stretch-py[2:3]-stable
+ubuntu-bionic-py2-stable
 ubuntu-xenial-py[2:3]-stable
 centos-7-py[2:3]-stable
 
 [netbox-git]
 debian-stretch-py[2:3]-git
+ubuntu-bionic-py2-git
 ubuntu-xenial-py[2:3]-git
 centos-7-py[2:3]-git
 
 [netbox-python2]
 debian-stretch-py2-stable
+ubuntu-bionic-py2-stable
 ubuntu-xenial-py2-stable
 centos-7-py2-stable
 debian-stretch-py2-git
+ubuntu-bionic-py2-git
 ubuntu-xenial-py2-git
 centos-7-py2-git

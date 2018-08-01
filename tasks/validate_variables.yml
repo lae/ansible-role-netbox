@@ -42,3 +42,13 @@
     msg: "Please define MEDIA_ROOT in netbox_config."
   when:
     - netbox_stable and netbox_stable_version | version_compare('2.1.4', '<') and "MEDIA_ROOT" not in netbox_config
+
+# TODO(mnaser): Remove this once Netbox starts using Django 2 which resolves
+#               the Python 3.7 compatibility.
+- name: Ensure using Python 2.7 on Ubuntu Bionic (18.04)
+  fail:
+    msg: "Ubuntu 18.04 does not ship with Python 3.5, it ships with 3.7 which is not compatible with Netbox, please use Python 2.7"
+  when:
+    - netbox_python == '3'
+    - ansible_distribution|lower == 'ubuntu'
+    - ansible_distribution_major_version == '18'
