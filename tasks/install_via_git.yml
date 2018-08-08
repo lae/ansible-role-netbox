@@ -15,28 +15,6 @@
     group: "{{ netbox_group }}"
     state: directory
 
-- name: Check existence of commit 643f64d, affecting MEDIA_ROOT
-  shell: 'git log --format=%H "{{ netbox_git_version }}" | grep ^643f64df3f02912957c2faf1a7555876fe00e2bc'
-  args:
-    chdir: "{{ netbox_git_repo_path }}"
-  register: __netbox_git_contains_media_root_change
-  changed_when: False
-  failed_when: "__netbox_git_contains_media_root_change.rc not in [0, 1]"
-
-- name: Ensure MEDIA_ROOT is defined if commit 643f64d exists
-  fail:
-    msg: "Please define MEDIA_ROOT in netbox_config."
-  when:
-    - __netbox_git_contains_media_root_change.rc == 0 and "MEDIA_ROOT" not in netbox_config
-
-- name: Check existence of commit 97188ad, fixing issue netbox#1563
-  shell: 'git log --format=%H "{{ netbox_git_version }}" | grep ^97188ad85ba77d361ae38d8b5e01ae9109e5e9bd'
-  args:
-    chdir: "{{ netbox_git_repo_path }}"
-  register: __netbox_git_contains_issue_1563_fix
-  changed_when: False
-  failed_when: "__netbox_git_contains_issue_1563_fix.rc not in [0, 1]"
-
 - name: Check existence of commit 1fb67b7, fixing issue netbox#2239
   shell: 'git log --format=%H "{{ netbox_git_version }}" | grep ^1fb67b791f1a91c624dae4a1cd256e4cf3ddbb77'
   args:
@@ -52,7 +30,7 @@
   notify:
     - reload netbox.service
   when:
-    - __netbox_git_repo | changed
+    - __netbox_git_repo is changed
   become: True
   become_user: "{{ netbox_user }}"
 

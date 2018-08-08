@@ -11,7 +11,7 @@ DATABASE = {
 {% endif %}
 }
 
-{% for setting, value in netbox_config.iteritems() %}
+{% for setting, value in netbox_config.items() %}
 {% if value in [True, False] %}
 {{ setting }} = {{ 'True' if value else 'False' }}
 {% else %}

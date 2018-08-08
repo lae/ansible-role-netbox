@@ -5,20 +5,16 @@ netbox_packages:
   - libxml2-devel
   - libxslt-devel
   - libffi-devel
+  - libjpeg-devel
   - graphviz
   - openssl-devel
-netbox_python2_packages:
-  - python2
-  - python-devel
-  - python-pip
-netbox_python2_binary: /usr/bin/python2
-netbox_pip2_binary: /usr/bin/pip2
-netbox_python3_packages:
+netbox_python_packages:
   - python34
   - python34-devel
   - python34-setuptools
   - python34-pip
-netbox_python3_binary: /usr/bin/python3.4
-netbox_pip3_binary: /usr/bin/pip3
+  - python-psycopg2
+netbox_python_binary: /usr/bin/python3.4
+netbox_pip_binary: /usr/bin/pip3
 netbox_ldap_packages:
   - openldap-devel

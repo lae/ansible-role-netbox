@@ -1,6 +1,6 @@
 ---
 # tasks file for lae.netbox
-- include: validate_variables.yml
+- import_tasks: validate_variables.yml
 
 - name: Gather OS specific variables
   include_vars: "{{ item }}"
@@ -10,13 +10,13 @@
     - "{{ ansible_distribution|lower }}.yml"
     - "{{ ansible_os_family|lower }}.yml"
 
-- include: "install_packages_{{ ansible_pkg_mgr }}.yml"
+- include_tasks: "install_packages_{{ ansible_pkg_mgr }}.yml"
 
 - name: Install virtualenv via pip
   pip:
     name: virtualenv
     state: latest
-    executable: "{{ netbox_pip3_binary if (netbox_python == 3) else netbox_pip2_binary }}"
+    executable: "{{ netbox_pip_binary }}"
 
 - name: Create NetBox user group
   group:
@@ -50,13 +50,13 @@
     - netbox_database_socket is not defined
     - netbox_database_host is defined
 
-- include: deploy_netbox.yml
+- import_tasks: deploy_netbox.yml
 
 - name: Install uWSGI via pip
   pip:
     name: uwsgi
     state: latest
-    executable: "{{ netbox_pip3_binary if (netbox_python == 3) else netbox_pip2_binary }}"
+    executable: "{{ netbox_pip_binary }}"
   notify:
     - reload netbox.service
 

@@ -6,10 +6,8 @@
   vars:
     test_profiles:
       - profile: debian-stretch
+      - profile: ubuntu-bionic
       - profile: ubuntu-xenial
       - profile: centos-7
     test_host_suffixes:
-      - py3-stable
-      - py2-stable
-      - py3-git
-      - py2-git
+      - git

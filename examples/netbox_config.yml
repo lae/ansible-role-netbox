@@ -12,16 +12,21 @@ netbox_config:
       - Dale Gribble
       - dgribble@example.com
   # note that the array is nested above
-  BANNER_TOP: &BANNER_TOP 'Your banner text'
   BANNER_BOTTOM: *BANNER_TOP
   BANNER_LOGIN: ''
+  BANNER_TOP: &BANNER_TOP 'Your banner text'
   # you probably won't need this, but you can reference other variables like above
   BASE_PATH: netbox/
+  CHANGELOG_RETENTION: 90
   CORS_ORIGIN_ALLOW_ALL: false
+  #CORS_ORIGIN_REGEX_WHITELIST:
   CORS_ORIGIN_WHITELIST:
     - hostname.domain.example
+  DATE_FORMAT: N j, Y
+  DATETIME_FORMAT: 'N j, Y g:i a'
   DEBUG: yes
   # yes, no, false, true, False, True are all valid booleans in Ansible - they will be inserted correctly in configuration.py
+  ENFORCE_GLOBAL_UNIQUE: False
   EMAIL:
     SERVER: localhost
     PORT: 25
@@ -29,7 +34,6 @@ netbox_config:
     PASSWORD: password
     TIMEOUT: 10
     FROM_EMAIL: notifications@localhost
-  ENFORCE_GLOBAL_UNIQUE: False
   LOGGING:
     version: 1
     disable_existing_loggers: False
@@ -44,20 +48,25 @@ netbox_config:
   LOGIN_REQUIRED: yes
   MAINTENANCE_MODE: False
   MAX_PAGE_SIZE: 500
-  PAGINATE_COUNT: 100
-  PREFER_IPV4: False
+  MEDIA_ROOT: /srv/netbox_media
   NAPALM_USERNAME: netbox
   NAPALM_PASSWORD: NetBox42
   NAPALM_TIMEOUT: 30
   NAPALM_ARGS:
     keepalive: 60
-  TIME_ZONE: UTC
-  DATE_FORMAT: N j, Y
+  PAGINATE_COUNT: 100
+  PREFER_IPV4: False
+  REPORTS_ROOT: /srv/netbox_reports
+  REDIS:
+    HOST: localhost
+    PORT: 6379
+    PASSWORD: redisisfun
+    DATABASE: 0
+    DEFAULT_TIMEOUT: 300
   # quotes aren't necessary as you can see - but in my opinion quotes make this more readable
   SHORT_DATE_FORMAT: 'Y-m-d'
-  TIME_FORMAT: 'g:i a'
-  SHORT_TIME_FORMAT: 'H:i:s'
-  DATETIME_FORMAT: 'N j, Y g:i a'
   SHORT_DATETIME_FORMAT: 'Y-m-d H:i'
-  MEDIA_ROOT: /srv/netbox_media
-  REPORTS_ROOT: /srv/netbox_reports
+  SHORT_TIME_FORMAT: 'H:i:s'
+  TIME_FORMAT: 'g:i a'
+  TIME_ZONE: UTC
+  WEBHOOKS_ENABLED: False

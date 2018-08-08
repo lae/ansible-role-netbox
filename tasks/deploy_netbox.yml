@@ -11,19 +11,11 @@
     - "{{ netbox_shared_path }}/media/image-attachments"
     - "{{ netbox_shared_path }}/reports"
 
-- include: "install_via_{{ 'git' if netbox_git else 'stable' }}.yml"
+- include_tasks: "install_via_{{ 'git' if netbox_git else 'stable' }}.yml"
 
-- include: generate_secret_key.yml
+- import_tasks: generate_secret_key.yml
   when:
     - netbox_config.SECRET_KEY is not defined
-
-- name: Pin Django REST Framework dependency to under 3.7.0 for NetBox 2.1.5 and below
-  replace:
-    path: "{{ netbox_current_path }}/requirements.txt"
-    regexp: '^(djangorestframework>=\d+\.\d+(\.\d+)?)$'
-    replace: '\1,<3.7.0'
-  when:
-    - (netbox_stable and netbox_stable_version | version_compare('2.1.5', '<=')) or (netbox_git and __netbox_git_contains_issue_1563_fix.rc == 1)
 
 - name: Pin django-filter dependency to under 2.0.0 for NetBox 2.3.5 and below
   replace:
@@ -37,7 +29,7 @@
   pip:
     requirements: "{{ netbox_current_path }}/requirements.txt"
     virtualenv: "{{ netbox_virtualenv_path }}"
-    virtualenv_python: "{{ netbox_python3_binary if (netbox_python == 3) else netbox_python2_binary }}"
+    virtualenv_python: "{{ netbox_python_binary }}"
   become: True
   become_user: "{{ netbox_user }}"
 
@@ -92,24 +84,13 @@
 
 - name: Symlink/Remove NetBox LDAP configuration file into/from the active NetBox release
   file:
-    src: "{{ netbox_shared_path }}/ldap_config.py"
+    src: "{{ netbox_shared_path + '/ldap_config.py' if netbox_ldap_enabled else omit }}"
     dest: "{{ netbox_config_path }}/ldap_config.py"
     owner: "{{ netbox_user }}"
     group: "{{ netbox_group }}"
     state: "{{ 'link' if netbox_ldap_enabled else 'absent' }}"
   notify:
     - reload netbox.service
-
-- name: Set MEDIA_ROOT to shared media directory (will be deprecated - if this is not skipped please update your NetBox)
-  lineinfile:
-    path: "{{ netbox_config_path }}/settings.py"
-    regexp: '^MEDIA_ROOT\s*='
-    line: 'MEDIA_ROOT = "{{ netbox_shared_path }}/media/"'
-    state: present
-  notify:
-    - reload netbox.service
-  when:
-    - (netbox_stable and netbox_stable_version | version_compare('2.1.4', '<')) or (netbox_git and __netbox_git_contains_media_root_change.rc == 1)
 
 - block:
   - name: Run database migrations for NetBox

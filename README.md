@@ -7,8 +7,7 @@ lae.netbox
 Deploys and configures DigitalOcean's [NetBox].
 
 This role will deploy NetBox within its own virtualenv either by release tarball
-or via git using Python 3 (or 2 if you're so inclined) and uWSGI as the
-application server.
+or via git using uWSGI as the application server.
 
 Tested and supported against CentOS 7/Debian 8 and 9/Ubuntu 16.
 
@@ -136,10 +135,6 @@ is where a `git archive` using the ref `netbox_git_version` will be extracted to
 service/configuration files as the location NetBox is installed.
 `netbox_shared_path` is intended to store configuration files and other "shared"
 content, like logs.
-
-    netbox_python: 3
-
-If you wish to deploy using Python 2, set this to `2`.
 
     netbox_socket: "127.0.0.1:8000"
     netbox_protocol: http
