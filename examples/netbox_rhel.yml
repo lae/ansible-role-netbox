@@ -13,6 +13,12 @@
         - "{{ inventory_hostname }}"
       MEDIA_ROOT: "{{ netbox_shared_path }}/media"
       REPORTS_ROOT: "{{ netbox_shared_path }}/reports"
+    postgresql_version: "10"
+    postgresql_packages:
+      - postgresql10
+      - postgresql10-server
+      - postgresql10-contrib
+      - postgresql10-libs
     postgresql_users:
       - name: netbox
         role_attr_flags: CREATEDB,NOSUPERUSER
@@ -27,10 +33,12 @@
     - name: Enable/Install EPEL Repo
       yum:
         name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+    - name: Enable/Install PostgreSQL Repo
+      yum:
+        name: https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/pgdg-redhat10-10-2.noarch.rpm
       
   roles:
     - geerlingguy.postgresql
     - lae.netbox
-
-# Using this playbook installs the EPEL repo on the host
-# Use at your own risk
+# Using this playbook installs the EPEL and PostgreSQL repos on the host.
+# Use at your own risk.
