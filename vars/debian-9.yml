@@ -1,5 +1,5 @@
 ---
-netbox_packages:
+__netbox_packages:
   - libxml2-dev
   - libxslt1-dev
   - libffi-dev
@@ -7,12 +7,13 @@ netbox_packages:
   - graphviz
   - libpq-dev
   - libssl-dev
-netbox_python_packages:
+__netbox_python_packages:
   - python3.5
   - python3.5-dev
   - python3-pip
   - python3-psycopg2 # used by ansible's postgres modules
-netbox_python_binary: /usr/bin/python3.5
-netbox_ldap_packages:
+__netbox_python_binary: /usr/bin/python3.5
+__netbox_pip_binary: /usr/bin/pip3
+__netbox_ldap_packages:
   - libldap2-dev
   - libsasl2-dev
