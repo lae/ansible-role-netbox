@@ -10,13 +10,23 @@
     - "{{ ansible_distribution|lower }}.yml"
     - "{{ ansible_os_family|lower }}.yml"
 
+- name: Determine whether to switch Ansible's interpreter
+  set_fact:
+    netbox_switch_ansible_python: "{{ _netbox_switch_ansible_python | default(True) }}"
+  when: netbox_switch_ansible_python is not defined
+
 - include_tasks: "install_packages_{{ ansible_pkg_mgr }}.yml"
+
+- name: Switch Ansible's Python interpreter to Python 3
+  set_fact:
+    ansible_python_interpreter: "{{ netbox_python_binary }}"
+  when: netbox_switch_ansible_python
 
 - name: Install virtualenv via pip
   pip:
     name: virtualenv
     state: latest
-    executable: "{{ netbox_pip_binary }}"
+    executable: /usr/bin/pip3
 
 - name: Create NetBox user group
   group:
@@ -56,7 +66,7 @@
   pip:
     name: uwsgi
     state: latest
-    executable: "{{ netbox_pip_binary }}"
+    executable: /usr/bin/pip3
   notify:
     - reload netbox.service
 
