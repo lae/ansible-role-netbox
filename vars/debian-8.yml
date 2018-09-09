@@ -11,9 +11,10 @@ netbox_python_packages:
   - python3.4
   - python3.4-dev
   - python3-pip
-  - python-psycopg2
+  - python-setuptools # used by ansible's pip module
+  - python-psycopg2 # used by ansible's postgres modules
+_netbox_switch_ansible_python: False
 netbox_python_binary: /usr/bin/python3.4
-netbox_pip_binary: /usr/bin/pip3
 netbox_ldap_packages:
   - libldap2-dev
   - libsasl2-dev
