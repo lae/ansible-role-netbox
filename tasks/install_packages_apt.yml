@@ -1,4 +1,15 @@
 ---
+- name: Ensure to add Universe repo for required packages
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+    update_cache: yes
+  loop:
+    - "deb http://in.archive.ubuntu.com/ubuntu/ {{ ansible_distribution_release }} main universe"
+    - "deb http://in.archive.ubuntu.com/ubuntu/ {{ ansible_distribution_release }}-updates main universe"
+    - "deb http://in.archive.ubuntu.com/ubuntu/ {{ ansible_distribution_release }}-backports main universe"
+    - "deb http://in.archive.ubuntu.com/ubuntu/ {{ ansible_distribution_release }}-security main universe"
+
 - name: Install required packages for selected NetBox configuration
   apt:
     name: "{{ item }}"
