@@ -4,7 +4,7 @@
     repo: "{{ item }}"
     state: present
     update_cache: yes
-  loop:
+  with_items:
     - "deb http://in.archive.ubuntu.com/ubuntu/ {{ ansible_distribution_release }} main universe"
     - "deb http://in.archive.ubuntu.com/ubuntu/ {{ ansible_distribution_release }}-updates main universe"
     - "deb http://in.archive.ubuntu.com/ubuntu/ {{ ansible_distribution_release }}-backports main universe"
