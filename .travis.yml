@@ -7,20 +7,16 @@ dist: trusty
 cache:
   directories: [ '$HOME/lxc' ]
   pip: true
-matrix:
-  fast_finish: true
 services:
 - postgresql
 addons:
   postgresql: "9.4"
 env:
-- ANSIBLE_GIT_VERSION='devel' # 2.6.x development branch
-- ANSIBLE_VERSION='<2.6.0' # 2.5.x
+- ANSIBLE_GIT_VERSION='devel' # 2.8.x development branch
+- ANSIBLE_VERSION='<2.8.0' # 2.7.x
+- ANSIBLE_VERSION='<2.7.0' # 2.6.x
 matrix:
   fast_finish: true
-  include:
-    - python: '2.7'
-      env: ANSIBLE_VERSION='<2.5.0' # 2.4.x
 install:
 - if [ "$ANSIBLE_GIT_VERSION" ]; then pip install "https://github.com/ansible/ansible/archive/${ANSIBLE_GIT_VERSION}.tar.gz";
   else pip install "ansible${ANSIBLE_VERSION}"; fi
