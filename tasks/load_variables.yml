@@ -1,0 +1,33 @@
+---
+- name: Gather OS specific variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution|lower }}-{{ ansible_distribution_version }}.yml"
+    - "{{ ansible_distribution|lower }}-{{ ansible_distribution_major_version }}.yml"
+    - "{{ ansible_distribution|lower }}.yml"
+    - "{{ ansible_os_family|lower }}.yml"
+
+- name: Define netbox_packages
+  set_fact:
+    netbox_packages: "{{ _netbox_packages | list }}"
+  when: netbox_packages is not defined
+
+- name: Define netbox_python_packages
+  set_fact:
+    netbox_python_packages: "{{ _netbox_python_packages | list }}"
+  when: netbox_python_packages is not defined
+
+- name: Define netbox_python_binary
+  set_fact:
+    netbox_python_binary: "{{ _netbox_python_binary }}"
+  when: netbox_python_binary is not defined
+
+- name: Define netbox_ldap_packages
+  set_fact:
+    netbox_ldap_packages: "{{ _netbox_ldap_packages | list }}"
+  when: netbox_ldap_packages is not defined
+
+- name: Determine whether to switch Ansible's interpreter
+  set_fact:
+    netbox_switch_ansible_python: "{{ _netbox_switch_ansible_python | default(True) }}"
+  when: netbox_switch_ansible_python is not defined

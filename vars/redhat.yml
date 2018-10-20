@@ -1,5 +1,5 @@
 ---
-netbox_packages:
+_netbox_packages:
   - gcc
   - postgresql-devel
   - libxml2-devel
@@ -8,7 +8,7 @@ netbox_packages:
   - libjpeg-devel
   - graphviz
   - openssl-devel
-netbox_python_packages:
+_netbox_python_packages:
   - python34
   - python34-devel
   - python34-setuptools
@@ -16,6 +16,6 @@ netbox_python_packages:
   - python-setuptools # used by ansible's pip module
   - python-psycopg2 # used by ansible's postgres modules
 _netbox_switch_ansible_python: False
-netbox_python_binary: /usr/bin/python3.4
-netbox_ldap_packages:
+_netbox_python_binary: /usr/bin/python3.4
+_netbox_ldap_packages:
   - openldap-devel
