@@ -38,11 +38,8 @@ script:
   grep -A1 "PLAY RECAP" play.log | grep -qP "changed=0 .*failed=0 .*"
   && (echo "PASS"; exit 0) || (echo "FAIL"; cat play.log; exit 1)'
 - ANSIBLE_STDOUT_CALLBACK=debug ansible-playbook -i inventory -v test.yml
-after_success:
-- wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
-- "[ $TRAVIS_EVENT_TYPE == 'cron' ] || bash send.sh success $DISCORD_WEBHOOK"
-after_failure:
-- wget https://raw.githubusercontent.com/DiscordHooks/travis-ci-discord-webhook/master/send.sh
-- bash send.sh failure $DISCORD_WEBHOOK
 notifications:
-  webhooks: https://galaxy.ansible.com/api/v1/notifications/
+  webhooks:
+    urls:
+      - https://galaxy.ansible.com/api/v1/notifications/
+      - https://t2d.idolactiviti.es/notify
