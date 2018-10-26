@@ -1,5 +1,5 @@
 # {{ ansible_managed }}
-{% if (netbox_stable and netbox_stable_version | version_compare('2.3.5', '<=')) or
+{% if (netbox_stable and netbox_stable_version is version_compare('2.3.5', '<=')) or
       (netbox_git and _netbox_git_contains_issue_2239_fix.rc == 1) %}
 django-filter<2.0.0
 {% endif %}
