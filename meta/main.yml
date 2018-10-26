@@ -1,9 +1,8 @@
 galaxy_info:
-  role_name: netbox
   author: Musee Ullah
   description: Installs and configures NetBox, a DCIM suite, in a production setting.
   license: MIT
-  min_ansible_version: 2.4
+  min_ansible_version: 2.5
   platforms:
     - name: Ubuntu
       versions:

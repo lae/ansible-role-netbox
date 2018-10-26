@@ -31,6 +31,14 @@ ansible-playbook -i your.server.fqdn, ~/.ansible/roles/lae.netbox/examples/playb
 This will deploy NetBox and PostgreSQL on `your.server.fqdn`; once complete it
 should be accessible on port 80. Modify if needed. Read below for more insight.
 
+You can also use Vagrant, if you prefer, to bring up NetBox at `localhost:8080`:
+
+```
+ansible-galaxy install geerlingguy.postgresql lae.netbox
+cd ~/.ansible/roles/lae.netbox/
+vagrant up
+```
+
 Prerequisites
 -------------
 

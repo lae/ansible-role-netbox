@@ -11,6 +11,9 @@
     netbox_config:
       ALLOWED_HOSTS:
         - "{{ inventory_hostname }}"
+        # The following should not be used in production, probably.
+        # This playbook gets used by Vagrant where we don't know the actual hostname.
+        - "*"
       MEDIA_ROOT: "{{ netbox_shared_path }}/media"
       REPORTS_ROOT: "{{ netbox_shared_path }}/reports"
     netbox_database_socket: "{{ postgresql_unix_socket_directories[0] }}"
