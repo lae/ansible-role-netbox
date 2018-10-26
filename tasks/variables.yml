@@ -9,26 +9,26 @@
 
 - name: Define netbox_packages
   set_fact:
-    netbox_packages: "{{ __netbox_packages | list }}"
+    netbox_packages: "{{ _netbox_packages | list }}"
   when: netbox_packages is not defined
 
 - name: Define netbox_python_packages
   set_fact:
-    netbox_python_packages: "{{ __netbox_python_packages | list }}"
+    netbox_python_packages: "{{ _netbox_python_packages | list }}"
   when: netbox_python_packages is not defined
 
 - name: Define netbox_python_binary
   set_fact:
-    netbox_python_binary: "{{ __netbox_python_binary }}"
+    netbox_python_binary: "{{ _netbox_python_binary }}"
   when: netbox_python_binary is not defined
 
 - name: Define netbox_pip_binary
   set_fact:
-    netbox_pip_binary: "{{ __netbox_pip_binary }}"
+    netbox_pip_binary: "{{ _netbox_pip_binary }}"
   when: netbox_pip_binary is not defined
 
 - name: Define netbox_ldap_packages
   set_fact:
-    netbox_ldap_packages: "{{ __netbox_ldap_packages | list }}"
+    netbox_ldap_packages: "{{ _netbox_ldap_packages | list }}"
   when: netbox_ldap_packages is not defined
   

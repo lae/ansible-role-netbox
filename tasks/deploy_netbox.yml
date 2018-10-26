@@ -101,8 +101,8 @@
 
   - name: Create a super user for NetBox
     shell: "printf '{{ netbox_superuser_script }}' | {{ netbox_virtualenv_path }}/bin/python {{ netbox_current_path }}/netbox/manage.py shell"
-    register: __netbox_superuser_result
-    changed_when: "'changed' in __netbox_superuser_result.stdout"
+    register: _netbox_superuser_result
+    changed_when: "'changed' in _netbox_superuser_result.stdout"
     when:
       - not netbox_ldap_enabled
 
