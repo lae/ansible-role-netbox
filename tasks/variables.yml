@@ -31,4 +31,3 @@
   set_fact:
     netbox_ldap_packages: "{{ _netbox_ldap_packages | list }}"
   when: netbox_ldap_packages is not defined
-  

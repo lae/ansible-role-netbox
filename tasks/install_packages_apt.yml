@@ -4,7 +4,7 @@
     repo: "{{ item }}"
     state: present
     update_cache: yes
-  with_items:
+  loop:
     - "deb http://in.archive.ubuntu.com/ubuntu/ {{ ansible_distribution_release }} main universe"
     - "deb http://in.archive.ubuntu.com/ubuntu/ {{ ansible_distribution_release }}-updates main universe"
     - "deb http://in.archive.ubuntu.com/ubuntu/ {{ ansible_distribution_release }}-backports main universe"
@@ -13,13 +13,14 @@
 
 - name: Install required packages for selected NetBox configuration
   apt:
-    name: "{{ item }}"
-    state: latest
+    name: "{{ _netbox_apt_packages | flatten }}"
+    state: present
     cache_valid_time: 3600
     update_cache: yes
-  with_items:
-    - "{{ netbox_python_packages }}"
-    - "{{ netbox_packages }}"
-    - "{{ netbox_ldap_packages if netbox_ldap_enabled else [] }}"
-    - "{{ 'git' if netbox_git else [] }}"
-    - "{{ 'acl' if ('SUDO_USER' in ansible_env and ansible_env.SUDO_USER != 'root') else [] }}"
+  vars:
+    _netbox_apt_packages:
+      - "{{ netbox_python_packages }}"
+      - "{{ netbox_packages }}"
+      - "{{ netbox_ldap_packages if netbox_ldap_enabled else [] }}"
+      - "{{ 'git' if netbox_git else [] }}"
+      - "{{ 'acl' if ('SUDO_USER' in ansible_env and ansible_env.SUDO_USER != 'root') else [] }}"

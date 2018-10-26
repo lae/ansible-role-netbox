@@ -87,6 +87,6 @@
     name: "{{ item }}"
     state: started
     enabled: yes
-  with_items:
+  loop:
     - netbox.socket
     - netbox.service

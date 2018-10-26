@@ -5,7 +5,7 @@
     state: directory
     owner: "{{ netbox_user }}"
     group: "{{ netbox_group }}"
-  with_items:
+  loop:
     - "{{ netbox_releases_path }}"
     - "{{ netbox_shared_path }}"
     - "{{ netbox_shared_path }}/media/image-attachments"
