@@ -1,8 +1,7 @@
-[![Build Status](https://travis-ci.org/lae/ansible-role-netbox.svg?branch=master)](https://travis-ci.org/lae/ansible-role-netbox)
-[![Galaxy Role](https://img.shields.io/badge/ansible--galaxy-netbox-blue.svg)](https://galaxy.ansible.com/lae/netbox/)
-
 lae.netbox
 =========
+[![Build Status](https://img.shields.io/travis/lae/ansible-role-netbox/master.svg?style=for-the-badge)](https://travis-ci.org/lae/ansible-role-netbox)
+[![Ansible Galaxy Role](https://img.shields.io/ansible/role/22759.svg?style=for-the-badge)](https://galaxy.ansible.com/lae/netbox)
 
 Deploys and configures DigitalOcean's [NetBox].
 
