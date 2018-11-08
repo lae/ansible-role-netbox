@@ -56,6 +56,10 @@ separate from this role. Take a look at the *Example Playbook* section.
 
 Please note that as of v2.2, NetBox requires PostgreSQL 9.4 or higher.
 
+### Redis 
+
+If you require webhooks then a redis server instance is required.  This role does not setup or manage the redis instance, see galaxy role [DavidWittman.redis](https://galaxy.ansible.com/davidwittman/redis)
+
 Role Variables
 --------------
 
@@ -183,6 +187,16 @@ You can find an example in `examples/`.
 Toggle this to enable NAPALM integration in NetBox. You must define
 `NAPALM_USERNAME` and `NAPALM_PASSWORD` in the `netbox_config` variable to be
 able to use NAPALM.
+
+    netbox_webhooks_enabled: false
+    netbox_redis_host: 127.0.0.1
+    netbox_redis_port: 6379
+    netbox_redis_password: ''
+    netbox_redis_database: 0
+    netbox_redis_default_timeout: 300
+
+Toggle `netbox_webhooks_enabled` to `true` to enable webhooks for
+NetBox.  REDIS server instance is required to use webhooks (see prerequisites)
 
 Example Playbook
 ----------------
