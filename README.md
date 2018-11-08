@@ -39,6 +39,12 @@ cd ~/.ansible/roles/lae.netbox/
 vagrant up
 ```
 
+Support/Contributing
+--------------------
+
+For support or if you'd like to contribute to this role but want guidance, feel
+free to join this Discord server: https://discord.gg/cjqr6Fg
+
 Prerequisites
 -------------
 
