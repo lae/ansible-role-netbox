@@ -26,8 +26,3 @@
   set_fact:
     netbox_ldap_packages: "{{ _netbox_ldap_packages | list }}"
   when: netbox_ldap_packages is not defined
-
-- name: Determine whether to switch Ansible's interpreter
-  set_fact:
-    netbox_switch_ansible_python: "{{ _netbox_switch_ansible_python | default(True) }}"
-  when: netbox_switch_ansible_python is not defined

@@ -9,7 +9,6 @@
 - name: Switch Ansible's Python interpreter to Python 3
   set_fact:
     ansible_python_interpreter: "{{ netbox_python_binary }}"
-  when: netbox_switch_ansible_python
 
 - name: Install virtualenv via pip
   pip:

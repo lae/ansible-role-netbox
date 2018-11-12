@@ -8,7 +8,7 @@ Deploys and configures DigitalOcean's [NetBox].
 This role will deploy NetBox within its own virtualenv either by release tarball
 or via git using uWSGI as the application server.
 
-Tested and supported against CentOS 7/Debian 8 and 9/Ubuntu 16.
+Tested and supported against CentOS 7/Debian 9/Ubuntu 16 and 18.
 
 Note that this role is slightly opinionated and differs from installation
 instructions from the NetBox documentation. The main differences are:
