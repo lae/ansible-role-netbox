@@ -21,6 +21,14 @@ netbox_database_user: netbox
 netbox_database_port: 5432
 #netbox_database_socket: /var/run/postgresql
 
+netbox_webhooks_enabled: false
+netbox_redis_host: 127.0.0.1
+netbox_redis_port: 6379
+netbox_redis_password: ''
+netbox_redis_database: 0
+netbox_redis_default_timeout: 300
+
+
 netbox_config:
   #SECRET_KEY:
   ALLOWED_HOSTS:

@@ -33,6 +33,17 @@
   become: True
   become_user: "{{ netbox_user }}"
 
+- name: Install django-rq if webhooks enabled
+  pip:
+    name: "django-rq"
+    virtualenv: "{{ netbox_virtualenv_path }}"
+    virtualenv_python: "{{ netbox_python_binary }}"
+  become: True
+  become_user: "{{ netbox_user }}"
+  when:
+    - netbox_webhooks_enabled
+
+
 - name: Generate NetBox configuration file
   template:
     src: templates/configuration.py.j2

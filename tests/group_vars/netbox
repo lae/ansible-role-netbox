@@ -5,8 +5,11 @@ netbox_config:
     - "{{ inventory_hostname }}"
   MEDIA_ROOT: "{{ netbox_shared_path }}/media"
   REPORTS_ROOT: "{{ netbox_shared_path }}/reports"
+
 netbox_superuser_password: netbox
 netbox_database: "netbox_{{ inventory_hostname_short }}"
 netbox_database_host: 10.0.3.1
 netbox_database_password:
 netbox_database_user: postgres
+netbox_webhooks_enabled: true
+netbox_redis_host: 10.0.3.1
