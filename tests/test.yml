@@ -1,5 +1,6 @@
 ---
 - hosts: netbox
+  become: True
   tasks:
     - name: Ensure that NetBox returns a successful HTTP response
       uri:
