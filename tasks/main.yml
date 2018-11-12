@@ -10,12 +10,6 @@
   set_fact:
     ansible_python_interpreter: "{{ netbox_python_binary }}"
 
-- name: Install virtualenv via pip
-  pip:
-    name: virtualenv
-    state: latest
-    executable: /usr/bin/pip3
-
 - name: Create NetBox user group
   group:
     name: "{{ netbox_group }}"
@@ -54,7 +48,6 @@
   pip:
     name: uwsgi
     state: latest
-    executable: /usr/bin/pip3
   notify:
     - reload netbox.service
 
