@@ -26,3 +26,12 @@
   set_fact:
     netbox_ldap_packages: "{{ _netbox_ldap_packages | list }}"
   when: netbox_ldap_packages is not defined
+
+- name: Identify current execution PATH
+  shell: "echo $PATH"
+  register: _path_exec
+  changed_when: false
+
+- name: Set a fact for current execution PATH
+  set_fact:
+    _path: "{{ _path_exec.stdout }}"

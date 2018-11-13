@@ -48,6 +48,8 @@
   pip:
     name: uwsgi
     state: latest
+  environment:
+    PATH: "/usr/local/bin:{{ _path }}"
   notify:
     - reload netbox.service
 

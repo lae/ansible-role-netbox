@@ -28,6 +28,7 @@
   pip:
     name: psycopg2
     state: latest
-    executable: "{{ netbox_python_binary }} -m pip"
   vars:
     ansible_python_interpreter: "{{ netbox_python_binary }}"
+  environment:
+    PATH: "/usr/local/bin:{{ _path }}"
