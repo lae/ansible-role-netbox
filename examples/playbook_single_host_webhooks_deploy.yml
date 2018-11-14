@@ -1,0 +1,30 @@
+---
+- hosts: all
+  become: yes
+  roles:
+    - geerlingguy.postgresql
+    - davidwittman.redis
+    - lae.netbox
+  vars:
+    netbox_stable: true
+    netbox_socket: "0.0.0.0:80"
+    netbox_superuser_password: netbox
+    netbox_config:
+      ALLOWED_HOSTS:
+        - "*"
+      MEDIA_ROOT: "{{ netbox_shared_path }}/media"
+      REPORTS_ROOT: "{{ netbox_shared_path }}/reports"
+    netbox_database_socket: "{{ postgresql_unix_socket_directories[0] }}"
+    # webhooks
+    netbox_webhooks_enabled: true
+    #db
+    postgresql_users:
+      - name: "{{ netbox_database_user }}"
+        role_attr_flags: CREATEDB,NOSUPERUSER
+    ## REDIS server install
+    redis_bind: 127.0.0.1
+
+# You can use this playbook as-is to setup a full NetBox server with webhooks enabled, just change
+# the FQDN below. It'll accept HTTP requests on specified FQDN.
+#
+# ansible-playbook -i netbox.example.com, playbook_single_host_webhooks_deploy.yml
