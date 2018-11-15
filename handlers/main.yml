@@ -16,3 +16,9 @@
   systemd:
     name: netbox.service
     state: reloaded
+
+- name: restart netbox-rqworker.service
+  systemd:
+    name: netbox-rqworker.service
+    state: restarted
+    daemon_reload: yes

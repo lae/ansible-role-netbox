@@ -82,7 +82,16 @@
   notify:
     - restart netbox.service
 
-- name: Start and enable NetBox' socket/service
+- name: Install NetBox-rqworker service unit file
+  template:
+    src: netbox-rqworker.service.j2
+    dest: /lib/systemd/system/netbox-rqworker.service
+  notify:
+    - restart netbox-rqworker.service
+  when:
+    - netbox_webhooks_enabled
+
+- name: Start and enable NetBox' socket and service
   systemd:
     name: "{{ item }}"
     state: started
@@ -90,3 +99,11 @@
   loop:
     - netbox.socket
     - netbox.service
+
+- name: Start and enable netbox-rqworker.service
+  systemd:
+    name: netbox-rqworker.service
+    state: started
+    enabled: yes
+  when:
+    - netbox_webhooks_enabled
