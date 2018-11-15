@@ -1,0 +1,26 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: vagrant
+  provider:
+    name: virtualbox
+lint:
+  name: yamllint
+  enabled: false
+platforms:
+  - name: debian-9
+    box: generic/debian9
+provisioner:
+  name: ansible
+  log: true
+  lint:
+    name: ansible-lint
+    enabled: false
+scenario:
+  name: default
+verifier:
+  name: testinfra
+  lint:
+    name: flake8
+

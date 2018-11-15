@@ -1,0 +1,29 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+  vars:
+    netbox_stable: true
+    netbox_socket: "0.0.0.0:80"
+    netbox_superuser_password: netbox
+    netbox_config:
+      ALLOWED_HOSTS:
+        - "{{ inventory_hostname }}"
+        # The following should not be used in production, probably.
+        # This playbook gets used by Vagrant where we don't know the actual hostname.
+        - "*"
+      MEDIA_ROOT: "{{ netbox_shared_path }}/media"
+      REPORTS_ROOT: "{{ netbox_shared_path }}/reports"
+    netbox_database_socket: "{{ postgresql_unix_socket_directories[0] }}"
+    # webhooks
+    netbox_webhooks_enabled: true
+    #db
+    postgresql_users:
+      - name: "{{ netbox_database_user }}"
+        role_attr_flags: CREATEDB,NOSUPERUSER
+    ## REDIS server install
+    redis_bind: 127.0.0.1
+  roles:
+    - geerlingguy.postgresql
+    - davidwittman.redis
+    - ansible-role-netbox
