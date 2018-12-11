@@ -46,6 +46,7 @@ netbox_config:
           - console
         level: INFO
   LOGIN_REQUIRED: yes
+  LOGIN_TIMEOUT: 1209600
   MAINTENANCE_MODE: False
   MAX_PAGE_SIZE: 500
   MEDIA_ROOT: /srv/netbox_media
@@ -63,6 +64,7 @@ netbox_config:
     PASSWORD: redisisfun
     DATABASE: 0
     DEFAULT_TIMEOUT: 300
+  SESSION_FILE_PATH: "{{ netbox_shared_path }}/sessions"
   # quotes aren't necessary as you can see - but in my opinion quotes make this more readable
   SHORT_DATE_FORMAT: 'Y-m-d'
   SHORT_DATETIME_FORMAT: 'Y-m-d H:i'
