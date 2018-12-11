@@ -8,7 +8,7 @@ Deploys and configures DigitalOcean's [NetBox].
 This role will deploy NetBox within its own virtualenv either by release tarball
 or via git using uWSGI as the application server.
 
-Tested and supported against CentOS 7/Debian 8 and 9/Ubuntu 16.
+Tested and supported against CentOS 7/Debian 9/Ubuntu 16 and 18.
 
 Note that this role is slightly opinionated and differs from installation
 instructions from the NetBox documentation. The main differences are:
@@ -74,7 +74,7 @@ tells the role to deploy by extracting tarball releases from GitHub, while
 `netbox_git` tells the role to clone a NetBox git repository - they're mutually
 exclusive.
 
-    netbox_stable_version: 2.4.7
+    netbox_stable_version: 2.5.0
     netbox_stable_uri: "https://github.com/digitalocean/netbox/archive/v{{ netbox_stable_version }}.tar.gz"
 
 These can be configured to pin a version (e.g. increment to trigger an upgrade)

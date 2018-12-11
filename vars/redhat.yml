@@ -9,13 +9,9 @@ _netbox_packages:
   - graphviz
   - openssl-devel
 _netbox_python_packages:
-  - python34
-  - python34-devel
-  - python34-setuptools
-  - python34-pip
-  - python-setuptools # used by ansible's pip module
-  - python-psycopg2 # used by ansible's postgres modules
-_netbox_switch_ansible_python: False
-_netbox_python_binary: /usr/bin/python3.4
+  - python36
+  - python36-devel
+  - python36-setuptools
+_netbox_python_binary: /usr/bin/python3.6
 _netbox_ldap_packages:
   - openldap-devel

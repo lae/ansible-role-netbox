@@ -27,7 +27,11 @@
     netbox_ldap_packages: "{{ _netbox_ldap_packages | list }}"
   when: netbox_ldap_packages is not defined
 
-- name: Determine whether to switch Ansible's interpreter
+- name: Identify current execution PATH
+  shell: "echo $PATH"
+  register: _path_exec
+  changed_when: false
+
+- name: Set a fact for current execution PATH
   set_fact:
-    netbox_switch_ansible_python: "{{ _netbox_switch_ansible_python | default(True) }}"
-  when: netbox_switch_ansible_python is not defined
+    _path: "{{ _path_exec.stdout }}"

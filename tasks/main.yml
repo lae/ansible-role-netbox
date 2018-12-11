@@ -9,13 +9,6 @@
 - name: Switch Ansible's Python interpreter to Python 3
   set_fact:
     ansible_python_interpreter: "{{ netbox_python_binary }}"
-  when: netbox_switch_ansible_python
-
-- name: Install virtualenv via pip
-  pip:
-    name: virtualenv
-    state: latest
-    executable: /usr/bin/pip3
 
 - name: Create NetBox user group
   group:
@@ -55,7 +48,8 @@
   pip:
     name: uwsgi
     state: latest
-    executable: /usr/bin/pip3
+  environment:
+    PATH: "/usr/local/bin:{{ _path }}"
   notify:
     - reload netbox.service
 

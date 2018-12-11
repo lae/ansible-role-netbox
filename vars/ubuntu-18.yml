@@ -11,6 +11,7 @@ _netbox_python_packages:
   - python3.6
   - python3.6-dev
   - python3-pip
+  - python3-venv
   - python3-psycopg2 # used by ansible's postgres modules
 _netbox_python_binary: /usr/bin/python3.6
 _netbox_ldap_packages:

@@ -29,7 +29,7 @@
     requirements: "{{ netbox_current_path }}/requirements.txt"
     extra_args: "-c {{ netbox_current_path }}/constraints.txt"
     virtualenv: "{{ netbox_virtualenv_path }}"
-    virtualenv_python: "{{ netbox_python_binary }}"
+    virtualenv_command: "{{ netbox_python_binary }} -m venv"
   become: True
   become_user: "{{ netbox_user }}"
 
@@ -37,7 +37,6 @@
   pip:
     name: "django-rq"
     virtualenv: "{{ netbox_virtualenv_path }}"
-    virtualenv_python: "{{ netbox_python_binary }}"
   become: True
   become_user: "{{ netbox_user }}"
   when:
