@@ -19,7 +19,8 @@ matrix:
   fast_finish: true
 install:
 - if [ "$ANSIBLE_GIT_VERSION" ]; then pip install "https://github.com/ansible/ansible/archive/${ANSIBLE_GIT_VERSION}.tar.gz";
-  else pip install "ansible${ANSIBLE_VERSION}"; fi
+  else pip install "ansible${ANSIBLE_VERSION}"; fi;
+  pip install --pre ansible-lint
 - ansible --version
 - ansible-galaxy install lae.travis-lxc
 - ansible-playbook tests/install.yml -i tests/inventory
@@ -32,6 +33,7 @@ before_script:
 - sudo redis-server /etc/redis/redis.conf --bind 10.0.3.1 --protected-mode no --port 6379
 - cd tests/
 script:
+- ansible-lint ../ || true
 - ansible-playbook -i inventory deploy.yml --syntax-check
 - ANSIBLE_STDOUT_CALLBACK=debug ansible-playbook -i inventory deploy.yml
 - 'ANSIBLE_STDOUT_CALLBACK=debug unbuffer ansible-playbook -vvi inventory

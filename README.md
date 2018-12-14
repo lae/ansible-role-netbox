@@ -198,6 +198,12 @@ able to use NAPALM.
 Toggle `netbox_webhooks_enabled` to `true` to enable webhooks for
 NetBox.  REDIS server instance is required to use webhooks (see prerequisites)
 
+    netbox_keep_uwsgi_updated: false
+
+Toggle `netbox_keep_uwsgi_updated` to `true` if you wish to ensure your uwsgi
+server is the latest release, otherwise uwsgi will not be updated on subsequent
+runs of your playbook.
+
 Example Playbook
 ----------------
 

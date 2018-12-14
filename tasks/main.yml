@@ -47,11 +47,14 @@
 - name: Install uWSGI via pip
   pip:
     name: uwsgi
-    state: latest
+    state: "{{ 'latest' if netbox_keep_uwsgi_updated else 'installed' }}"
   environment:
     PATH: "/usr/local/bin:{{ _path }}"
   notify:
     - reload netbox.service
+  retries: 2
+  register: _netbox_uwsgi_install
+  until: _netbox_uwsgi_install is succeeded
 
 - name: Configure uWSGI NetBox application
   template:

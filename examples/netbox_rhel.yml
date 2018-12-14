@@ -13,6 +13,7 @@
         - "{{ inventory_hostname }}"
       MEDIA_ROOT: "{{ netbox_shared_path }}/media"
       REPORTS_ROOT: "{{ netbox_shared_path }}/reports"
+    netbox_keep_uwsgi_updated: true
     postgresql_version: "10"
     postgresql_packages:
       - postgresql10
@@ -22,7 +23,6 @@
     postgresql_users:
       - name: netbox
         role_attr_flags: CREATEDB,NOSUPERUSER
-  
   pre_tasks:
     - name: Enable Subscription Manager Repos
       rhsm_repository:
@@ -36,7 +36,7 @@
     - name: Enable/Install PostgreSQL Repo
       yum:
         name: https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/pgdg-redhat10-10-2.noarch.rpm
-      
+
   roles:
     - geerlingguy.postgresql
     - lae.netbox

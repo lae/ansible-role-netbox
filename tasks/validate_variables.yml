@@ -17,7 +17,8 @@
     msg: "Please define either database_socket (local) or database_host/database_password (TCP)."
   when:
     - netbox_database_socket is not defined
-    - netbox_database_host is not defined or (netbox_database_host is defined and netbox_database_password is not defined)
+    - netbox_database_host is not defined or
+      (netbox_database_host is defined and netbox_database_password is not defined)
 
 - name: Ensure only one DB connection method is defined
   fail:

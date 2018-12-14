@@ -17,6 +17,7 @@ galaxy_info:
   galaxy_tags:
     - dcim
     - ipam
-    - inventory-management
     - web
+    - networking
+    - datacenter
 dependencies: []

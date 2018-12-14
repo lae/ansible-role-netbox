@@ -17,6 +17,7 @@
       MEDIA_ROOT: "{{ netbox_shared_path }}/media"
       REPORTS_ROOT: "{{ netbox_shared_path }}/reports"
     netbox_database_socket: "{{ postgresql_unix_socket_directories[0] }}"
+    netbox_keep_uwsgi_updated: true
     postgresql_users:
       - name: "{{ netbox_database_user }}"
         role_attr_flags: CREATEDB,NOSUPERUSER
