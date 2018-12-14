@@ -47,7 +47,7 @@
 - name: Install uWSGI via pip
   pip:
     name: uwsgi
-    state: "{{ 'latest' if netbox_keep_uwsgi_updated else 'installed' }}"
+    state: "{{ 'latest' if netbox_keep_uwsgi_updated else 'present' }}"
   environment:
     PATH: "/usr/local/bin:{{ _path }}"
   notify:
