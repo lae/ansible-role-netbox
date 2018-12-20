@@ -1,4 +1,4 @@
-# {{ ansible_managed }}
+{{ ansible_managed | comment }}
 [Unit]
 Description=NetBox IPAM/DCIM Tool
 Documentation=http://netbox.readthedocs.io/en/{{ 'latest' if netbox_git else 'stable' }}/
