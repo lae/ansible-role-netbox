@@ -90,7 +90,7 @@
 
 - name: Install napalm if NAPALM integration is enabled
   pip:
-    name: napalm
+    name: "{{ netbox_napalm_packages }}"
     virtualenv: "{{ netbox_virtualenv_path }}"
   when:
     - netbox_napalm_enabled
