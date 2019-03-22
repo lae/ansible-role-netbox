@@ -3,6 +3,7 @@
   yum:
     name: epel-release
     state: installed
+  when: netbox_install_epel
 
 - name: Install required packages for selected NetBox configuration
   yum:
