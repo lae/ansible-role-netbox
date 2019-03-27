@@ -56,7 +56,7 @@ separate from this role. Take a look at the *Example Playbook* section.
 
 Please note that as of v2.2, NetBox requires PostgreSQL 9.4 or higher.
 
-### Redis 
+### Redis
 
 If you require webhooks then a redis server instance is required.  This role does not setup or manage the redis instance, see galaxy role [DavidWittman.redis](https://galaxy.ansible.com/davidwittman/redis)
 
@@ -93,7 +93,7 @@ modify something in a release or are deploying while firewalled in your local ne
 
 It is **required** to set the superuser password. This role will create a new
 superuser if the user does not exist, or will modify an existing user if they're
-not a superuser/have a different email or password. (Yes, you can use this to 
+not a superuser/have a different email or password. (Yes, you can use this to
 reset your superuser password if you forget it.)
 
     netbox_database: netbox
@@ -203,6 +203,10 @@ NetBox.  REDIS server instance is required to use webhooks (see prerequisites)
 Toggle `netbox_keep_uwsgi_updated` to `true` if you wish to ensure your uwsgi
 server is the latest release, otherwise uwsgi will not be updated on subsequent
 runs of your playbook.
+
+    netbox_install_epel: true
+
+Toggle `netbox_install_epel` to `false` if you do not want this role to install the Fedora EPEL for you. This can be useful for enterprise environments where the system's repositories are managed/mirrored by the enterprise.
 
 Example Playbook
 ----------------
