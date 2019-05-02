@@ -31,7 +31,9 @@
   shell: "echo $PATH"
   register: _path_exec
   changed_when: false
+  check_mode: false
 
 - name: Set a fact for current execution PATH
   set_fact:
     _path: "{{ _path_exec.stdout }}"
+  check_mode: false
