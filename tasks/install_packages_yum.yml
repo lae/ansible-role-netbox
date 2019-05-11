@@ -24,12 +24,15 @@
   register: _existence_of_pip
   changed_when: "'Successfully installed pip' in _existence_of_pip.stdout"
 
-# python3 psycopg2 packages are not available on EPEL.
-- name: Install psycopg2 via pip on Red Hat-based distros
+# python3 psycopg2/selinux packages are not available on EPEL.
+- name: Install psycopg2/selinux via pip on Red Hat-based distros
   pip:
-    name: psycopg2
+    name: "{{ item }}"
     state: latest
   vars:
     ansible_python_interpreter: "{{ netbox_python_binary }}"
   environment:
     PATH: "/usr/local/bin:{{ _path }}"
+  with_items:
+    - psycopg2
+    - selinux
