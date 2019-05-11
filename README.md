@@ -183,10 +183,13 @@ default, Ansible will search your playbook's `templates/` directory for this.
 You can find an example in `examples/`.
 
     netbox_napalm_enabled: false
+    netbox_napalm_packages:
+        - napalm
 
-Toggle this to enable NAPALM integration in NetBox. You must define
-`NAPALM_USERNAME` and `NAPALM_PASSWORD` in the `netbox_config` variable to be
-able to use NAPALM.
+Toggle `netbox_napalm_enabled` to enable NAPALM integration in NetBox. You must
+define `NAPALM_USERNAME` and `NAPALM_PASSWORD` in the `netbox_config` variable
+to be able to use NAPALM. Add extra NAPALM python libraries by listing them in
+`netbox_napalm_packages` (e.g. `napalm-eos`).
 
     netbox_webhooks_enabled: false
     netbox_redis_host: 127.0.0.1
