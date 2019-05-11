@@ -1,5 +1,5 @@
 ---
-- hosts: netbox
+- hosts: all
   become: yes
   vars:
     netbox_stable: true
@@ -14,12 +14,16 @@
       MEDIA_ROOT: "{{ netbox_shared_path }}/media"
       REPORTS_ROOT: "{{ netbox_shared_path }}/reports"
     netbox_keep_uwsgi_updated: true
-    postgresql_version: "10"
+    postgresql_version: 10
     postgresql_packages:
       - postgresql10
       - postgresql10-server
       - postgresql10-contrib
       - postgresql10-libs
+    postgresql_data_dir: /var/lib/pgsql/10/data
+    postgresql_bin_path: /usr/pgsql-10/bin
+    postgresql_config_path: /var/lib/pgsql/10/data
+    postgresql_daemon: postgresql-10
     postgresql_users:
       - name: netbox
         role_attr_flags: CREATEDB,NOSUPERUSER
