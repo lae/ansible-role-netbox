@@ -74,7 +74,7 @@ tells the role to deploy by extracting tarball releases from GitHub, while
 `netbox_git` tells the role to clone a NetBox git repository - they're mutually
 exclusive.
 
-    netbox_stable_version: 2.5.8
+    netbox_stable_version: 2.5.12
     netbox_stable_uri: "https://github.com/digitalocean/netbox/archive/v{{ netbox_stable_version }}.tar.gz"
 
 These can be configured to pin a version (e.g. increment to trigger an upgrade)
