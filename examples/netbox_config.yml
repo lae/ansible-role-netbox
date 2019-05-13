@@ -17,8 +17,9 @@ netbox_config:
   BANNER_TOP: &BANNER_TOP 'Your banner text'
   # you probably won't need this, but you can reference other variables like above
   BASE_PATH: netbox/
+  CACHE_TIMEOUT: 900
   CHANGELOG_RETENTION: 90
-  CORS_ORIGIN_ALLOW_ALL: false
+  CORS_ORIGIN_ALLOW_ALL: False
   #CORS_ORIGIN_REGEX_WHITELIST:
   CORS_ORIGIN_WHITELIST:
     - hostname.domain.example
@@ -34,6 +35,9 @@ netbox_config:
     PASSWORD: password
     TIMEOUT: 10
     FROM_EMAIL: notifications@localhost
+  EXEMPT_VIEW_PERMISSIONS:
+    - dcim.site
+    - ipam.prefix
   LOGGING:
     version: 1
     disable_existing_loggers: False
@@ -50,6 +54,7 @@ netbox_config:
   MAINTENANCE_MODE: False
   MAX_PAGE_SIZE: 500
   MEDIA_ROOT: /srv/netbox_media
+  METRICS_ENABLED: True
   NAPALM_USERNAME: netbox
   NAPALM_PASSWORD: NetBox42
   NAPALM_TIMEOUT: 30
@@ -63,6 +68,7 @@ netbox_config:
     PORT: 6379
     PASSWORD: redisisfun
     DATABASE: 0
+    CACHE_DATABASE: 1
     DEFAULT_TIMEOUT: 300
   SESSION_FILE_PATH: "{{ netbox_shared_path }}/sessions"
   # quotes aren't necessary as you can see - but in my opinion quotes make this more readable
