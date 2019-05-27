@@ -5,7 +5,13 @@ netbox_config:
     - "{{ inventory_hostname }}"
   MEDIA_ROOT: "{{ netbox_shared_path }}/media"
   REPORTS_ROOT: "{{ netbox_shared_path }}/reports"
+  NAPALM_USERNAME: manager
+  NAPALM_PASSWORD: null
+  NAPALM_ARGS:
+    use_keys: true
+    key_file: '/srv/netbox/.ssh/id_rsa'
 
+netbox_napalm_enabled: true
 netbox_superuser_password: netbox
 netbox_database: "netbox_{{ inventory_hostname_short }}"
 netbox_database_host: 10.0.3.1
