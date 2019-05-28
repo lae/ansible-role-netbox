@@ -1,3 +1,5 @@
+import json
+
 {{ ansible_managed | comment }}
 DATABASE = {
     'NAME': '{{ netbox_database }}',
@@ -13,7 +15,7 @@ DATABASE = {
 
 {% if netbox_webhooks_enabled %}
 WEBHOOKS_ENABLED = True
-REDIS = { 
+REDIS = {
     'HOST': '{{ netbox_redis_host }}',
     'PORT': '{{ netbox_redis_port }}',
     'PASSWORD': '{{ netbox_redis_password }}',
@@ -25,8 +27,10 @@ REDIS = {
 {% for setting, value in netbox_config.items() %}
 {% if value in [True, False] %}
 {{ setting }} = {{ 'True' if value else 'False' }}
-{% else %}
+{% elif value is string or value is number %}
 {{ setting }} = {{ value | to_nice_json }}
+{% else %}
+{{ setting }} = json.loads(r'''{{ value | to_json }}''')
 {% endif %}
 {% endfor %}
 
