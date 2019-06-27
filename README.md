@@ -48,7 +48,7 @@ free to join this Discord server: https://discord.gg/cjqr6Fg
 Prerequisites
 -------------
 
-### Database
+### PostgreSQL
 
 This role does not setup a PostgreSQL server (but will create a database if
 needed), so you'll need to setup a PostgreSQL server and create a database user
@@ -58,7 +58,8 @@ Please note that as of v2.2, NetBox requires PostgreSQL 9.4 or higher.
 
 ### Redis
 
-If you require webhooks then a redis server instance is required.  This role does not setup or manage the redis instance, see galaxy role [DavidWittman.redis](https://galaxy.ansible.com/davidwittman/redis)
+This role does not setup a Redis server, so you'll need to setup a Redis server on your own. On Debian an derivatives installing `redis-server` package
+satisfies this requirement.
 
 Role Variables
 --------------
@@ -191,25 +192,27 @@ define `NAPALM_USERNAME` and `NAPALM_PASSWORD` in the `netbox_config` variable
 to be able to use NAPALM. Add extra NAPALM python libraries by listing them in
 `netbox_napalm_packages` (e.g. `napalm-eos`).
 
-    netbox_webhooks_enabled: false
+A Redis server instance is required to run Netbox.
+
     netbox_redis_host: 127.0.0.1
     netbox_redis_port: 6379
     netbox_redis_password: ''
     netbox_redis_database: 0
     netbox_redis_default_timeout: 300
 
-Toggle `netbox_webhooks_enabled` to `true` to enable webhooks for
-NetBox.  REDIS server instance is required to use webhooks (see prerequisites)
+Toggle `netbox_webhooks_enabled` to `true` to enable webhooks for NetBox.
 
-    netbox_keep_uwsgi_updated: false
+    netbox_webhooks_enabled: false
 
 Toggle `netbox_keep_uwsgi_updated` to `true` if you wish to ensure your uwsgi
 server is the latest release, otherwise uwsgi will not be updated on subsequent
 runs of your playbook.
 
-    netbox_install_epel: true
+    netbox_keep_uwsgi_updated: false
 
 Toggle `netbox_install_epel` to `false` if you do not want this role to install the Fedora EPEL for you. This can be useful for enterprise environments where the system's repositories are managed/mirrored by the enterprise.
+
+    netbox_install_epel: true
 
 Example Playbook
 ----------------

@@ -15,6 +15,8 @@ DATABASE = {
 
 {% if netbox_webhooks_enabled %}
 WEBHOOKS_ENABLED = True
+{% endif %}
+
 REDIS = {
     'HOST': '{{ netbox_redis_host }}',
     'PORT': '{{ netbox_redis_port }}',
@@ -22,7 +24,6 @@ REDIS = {
     'DATABASE': '{{ netbox_redis_database }}',
     'DEFAULT_TIMEOUT': '{{ netbox_redis_default_timeout }}',
 }
-{% endif %}
 
 {% for setting, value in netbox_config.items() %}
 {% if value in [True, False] %}
