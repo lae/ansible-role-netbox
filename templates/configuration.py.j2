@@ -1,5 +1,3 @@
-import json
-
 {{ ansible_managed | comment }}
 DATABASE = {
     'NAME': '{{ netbox_database }}',
@@ -27,10 +25,8 @@ REDIS = {
 {% for setting, value in netbox_config.items() %}
 {% if value in [True, False] %}
 {{ setting }} = {{ 'True' if value else 'False' }}
-{% elif value is string or value is number %}
-{{ setting }} = {{ value | to_nice_json }}
 {% else %}
-{{ setting }} = json.loads(r'''{{ value | to_json }}''')
+{{ setting }} = {{ value | to_nice_json }}
 {% endif %}
 {% endfor %}
 
