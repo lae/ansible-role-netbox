@@ -2,9 +2,6 @@
 - hosts: netbox
   become: True
   tasks:
-    - name: Ensure that NetBox returns a successful HTTP response
-      uri:
-        url: "http://{{ inventory_hostname }}:8080"
     - block:
         - name: uWSGI/NetBox service status
           shell: "systemctl status netbox.service"
@@ -22,3 +19,6 @@
           shell: cat /srv/netbox/shared/configuration.py
           changed_when: False
       ignore_errors: yes
+    - name: Ensure that NetBox returns a successful HTTP response
+      uri:
+        url: "http://{{ inventory_hostname }}:8080"
