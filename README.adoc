@@ -188,7 +188,8 @@ NAPALM credentials here as well.
 documentation, is mandatory in this role to prevent losing these files during
 upgrades (this role does not upgrade NetBox in-place). It should be set to a
 directory that is permanent and not lost on upgrade (the default, listed above,
-can be used without issue).
+can be used without issue). This role will attempt to create these directories
+and change their ownership to whatever `netbox_user` is set to.
 
 [source,yaml]
 ----
