@@ -14,8 +14,6 @@ netbox_superuser_username: admin
 #netbox_superuser_password: changeme
 netbox_superuser_email: admin@localhost
 
-netbox_behind_load_balancer: false
-
 netbox_database: netbox
 netbox_database_user: netbox
 #netbox_database_password: changeme
