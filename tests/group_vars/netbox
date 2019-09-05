@@ -5,6 +5,7 @@ netbox_config:
     - "{{ inventory_hostname }}"
   MEDIA_ROOT: "{{ netbox_shared_path }}/media"
   REPORTS_ROOT: "{{ netbox_shared_path }}/reports"
+  SCRIPTS_ROOT: "{{ netbox_shared_path }}/scripts"
   NAPALM_USERNAME: manager
   NAPALM_PASSWORD: null
   NAPALM_ARGS:

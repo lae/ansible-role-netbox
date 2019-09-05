@@ -1,7 +1,7 @@
 ---
 # defaults file for lae.netbox
 netbox_stable: false
-netbox_stable_version: 2.5.12
+netbox_stable_version: 2.6.3
 netbox_stable_uri: "https://github.com/digitalocean/netbox/archive/v{{ netbox_stable_version }}.tar.gz"
 
 netbox_git: false
@@ -39,6 +39,7 @@ netbox_config:
   #NAPALM_PASSWORD:
   MEDIA_ROOT: "{{ netbox_shared_path }}/media"
   REPORTS_ROOT: "{{ netbox_shared_path }}/reports"
+  SCRIPTS_ROOT: "{{ netbox_shared_path }}/scripts"
 
 netbox_user: netbox
 netbox_group: netbox

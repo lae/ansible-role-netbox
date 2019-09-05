@@ -165,6 +165,7 @@ netbox_config:
   #NAPALM_PASSWORD:
   MEDIA_ROOT: "{{ netbox_shared_path }}/media"
   REPORTS_ROOT: "{{ netbox_shared_path }}/reports"
+  SCRIPTS_ROOT: "{{ netbox_shared_path }}/scripts"
 ----
 
 This is a dictionary of settings used to template NetBox's `configuration.py`.
@@ -183,10 +184,11 @@ balancer.
 If you have enabled NAPALM integration in this role, you will need to configure
 NAPALM credentials here as well.
 
-`MEDIA_ROOT`/`REPORTS_ROOT`, while not mandatory in the NetBox documentation,
-is mandatory in this role in order to prevent missing files. It should be set to
-a directory that is permanent and not lost on upgrade (the default, listed
-above, can be used without issue).
+`MEDIA_ROOT`/`REPORTS_ROOT`/`SCRIPTS_ROOT`, while not mandatory in the NetBox
+documentation, is mandatory in this role to prevent losing these files during
+upgrades (this role does not upgrade NetBox in-place). It should be set to a
+directory that is permanent and not lost on upgrade (the default, listed above,
+can be used without issue).
 
 [source,yaml]
 ----
