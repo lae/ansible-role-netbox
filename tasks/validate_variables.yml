@@ -26,6 +26,16 @@
   when:
     - netbox_database_socket is defined and netbox_database_host is defined
 
+- name: Ensure DATABASE config is not accidentally duplicated
+  fail:
+    msg: "Please remove the DATABASE key in netbox_config. There are separate, dedicated role variables for this."
+  when: "'DATABASE' in netbox_config"
+
+- name: Ensure REDIS config is not accidentally duplicated
+  fail:
+    msg: "Please remove the REDIS key in netbox_config. There are separate, dedicated role variables for this."
+  when: "'REDIS' in netbox_config"
+
 - name: Ensure ALLOWED_HOSTS is defined
   fail:
     msg: "Please define ALLOWED_HOSTS in netbox_config."

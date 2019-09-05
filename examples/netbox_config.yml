@@ -63,13 +63,6 @@ netbox_config:
   PAGINATE_COUNT: 100
   PREFER_IPV4: False
   REPORTS_ROOT: /srv/netbox_reports
-  REDIS:
-    HOST: localhost
-    PORT: 6379
-    PASSWORD: redisisfun
-    DATABASE: 0
-    CACHE_DATABASE: 1
-    DEFAULT_TIMEOUT: 300
   SESSION_FILE_PATH: "{{ netbox_shared_path }}/sessions"
   # quotes aren't necessary as you can see - but in my opinion quotes make this more readable
   SHORT_DATE_FORMAT: 'Y-m-d'
