@@ -34,5 +34,5 @@
   environment:
     PATH: "/usr/local/bin:{{ _path }}"
   with_items:
-    - psycopg2
+    - psycopg2-binary
     - selinux
