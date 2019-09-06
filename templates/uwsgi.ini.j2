@@ -16,5 +16,8 @@ chdir={{ netbox_current_path }}/netbox
 static-map=/{{ _base_path }}static={{ netbox_current_path }}/netbox/static
 logger={{ netbox_application_log }}
 req-logger={{ netbox_requests_log }}
+{% for key, value in netbox_uwsgi_options.items() %}
+{{ key }}={{ value }}
+{% endfor %}
 
 # vim: ft=dosini

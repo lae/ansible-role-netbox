@@ -299,6 +299,12 @@ server is the latest release, otherwise uwsgi will not be updated on subsequent
 runs of your playbook.
 
 [source,yaml]
+netbox_uwsgi_options: {}
+
+Specify extra configuration options to insert into `uwsgi.ini` here. This is
+expected to be a dictionary of key/value pairs, e.g. `buffer-size: 65535`.
+
+[source,yaml]
 netbox_install_epel: true
 
 Toggle `netbox_install_epel` to `false` if you do not want this role to install
