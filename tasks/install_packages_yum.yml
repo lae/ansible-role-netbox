@@ -8,7 +8,7 @@
 - name: Install required packages for selected NetBox configuration
   yum:
     name: "{{ _netbox_yum_packages | flatten }}"
-    state: latest
+    state: present
     update_cache: yes
   vars:
     _netbox_yum_packages:
@@ -28,7 +28,7 @@
 - name: Install psycopg2/selinux via pip on Red Hat-based distros
   pip:
     name: "{{ item }}"
-    state: latest
+    state: present
   vars:
     ansible_python_interpreter: "{{ netbox_python_binary }}"
   environment:
