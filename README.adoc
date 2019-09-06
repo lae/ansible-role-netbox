@@ -37,7 +37,7 @@ Provided you have Ansible installed and are using defaults:
 
 [source,bash,subs="attributes"]
 ----
-ansible-galaxy install geerlingguy.postgresql {role}
+ansible-galaxy install geerlingguy.postgresql davidwittman.redis {role}
 ansible-playbook -i your.server.fqdn, ~/.ansible/roles/{role}/examples/playbook_single_host_deploy.yml -K
 ----
 
@@ -48,16 +48,21 @@ You can also use Vagrant, if you prefer, to bring up NetBox at `localhost:8080`:
 
 [source,bash,subs="attributes"]
 ----
-ansible-galaxy install geerlingguy.postgresql {role}
+ansible-galaxy install geerlingguy.postgresql davidwittman.redis {role}
 cd ~/.ansible/roles/{role}/
 vagrant up
 ----
 
-ifeval::["{role-author}" == "lae"]
 == Support/Contributing
 
+If you would like to contribute to this role, please read `DEVELOPING.md` for
+this repository's workflow and (optional) instructions on setting up a
+development environment. This role uses the `lae.travis-lxc` role when testing
+under Travis CI, which you can find definitions for in the `tests/` directory.
+
+ifeval::["{role-author}" == "lae"]
 For support or if you'd like to contribute to this role but want guidance, feel
-free to join this Discord server: https://discord.gg/cjqr6Fg
+free to ask in @lae's Discord server: https://discord.gg/cjqr6Fg
 
 endif::[]
 == Prerequisites
@@ -323,6 +328,7 @@ socket to talk to the Postgres server with the default netbox database user.
   become: yes
   roles:
     - geerlingguy.postgresql
+    - davidwittman.redis
     - {role}
   vars:
     netbox_stable: true
@@ -334,9 +340,11 @@ socket to talk to the Postgres server with the default netbox database user.
         - netbox.idolactiviti.es
       MEDIA_ROOT: "{{ netbox_shared_path }}/media"
       REPORTS_ROOT: "{{ netbox_shared_path }}/reports"
+      SCRIPTS_ROOT: "{{ netbox_shared_path }}/scripts"
     postgresql_users:
       - name: "{{ netbox_database_user }}"
         role_attr_flags: CREATEDB,NOSUPERUSER
+    redis_bind: 127.0.0.1
 ----
 
 Note the `CREATEDB` attribute.
@@ -350,6 +358,7 @@ installing NetBox on to authenticate with it over TCP:
 - hosts: netbox.idolactiviti.es
   become: yes
   roles:
+    - davidwittman.redis
     - {role}
   vars:
     netbox_stable: true
@@ -360,11 +369,13 @@ installing NetBox on to authenticate with it over TCP:
         - "{{ inventory_hostname }}"
       MEDIA_ROOT: "{{ netbox_shared_path }}/media"
       REPORTS_ROOT: "{{ netbox_shared_path }}/reports"
+      SCRIPTS_ROOT: "{{ netbox_shared_path }}/scripts"
     netbox_database_host: pg-netbox.idolactiviti.es
     netbox_database_port: 15432
     netbox_database: netbox_prod
     netbox_database_user: netbox_prod_user
     netbox_database_password: "very_secure_password_for_prod"
+    redis_bind: 127.0.0.1
 ----
 
-See `examples/` for more.
+See the `examples/` directory for more.
