@@ -119,6 +119,14 @@
   notify:
     - reload netbox.service
 
+- name: Copy NetBox scripts into SCRIPTS_ROOT
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ netbox_config.SCRIPTS_ROOT }}/{{ item.name }}.py"
+    owner: "{{ netbox_user }}"
+    group: "{{ netbox_group }}"
+  loop: "{{ netbox_scripts }}"
+
 - block:
   - name: Run database migrations for NetBox
     django_manage:

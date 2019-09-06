@@ -192,6 +192,24 @@ can be used without issue). This role will attempt to create these directories
 and change their ownership to whatever `netbox_user` is set to.
 
 [source,yaml]
+netbox_scripts: []
+
+https://netbox.readthedocs.io/en/stable/additional-features/custom-scripts/[Scripts]
+to upload for use within NetBox. This should be a list of dictionaries with a
+`src` attribute, specifying the local path to the script, and a `name` attribute,
+specifying the script/module name. For example:
+
+[source,yaml]
+----
+netbox_scripts:
+  - src: netbox_scripts/migrate_application.py
+    name: migrate_application
+----
+
+This will copy `netbox_scripts/migrate_application.py` to
+`{{ netbox_config.SCRIPTS_ROOT }}/migrate_application.py`.
+
+[source,yaml]
 ----
 netbox_user: netbox
 netbox_group: netbox
@@ -241,9 +259,7 @@ http://uwsgi-docs.readthedocs.io/en/latest/Logging.html#pluggable-loggers[as lon
 Application log correlates to `logger` and requests log to `req-logger`.
 
 [source,yaml]
-----
 netbox_load_initial_data: false
-----
 
 To load the initial data shipped by NetBox, set this to `true`.
 
@@ -271,25 +287,19 @@ to be able to use NAPALM. Add extra NAPALM python libraries by listing them in
 `netbox_napalm_packages` (e.g. `napalm-eos`).
 
 [source,yaml]
-----
 netbox_webhooks_enabled: false
-----
 
 Toggle `netbox_webhooks_enabled` to `true` to enable webhooks for NetBox.
 
 [source,yaml]
-----
 netbox_keep_uwsgi_updated: false
-----
 
 Toggle `netbox_keep_uwsgi_updated` to `true` if you wish to ensure your uwsgi
 server is the latest release, otherwise uwsgi will not be updated on subsequent
 runs of your playbook.
 
 [source,yaml]
-----
 netbox_install_epel: true
-----
 
 Toggle `netbox_install_epel` to `false` if you do not want this role to install
 the Fedora EPEL for you. This can be useful for enterprise environments where
