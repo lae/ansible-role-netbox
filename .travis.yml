@@ -12,9 +12,8 @@ services:
 addons:
   postgresql: "9.4"
 env:
-- ANSIBLE_GIT_VERSION='devel' # 2.8.x development branch
-- ANSIBLE_VERSION='<2.8.0' # 2.7.x
-- ANSIBLE_VERSION='<2.7.0' # 2.6.x
+- ANSIBLE_GIT_VERSION='devel' # 2.9.x development branch
+- ANSIBLE_VERSION='<2.9.0' # 2.8.x
 matrix:
   fast_finish: true
 install:
@@ -35,9 +34,9 @@ before_script:
 script:
 - ansible-lint ../ || true
 - ansible-playbook -i inventory deploy.yml --syntax-check
-- ANSIBLE_STDOUT_CALLBACK=debug ansible-playbook -i inventory deploy.yml
-- 'ANSIBLE_STDOUT_CALLBACK=debug unbuffer ansible-playbook -vvi inventory
-  deploy.yml > play.log || (e=$?; cat play.log; exit $e); printf "Idempotence: ";
+- ansible-playbook -i inventory deploy.yml
+- 'ANSIBLE_STDOUT_CALLBACK=debug ANSIBLE_DISPLAY_SKIPPED_HOSTS=no ANSIBLE_DISPLAY_OK_HOSTS=no
+  unbuffer ansible-playbook -vvi inventory deploy.yml &>play.log; printf "Idempotence: ";
   grep -A1 "PLAY RECAP" play.log | grep -qP "changed=0 .*failed=0 .*"
   && (echo "PASS"; exit 0) || (echo "FAIL"; cat play.log; exit 1)'
 - ANSIBLE_STDOUT_CALLBACK=debug ansible-playbook -i inventory -v test.yml

@@ -1,0 +1,370 @@
+:role-author: lae
+:role-name: netbox
+:role: {role-author}.{role-name}
+:gh-name: {role-author}/ansible-role-{role-name}
+:netbox-version: 2.6.3
+= {role}
+:toc:
+:toc-placement: preamble
+ifdef::env-github[]
+:tip-caption: :bulb:
+:warning-caption: :warning:
+endif::[]
+
+ifdef::env-github[]
+image:https://img.shields.io/travis/{gh-name}/master.svg?style=for-the-badge[Build Status,link=https://travis-ci.org/{gh-name}]
+image:https://img.shields.io/badge/role-{role}-blue?style=for-the-badge[Ansible Galaxy Role,link=https://galaxy.ansible.com/{role-author}/{role-name}]
+endif::env-github[]
+
+Deploys and configures DigitalOcean's https://github.com/digitalocean/netbox[NetBox].
+
+This role will deploy NetBox within its own virtualenv either by release
+tarball or via git using uWSGI as the application server.
+
+Tested and supported against CentOS 7/Debian 9 and 10/Ubuntu 16 and 18.
+
+Note that this role is slightly opinionated and differs from installation
+instructions from the NetBox documentation. The main differences are:
+
+* Uses distro-provided systemd instead of supervisord
+* Uses uWSGI as an application server instead of gunicorn
+* Hardens the NetBox/uWSGI service (see `templates/netbox.service.j2`)
+* Will hot reload on upgrades and configuration changes
+
+== Quickstart
+
+Provided you have Ansible installed and are using defaults:
+
+[source,bash,subs="attributes"]
+----
+ansible-galaxy install geerlingguy.postgresql {role}
+ansible-playbook -i your.server.fqdn, ~/.ansible/roles/{role}/examples/playbook_single_host_deploy.yml -K
+----
+
+This will deploy NetBox and PostgreSQL on `your.server.fqdn`; once complete it
+should be accessible on port 80. Modify if needed. Read below for more insight.
+
+You can also use Vagrant, if you prefer, to bring up NetBox at `localhost:8080`:
+
+[source,bash,subs="attributes"]
+----
+ansible-galaxy install geerlingguy.postgresql {role}
+cd ~/.ansible/roles/{role}/
+vagrant up
+----
+
+ifeval::["{role-author}" == "lae"]
+== Support/Contributing
+
+For support or if you'd like to contribute to this role but want guidance, feel
+free to join this Discord server: https://discord.gg/cjqr6Fg
+
+endif::[]
+== Prerequisites
+
+=== PostgreSQL
+
+This role does not setup a PostgreSQL server (but will create a database if
+needed), so you'll need to setup a PostgreSQL server and create a database user
+separate from this role. Take a look at the _Example Playbook_ section.
+
+WARNING: NetBox v2.2.0+ require PostgreSQL 9.4 at the minimum, which may not be
+available in your distribution's repos. You may want to use a role for this.
+
+=== Redis
+
+This role does not setup or manage a Redis instance. You may want to either
+install `redis-server` via a task in `pre_tasks` within your playbook or use a
+Redis installation role such as
+https://galaxy.ansible.com/davidwittman/redis[DavidWittman.redis].
+
+== Role Variables
+
+TIP: See `examples/` for some playbooks you could write for different scenarios.
+
+WARNING: A few role variables are mandatory. Look for the bold *required* below.
+
+[source,yaml]
+----
+netbox_stable: false
+netbox_git: false
+----
+
+It's *required* to set one of the above variables to `true`. `netbox_stable`
+tells the role to deploy by extracting tarball releases from GitHub, while
+`netbox_git` tells the role to clone a NetBox git repository - they're mutually
+exclusive.
+
+[source,yaml,subs="attributes"]
+----
+netbox_stable_version: {netbox-version}
+netbox_stable_uri: "https://github.com/digitalocean/netbox/archive/v{{ netbox_stable_version }}.tar.gz"
+----
+
+These can be configured to pin a version (e.g. increment to trigger an upgrade)
+or deploy using a tarball located somewhere else. Useful for when you need to
+modify something in a release or are deploying locally behind a firewall.
+
+[source,yaml]
+----
+netbox_git_version: develop
+netbox_git_uri: "https://github.com/digitalocean/netbox.git"
+----
+
+`netbox_git_version` can be any valid ref within a git repository.
+`netbox_git_uri` can be used to point to e.g. an on-premise repo or a fork.
+
+[source,yaml]
+----
+netbox_superuser_username: admin
+#netbox_superuser_password: changeme
+netbox_superuser_email: admin@localhost
+----
+
+It is *required* to set the superuser password. This role will create a new
+superuser if the user does not exist, or will modify an existing user if they're
+not a superuser/have a different email or password. (Yes, you can use this to
+reset your superuser password if you forget it.)
+
+[source,yaml]
+----
+netbox_database: netbox
+netbox_database_user: netbox
+#netbox_database_password: changeme
+#netbox_database_host: localhost
+netbox_database_port: 5432
+#netbox_database_socket: /var/run/postgresql
+----
+
+It is *required* to configure either a socket directory (to communicate over
+UNIX sockets) or a host/password (to use TCP/IP). See the _Example Playbook_
+section for more information on configuring the database.
+
+Note that these are used to configure `DATABASE` in `configuration.py`.
+
+[source,yaml]
+----
+netbox_redis_host: 127.0.0.1
+netbox_redis_port: 6379
+netbox_redis_password: ''
+netbox_redis_database: 0
+netbox_redis_cache_database: 1
+netbox_redis_default_timeout: 300
+----
+
+This populates the `REDIS` config dictionary in `configuration.py`.
+
+[source,yaml]
+----
+netbox_config:
+  #SECRET_KEY:
+  ALLOWED_HOSTS:
+    - localhost
+    - 127.0.0.1
+  #NAPALM_USERNAME:
+  #NAPALM_PASSWORD:
+  MEDIA_ROOT: "{{ netbox_shared_path }}/media"
+  REPORTS_ROOT: "{{ netbox_shared_path }}/reports"
+  SCRIPTS_ROOT: "{{ netbox_shared_path }}/scripts"
+----
+
+This is a dictionary of settings used to template NetBox's `configuration.py`.
+See http://netbox.readthedocs.io/en/stable/configuration/mandatory-settings/[Mandatory Settings]
+and http://netbox.readthedocs.io/en/stable/configuration/optional-settings/[Optional Settings]
+from the NetBox documentation for more details, as well as
+`examples/netbox_config.yml` in this repository.
+
+It is not necessary to define `SECRET_KEY` here - this role will automatically
+create one for you at `{{ netbox_shared_path }}/generated_secret_key`. The
+`SECRET_KEY` will then be read from this file on subsequent runs, unless you
+later do set this in your playbook. Note that you should define the
+`SECRET_KEY` if you are deploying multiple NetBox instances behind one load
+balancer.
+
+If you have enabled NAPALM integration in this role, you will need to configure
+NAPALM credentials here as well.
+
+`MEDIA_ROOT`/`REPORTS_ROOT`/`SCRIPTS_ROOT`, while not mandatory in the NetBox
+documentation, is mandatory in this role to prevent losing these files during
+upgrades (this role does not upgrade NetBox in-place). It should be set to a
+directory that is permanent and not lost on upgrade (the default, listed above,
+can be used without issue). This role will attempt to create these directories
+and change their ownership to whatever `netbox_user` is set to.
+
+[source,yaml]
+netbox_scripts: []
+
+https://netbox.readthedocs.io/en/stable/additional-features/custom-scripts/[Scripts]
+to upload for use within NetBox. This should be a list of dictionaries with a
+`src` attribute, specifying the local path to the script, and a `name` attribute,
+specifying the script/module name. For example:
+
+[source,yaml]
+----
+netbox_scripts:
+  - src: netbox_scripts/migrate_application.py
+    name: migrate_application
+----
+
+This will copy `netbox_scripts/migrate_application.py` to
+`{{ netbox_config.SCRIPTS_ROOT }}/migrate_application.py`.
+
+[source,yaml]
+----
+netbox_user: netbox
+netbox_group: netbox
+netbox_home: /srv/netbox
+netbox_releases_path: "{{ netbox_home }}/releases"
+netbox_git_repo_path: "{{ netbox_releases_path }}/git-repo"
+netbox_git_deploy_path: "{{ netbox_releases_path }}/git-deploy"
+netbox_stable_path: "{{ netbox_releases_path }}/netbox-{{ netbox_stable_version }}"
+netbox_current_path: "{{ netbox_home }}/current"
+netbox_shared_path: "{{ netbox_home }}/shared"
+----
+
+These are all deployment details that you can modify to change the application
+user and application storage locations. `netbox_releases_path` stores all
+NetBox releases you've ever deployed. `netbox_git_repo_path` is where the Git
+repository will be cloned to and should remain untouched - whilst
+`netbox_git_deploy_path` is where a `git archive` using the ref
+`netbox_git_version` will be extracted to. `netbox_stable_path` is the
+extracted folder from a release tarball. `netbox_current_path` will be
+symlinked to the selected release and used in service/configuration files as
+the location NetBox is installed. `netbox_shared_path` is intended to store
+configuration files and other "shared" content, like logs.
+
+[source,yaml]
+----
+netbox_socket: "127.0.0.1:8000"
+netbox_protocol: http
+netbox_processes: "{{ ansible_processor_vcpus }}"
+----
+
+`netbox_socket` defines what the uWSGI service will bind to and can be set to
+any valid https://www.freedesktop.org/software/systemd/man/systemd.socket.html#ListenStream=[ListenStream]
+address (systemd socket). Set `netbox_protocol` to `uwsgi` if you want uWSGI to
+speak WSGI (for instance if you're running nginx as a load balancer).
+`netbox_processes` defines how many NetBox workers uWSGI will bring up to serve
+requests.
+
+[source,yaml]
+----
+netbox_application_log: "file:{{ netbox_shared_path }}/application.log"
+netbox_requests_log: "file:{{ netbox_shared_path }}/requests.log"
+----
+
+These define where logs will be stored. You can use external logging facilities
+instead of local files if you wish,
+http://uwsgi-docs.readthedocs.io/en/latest/Logging.html#pluggable-loggers[as long as uWSGI supports it].
+Application log correlates to `logger` and requests log to `req-logger`.
+
+[source,yaml]
+netbox_load_initial_data: false
+
+To load the initial data shipped by NetBox, set this to `true`.
+
+[source,yaml]
+----
+netbox_ldap_enabled: false
+netbox_ldap_config_template: netbox_ldap_config.py.j2
+----
+
+Toggle `netbox_ldap_enabled` to `true` to configure LDAP authentication for
+NetBox. `netbox_ldap_config_template` should be the path to your template - by
+default, Ansible will search your playbook's `templates/` directory for this.
+You can find an example in `examples/`.
+
+[source,yaml]
+----
+netbox_napalm_enabled: false
+netbox_napalm_packages:
+  - napalm
+----
+
+Toggle `netbox_napalm_enabled` to enable NAPALM integration in NetBox. You must
+define `NAPALM_USERNAME` and `NAPALM_PASSWORD` in the `netbox_config` variable
+to be able to use NAPALM. Add extra NAPALM python libraries by listing them in
+`netbox_napalm_packages` (e.g. `napalm-eos`).
+
+[source,yaml]
+netbox_webhooks_enabled: false
+
+Toggle `netbox_webhooks_enabled` to `true` to enable webhooks for NetBox.
+
+[source,yaml]
+netbox_keep_uwsgi_updated: false
+
+Toggle `netbox_keep_uwsgi_updated` to `true` if you wish to ensure your uwsgi
+server is the latest release, otherwise uwsgi will not be updated on subsequent
+runs of your playbook.
+
+[source,yaml]
+netbox_uwsgi_options: {}
+
+Specify extra configuration options to insert into `uwsgi.ini` here. This is
+expected to be a dictionary of key/value pairs, e.g. `buffer-size: 65535`.
+
+[source,yaml]
+netbox_install_epel: true
+
+Toggle `netbox_install_epel` to `false` if you do not want this role to install
+the Fedora EPEL for you. This can be useful for enterprise environments where
+the system's repositories are managed/mirrored by the enterprise.
+
+== Example Playbook
+
+The following installs PostgreSQL and creates a user with @geerlingguy's robust
+Postgres role, then proceeds to deploy and configure NetBox using a local unix
+socket to talk to the Postgres server with the default netbox database user.
+
+[source,yaml,subs="attributes"]
+----
+- hosts: netbox.idolactiviti.es
+  become: yes
+  roles:
+    - geerlingguy.postgresql
+    - {role}
+  vars:
+    netbox_stable: true
+    netbox_database_socket: "{{ postgresql_unix_socket_directories[0] }}"
+    netbox_superuser_password: netbox
+    netbox_socket: "0.0.0.0:80"
+    netbox_config:
+      ALLOWED_HOSTS:
+        - netbox.idolactiviti.es
+      MEDIA_ROOT: "{{ netbox_shared_path }}/media"
+      REPORTS_ROOT: "{{ netbox_shared_path }}/reports"
+    postgresql_users:
+      - name: "{{ netbox_database_user }}"
+        role_attr_flags: CREATEDB,NOSUPERUSER
+----
+
+Note the `CREATEDB` attribute.
+
+Assuming you have a PG server already running with the user `netbox_prod_user`
+created, it owns a database called `netbox_prod`, and it allows the host you're
+installing NetBox on to authenticate with it over TCP:
+
+[source,yaml,subs="attributes"]
+----
+- hosts: netbox.idolactiviti.es
+  become: yes
+  roles:
+    - {role}
+  vars:
+    netbox_stable: true
+    netbox_superuser_password: netbox
+    netbox_socket: "0.0.0.0:80"
+    netbox_config:
+      ALLOWED_HOSTS:
+        - "{{ inventory_hostname }}"
+      MEDIA_ROOT: "{{ netbox_shared_path }}/media"
+      REPORTS_ROOT: "{{ netbox_shared_path }}/reports"
+    netbox_database_host: pg-netbox.idolactiviti.es
+    netbox_database_port: 15432
+    netbox_database: netbox_prod
+    netbox_database_user: netbox_prod_user
+    netbox_database_password: "very_secure_password_for_prod"
+----
+
+See `examples/` for more.

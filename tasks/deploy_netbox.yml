@@ -8,8 +8,10 @@
   loop:
     - "{{ netbox_releases_path }}"
     - "{{ netbox_shared_path }}"
-    - "{{ netbox_shared_path }}/media/image-attachments"
-    - "{{ netbox_shared_path }}/reports"
+    - "{{ netbox_config.MEDIA_ROOT }}"
+    - "{{ netbox_config.MEDIA_ROOT }}/image-attachments"
+    - "{{ netbox_config.REPORTS_ROOT }}"
+    - "{{ netbox_config.SCRIPTS_ROOT }}"
 
 - include_tasks: "install_via_{{ 'git' if netbox_git else 'stable' }}.yml"
 
@@ -47,7 +49,6 @@
   retries: 2
   register: _netbox_django_rq_install
   until: _netbox_django_rq_install is succeeded
-
 
 - name: Generate NetBox configuration file
   template:
@@ -117,6 +118,14 @@
     state: "{{ 'link' if netbox_ldap_enabled else 'absent' }}"
   notify:
     - reload netbox.service
+
+- name: Copy NetBox scripts into SCRIPTS_ROOT
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ netbox_config.SCRIPTS_ROOT }}/{{ item.name }}.py"
+    owner: "{{ netbox_user }}"
+    group: "{{ netbox_group }}"
+  loop: "{{ netbox_scripts }}"
 
 - block:
   - name: Run database migrations for NetBox

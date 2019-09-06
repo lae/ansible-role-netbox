@@ -1,14 +1,16 @@
 [netbox:children]
-netbox-stable
-netbox-git
+netbox_stable
+netbox_git
 
-[netbox-stable]
+[netbox_stable]
+debian-buster-stable
 debian-stretch-stable
 ubuntu-bionic-stable
 ubuntu-xenial-stable
 centos-7-stable
 
-[netbox-git]
+[netbox_git]
+debian-buster-git
 debian-stretch-git
 ubuntu-bionic-git
 ubuntu-xenial-git

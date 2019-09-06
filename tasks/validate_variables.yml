@@ -1,48 +1,51 @@
 ---
-- name: Ensure installation scenario is selected
-  fail:
+- name: A single NetBox installation scenario must be enabled
+  assert:
+    that:
+      - netbox_stable or netbox_git
+      - not (netbox_stable and netbox_git)
     msg: "Please choose either the stable or git scenario."
-  when:
-    - not netbox_stable
-    - not netbox_git
 
-- name: Ensure only one scenario is enabled
-  fail:
-    msg: "Please select only one scenario."
-  when:
-    - netbox_stable and netbox_git
+- name: A database host/password or socket must be specified
+  assert:
+    that:
+      - netbox_database_socket is defined or
+        (netbox_database_host is defined and netbox_database_password is defined)
+      - not (netbox_database_socket is defined and netbox_database_host is defined)
+    msg: "Please define either a socket (local) or host/password (TCP)."
 
-- name: Ensure a DB connection method is defined
-  fail:
-    msg: "Please define either database_socket (local) or database_host/database_password (TCP)."
-  when:
-    - netbox_database_socket is not defined
-    - netbox_database_host is not defined or
-      (netbox_database_host is defined and netbox_database_password is not defined)
+- name: A super user password for NetBox must be specified
+  assert:
+    that:
+      - netbox_superuser_password is defined
+    msg: "Please set an admin password with netbox_superuser_password."
 
-- name: Ensure only one DB connection method is defined
-  fail:
-    msg: "Please define only one database connection method."
-  when:
-    - netbox_database_socket is defined and netbox_database_host is defined
+- name: The netbox_config variable should not configure PostgreSQL/Redis
+  assert:
+    that:
+      - "'DATABASE' not in netbox_config"
+      - "'REDIS' not in netbox_config"
+    msg: "Please remove the DATABASE and/or REDIS keys in netbox_config and use their dedicated role variables instead."
 
-- name: Ensure ALLOWED_HOSTS is defined
-  fail:
+- name: netbox_config must specify a list of ALLOWED_HOSTS
+  assert:
+    that:
+      - "'ALLOWED_HOSTS' in netbox_config"
+      - netbox_config.ALLOWED_HOSTS is iterable
     msg: "Please define ALLOWED_HOSTS in netbox_config."
-  when: "'ALLOWED_HOSTS' not in netbox_config"
 
-- name: Ensure NAPALM_USERNAME/PASSWORD is defined for NAPALM integration
-  fail:
+- name: NAPALM credentials must be specified in netbox_config if NAPALM is enabled
+  assert:
+    that:
+      - "'NAPALM_USERNAME' in netbox_config"
+      - "'NAPALM_PASSWORD' in netbox_config"
     msg: "Please define NAPALM_USERNAME and NAPALM_PASSWORD in netbox_config to use NAPALM."
-  when:
-    - netbox_napalm_enabled and ("NAPALM_USERNAME" not in netbox_config or "NAPALM_PASSWORD" not in netbox_config)
+  when: "netbox_napalm_enabled | bool"
 
-- name: Ensure MEDIA_ROOT is defined
-  fail:
-    msg: "Please define MEDIA_ROOT in netbox_config."
-  when: "'MEDIA_ROOT' not in netbox_config"
-
-- name: Ensure REPORTS_ROOT is defined
-  fail:
-    msg: "Please define REPORTS_ROOT in netbox_config."
-  when: "'REPORTS_ROOT' not in netbox_config"
+- name: NetBox user content directories must be specified
+  assert:
+    that:
+      - "'MEDIA_ROOT' in netbox_config"
+      - "'REPORTS_ROOT' in netbox_config"
+      - "'SCRIPTS_ROOT' in netbox_config"
+    msg: "Please ensure MEDIA_ROOT/REPORTS_ROOT/SCRIPTS_ROOT are defined in netbox_config."

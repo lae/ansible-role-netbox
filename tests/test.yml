@@ -9,6 +9,9 @@
         - name: uWSGI/NetBox service journal
           shell: "journalctl --no-pager -xu netbox.service"
           changed_when: False
+        - name: uWSGI configuration
+          shell: cat /srv/netbox/shared/uwsgi.ini
+          changed_when: False
         - name: NetBox rq-worker service status
           shell: "systemctl status netbox-rqworker.service"
           changed_when: False
