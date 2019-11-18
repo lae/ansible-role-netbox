@@ -11,9 +11,10 @@ DATABASE = {
 {% else %}
     'HOST': '{{ netbox_database_socket }}',
 {% endif %}
+    'CONN_MAX_AGE': {{ netbox_database_conn_age }},
 }
 
-REDIS = { 
+REDIS = {
     'HOST': '{{ netbox_redis_host }}',
     'PORT': '{{ netbox_redis_port }}',
     'PASSWORD': '{{ netbox_redis_password }}',
