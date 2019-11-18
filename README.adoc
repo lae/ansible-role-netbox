@@ -149,6 +149,15 @@ Note that these are used to configure `DATABASE` in `configuration.py`.
 
 [source,yaml]
 ----
+netbox_database_conn_age: 300
+----
+
+To configure Netbox to keep database connections open longer than a single requests,
+set `netbox_database_conn_age` to your preferred maximum connection age, in seconds.
+300 seconds (5 minutes) is typically a good number to start with.
+
+[source,yaml]
+----
 netbox_redis_host: 127.0.0.1
 netbox_redis_port: 6379
 netbox_redis_password: ''
