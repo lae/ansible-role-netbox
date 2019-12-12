@@ -1,11 +1,11 @@
 ---
 # defaults file for lae.netbox
 netbox_stable: false
-netbox_stable_version: 2.6.8
+netbox_stable_version: 2.7-beta1
 netbox_stable_uri: "https://github.com/digitalocean/netbox/archive/v{{ netbox_stable_version }}.tar.gz"
 
 netbox_git: false
-netbox_git_version: develop
+netbox_git_version: develop-2.7
 netbox_git_uri: "https://github.com/digitalocean/netbox.git"
 
 netbox_install_epel: true
