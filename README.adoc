@@ -306,6 +306,17 @@ netbox_webhooks_enabled: false
 Toggle `netbox_webhooks_enabled` to `true` to enable webhooks for NetBox.
 
 [source,yaml]
+netbox_metrics_enabled: true
+
+Toggle `netbox_metrics_enabled` to `true` to enable application metrics (via https://github.com/korfuri/django-prometheus[django-prometheus]). This adds relevant pieces of configuration for proper metrics handling. (https://netbox.readthedocs.io/en/stable/additional-features/prometheus-metrics/[more info]).
+
+[source,yaml]
+netbox_metrics_dir: netbox_metrics
+netbox_metrics_path: "/run/{{ netbox_metrics_dir }}"
+
+The directory name where the metrics files are stored can be set with `netbox_metrics_dir`. However, `netbox_metrics_path` must remain the default (seen above) in order to work with `systemd` and the `RuntimeDirectory` parameter (which only points to `/run`).
+
+[source,yaml]
 netbox_keep_uwsgi_updated: false
 
 Toggle `netbox_keep_uwsgi_updated` to `true` if you wish to ensure your uwsgi
