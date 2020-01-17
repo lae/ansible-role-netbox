@@ -31,6 +31,9 @@ DeviceAllow=/dev/urandom r
 DeviceAllow=/dev/zero r
 ProtectHome=yes
 NoNewPrivileges=yes
+{% if netbox_metrics_enabled %}
+RuntimeDirectory={{ netbox_metrics_dir }}
+{% endif %}
 
 [Install]
 WantedBy=multi-user.target
