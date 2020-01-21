@@ -20,7 +20,7 @@ req-logger={{ netbox_requests_log }}
 env=prometheus_multiproc_dir={{ netbox_metrics_path }}
 {% endif %}
 {% for key, value in netbox_uwsgi_options.items() %}
-{% if 'prometheus_multiproc_dir' not in value %}
+{% if 'prometheus_multiproc_dir' not in value|string %}
 {{ key }}={{ value }}
 {% endif %}
 {% endfor %}
