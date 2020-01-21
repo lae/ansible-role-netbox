@@ -25,3 +25,6 @@
     - name: Ensure that NetBox returns a successful HTTP response
       uri:
         url: "http://{{ inventory_hostname }}:8080"
+    - name: Check that Netbox metrics endpoint works
+      uri:
+        url: "http://{{ inventory_hostname }}:8080/metrics
