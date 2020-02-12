@@ -21,6 +21,7 @@ REDIS = {
     'DATABASE': '{{ netbox_redis_database }}',
     'CACHE_DATABASE': '{{ netbox_redis_cache_database }}',
     'DEFAULT_TIMEOUT': '{{ netbox_redis_default_timeout }}',
+    'SSL': {{ netbox_redis_ssl_enabled }},
 }
 
 {% if netbox_webhooks_enabled %}
