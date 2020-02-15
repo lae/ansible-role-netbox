@@ -37,3 +37,10 @@
   set_fact:
     _path: "{{ _path_exec.stdout }}"
   check_mode: false
+
+- name: Check for Version > 2.7
+  set_fact:
+    netbox_new_redis: True
+    netbox_webhooks_enabled: True
+  when: (netbox_stable_version is version('2.7', 'gt') and netbox_stable == True) or
+        ((netbox_git_version is version('2.7', 'gt' or netbox_git_version is search("*2.7*")) and netbox_git == True)

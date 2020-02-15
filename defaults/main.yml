@@ -1,7 +1,7 @@
 ---
 # defaults file for lae.netbox
 netbox_stable: false
-netbox_stable_version: 2.7-beta1
+netbox_stable_version: 2.7.4
 netbox_stable_uri: "https://github.com/digitalocean/netbox/archive/v{{ netbox_stable_version }}.tar.gz"
 
 netbox_git: false
@@ -28,6 +28,7 @@ netbox_redis_password: ''
 netbox_redis_database: 0
 netbox_redis_cache_database: 1
 netbox_redis_default_timeout: 300
+netbox_redis_ssl_enabled: False
 
 netbox_webhooks_enabled: false
 
