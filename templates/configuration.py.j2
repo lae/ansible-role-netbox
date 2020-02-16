@@ -15,12 +15,20 @@ DATABASE = {
 }
 
 REDIS = {
-    'HOST': '{{ netbox_redis_host }}',
-    'PORT': '{{ netbox_redis_port }}',
-    'PASSWORD': '{{ netbox_redis_password }}',
-    'DATABASE': '{{ netbox_redis_database }}',
-    'CACHE_DATABASE': '{{ netbox_redis_cache_database }}',
-    'DEFAULT_TIMEOUT': '{{ netbox_redis_default_timeout }}',
+    'webhooks': {
+        'HOST': '{{ netbox_redis_host }}',
+        'PORT': '{{ netbox_redis_port }}',
+        'PASSWORD': '{{ netbox_redis_password }}',
+        'DATABASE': '{{ netbox_redis_database }}',
+        'DEFAULT_TIMEOUT': '{{ netbox_redis_default_timeout }}',
+    },
+    'caching': {
+        'HOST': '{{ netbox_redis_host }}',
+        'PORT': '{{ netbox_redis_port }}',
+        'PASSWORD': '{{ netbox_redis_password }}',
+        'DATABASE': '{{ netbox_redis_cache_database }}',
+        'DEFAULT_TIMEOUT': '{{ netbox_redis_default_timeout }}',
+    },
 }
 
 {% if netbox_webhooks_enabled %}
