@@ -21,6 +21,7 @@ REDIS = {
         'PASSWORD': '{{ netbox_redis_password }}',
         'DATABASE': '{{ netbox_redis_database }}',
         'DEFAULT_TIMEOUT': '{{ netbox_redis_default_timeout }}',
+        'SSL': {{ netbox_redis_ssl_enabled }},
     },
     'caching': {
         'HOST': '{{ netbox_redis_host }}',
@@ -28,6 +29,7 @@ REDIS = {
         'PASSWORD': '{{ netbox_redis_password }}',
         'DATABASE': '{{ netbox_redis_cache_database }}',
         'DEFAULT_TIMEOUT': '{{ netbox_redis_default_timeout }}',
+        'SSL': {{ netbox_redis_ssl_enabled }},
     },
 }
 

@@ -24,6 +24,7 @@ netbox_database_conn_age: 0
 
 netbox_redis_host: 127.0.0.1
 netbox_redis_port: 6379
+netbox_redis_ssl_enabled: false
 netbox_redis_password: ''
 netbox_redis_database: 0
 netbox_redis_cache_database: 1
