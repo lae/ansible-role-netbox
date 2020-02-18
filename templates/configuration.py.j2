@@ -15,15 +15,6 @@ DATABASE = {
 }
 
 REDIS = {
-<<<<<<< HEAD
-    'HOST': '{{ netbox_redis_host }}',
-    'PORT': '{{ netbox_redis_port }}',
-    'PASSWORD': '{{ netbox_redis_password }}',
-    'DATABASE': '{{ netbox_redis_database }}',
-    'CACHE_DATABASE': '{{ netbox_redis_cache_database }}',
-    'DEFAULT_TIMEOUT': '{{ netbox_redis_default_timeout }}',
-    'SSL': {{ netbox_redis_ssl_enabled }},
-=======
     'webhooks': {
         'HOST': '{{ netbox_redis_host }}',
         'PORT': {{ netbox_redis_port }},
@@ -40,7 +31,6 @@ REDIS = {
         'DEFAULT_TIMEOUT': {{ netbox_redis_cache_default_timeout }},
         'SSL': {{ netbox_redis_cache_ssl_enabled }},
     }
->>>>>>> Support splitting webhooks/cache Redis
 }
 
 {% for setting, value in netbox_config.items() %}
