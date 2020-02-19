@@ -18,6 +18,7 @@ netbox_database_host: 10.0.3.1
 netbox_database_password:
 netbox_database_user: postgres
 netbox_webhooks_enabled: true
+netbox_metrics_enabled: true
 netbox_redis_host: 10.0.3.1
 netbox_uwsgi_options:
   buffer-size: 65535

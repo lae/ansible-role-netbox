@@ -32,6 +32,10 @@ netbox_redis_ssl_enabled: false
 
 netbox_webhooks_enabled: false
 
+netbox_metrics_enabled: false
+netbox_metrics_dir: netbox_metrics
+netbox_metrics_path: "/run/{{ netbox_metrics_dir }}"
+
 netbox_config:
   #SECRET_KEY:
   ALLOWED_HOSTS:

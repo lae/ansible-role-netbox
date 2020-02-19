@@ -1,6 +1,18 @@
 import json
-
+import os
 {{ ansible_managed | comment }}
+
+{% if netbox_metrics_enabled %}
+if "prometheus_multiproc_dir" in os.environ:
+    try:
+        import prometheus_client
+        import uwsgi
+        prometheus_client.values.ValueClass = prometheus_client.values.MultiProcessValue(
+            _pidFunc=uwsgi.worker_id)
+    except ImportError:
+        pass  # not running in uwsgi
+{% endif %}
+
 DATABASE = {
     'NAME': '{{ netbox_database }}',
     'USER': '{{ netbox_database_user }}',
@@ -26,6 +38,10 @@ REDIS = {
 
 {% if netbox_webhooks_enabled %}
 WEBHOOKS_ENABLED = True
+{% endif %}
+
+{% if netbox_metrics_enabled %}
+METRICS_ENABLED = True
 {% endif %}
 
 {% for setting, value in netbox_config.items() %}
