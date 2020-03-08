@@ -206,22 +206,30 @@ can be used without issue). This role will attempt to create these directories
 and change their ownership to whatever `netbox_user` is set to.
 
 [source,yaml]
+----
 netbox_scripts: []
+netbox_reports: []
+----
 
 https://netbox.readthedocs.io/en/stable/additional-features/custom-scripts/[Scripts]
-to upload for use within NetBox. This should be a list of dictionaries with a
-`src` attribute, specifying the local path to the script, and a `name` attribute,
-specifying the script/module name. For example:
+and https://netbox.readthedocs.io/en/stable/additional-features/reports/[Reports]
+to upload for use within NetBox. These should be lists of dictionaries with a
+`src` attribute, specifying the local path to the script or report, and a
+`name` attribute, specifying the module name (script/report name). For example:
 
 [source,yaml]
 ----
 netbox_scripts:
   - src: netbox_scripts/migrate_application.py
     name: migrate_application
+netbox_reports:
+  - src: netbox_reports/devices.py
+    name: devices
 ----
 
-This will copy `netbox_scripts/migrate_application.py` to
-`{{ netbox_config.SCRIPTS_ROOT }}/migrate_application.py`.
+This will copy `netbox_scripts/migrate_application.py` from your playbook
+directory to `{{ netbox_config.SCRIPTS_ROOT }}/migrate_application.py` and
+`netbox_reports/devices.py` to `{{ netbox.config.REPORTS_ROOT }}/devices.py`.
 
 [source,yaml]
 ----

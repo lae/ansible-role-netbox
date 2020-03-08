@@ -49,3 +49,10 @@
       - "'REPORTS_ROOT' in netbox_config"
       - "'SCRIPTS_ROOT' in netbox_config"
     msg: "Please ensure MEDIA_ROOT/REPORTS_ROOT/SCRIPTS_ROOT are defined in netbox_config."
+
+- name: Script/Report module names should follow PEP8
+  assert:
+    that:
+      - "(netbox_scripts | map(attribute='name') | map('regex_search', '^[a-z][a-z0-9_]*$') | select('string') | list | length) == (netbox_scripts | length)"
+      - "(netbox_reports | map(attribute='name') | map('regex_search', '^[a-z][a-z0-9_]*$') | select('string') | list | length) == (netbox_reports | length)"
+    msg: "Please ensure that your script/report module names start with a lowercase letter and contain only lowercase letters, numbers, and underscores."

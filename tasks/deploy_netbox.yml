@@ -127,6 +127,14 @@
     group: "{{ netbox_group }}"
   loop: "{{ netbox_scripts }}"
 
+- name: Copy NetBox reports into REPORTS_ROOT
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ netbox_config.REPORTS_ROOT }}/{{ item.name }}.py"
+    owner: "{{ netbox_user }}"
+    group: "{{ netbox_group }}"
+  loop: "{{ netbox_reports }}"
+
 - block:
   - name: Run database migrations for NetBox
     django_manage:
