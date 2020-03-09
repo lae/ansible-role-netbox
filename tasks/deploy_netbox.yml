@@ -148,6 +148,12 @@
       app_path: "{{ netbox_current_path }}/netbox"
       virtualenv: "{{ netbox_virtualenv_path }}"
 
+  - name: Clear expired user sessions in NetBox
+    django_manage:
+      command: clearsessions
+      app_path: "{{ netbox_current_path }}/netbox"
+      virtualenv: "{{ netbox_virtualenv_path }}"
+
   - name: Populate NetBox with initial data
     django_manage:
       command: loaddata
