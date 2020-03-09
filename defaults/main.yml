@@ -48,6 +48,7 @@ netbox_config:
   SCRIPTS_ROOT: "{{ netbox_shared_path }}/scripts"
 
 netbox_scripts: []
+netbox_reports: []
 
 netbox_user: netbox
 netbox_group: netbox
