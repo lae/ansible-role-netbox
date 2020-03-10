@@ -85,8 +85,6 @@
     dest: /lib/systemd/system/netbox-rqworker.service
   notify:
     - restart netbox-rqworker.service
-  when:
-    - netbox_webhooks_enabled
 
 - name: Start and enable NetBox' socket and service
   systemd:
@@ -102,5 +100,3 @@
     name: netbox-rqworker.service
     state: started
     enabled: yes
-  when:
-    - netbox_webhooks_enabled

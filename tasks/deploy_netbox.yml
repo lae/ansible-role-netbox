@@ -38,14 +38,12 @@
   register: _netbox_virtualenv_setup
   until: _netbox_virtualenv_setup is succeeded
 
-- name: Install django-rq if webhooks enabled
+- name: Install django-rq
   pip:
     name: "django-rq"
     virtualenv: "{{ netbox_virtualenv_path }}"
   become: True
   become_user: "{{ netbox_user }}"
-  when:
-    - netbox_webhooks_enabled
   retries: 2
   register: _netbox_django_rq_install
   until: _netbox_django_rq_install is succeeded
