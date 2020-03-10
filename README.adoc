@@ -2,7 +2,7 @@
 :role-name: netbox
 :role: {role-author}.{role-name}
 :gh-name: {role-author}/ansible-role-{role-name}
-:netbox-version: 2.7.9
+:netbox-version: 2.7.10
 = {role}
 :toc:
 :toc-placement: preamble
