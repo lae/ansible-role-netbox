@@ -27,6 +27,18 @@
     netbox_ldap_packages: "{{ _netbox_ldap_packages | list }}"
   when: netbox_ldap_packages is not defined
 
+- name: Generate list of optional Python dependencies
+  set_fact:
+    _netbox_python_deps:
+      - "{{ netbox_napalm_packages if netbox_napalm_enabled else [] }}"
+      - "{{ 'django-auth-ldap' if netbox_ldap_enabled else [] }}"
+      - "{{ 'django-storages' if _netbox_storages_module is defined else [] }}"
+      - "{{ _netbox_storages_map[_netbox_storages_module] if _netbox_storages_module is defined else [] }}"
+
+- name: Flatten that list of dependencies
+  set_fact:
+    _netbox_python_deps: "{{ _netbox_python_deps | flatten }}"
+
 - name: Identify current execution PATH
   shell: "echo $PATH"
   register: _path_exec

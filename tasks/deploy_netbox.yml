@@ -38,29 +38,18 @@
   register: _netbox_virtualenv_setup
   until: _netbox_virtualenv_setup is succeeded
 
-- name: Install additional pip Packages
+- name: Install selected optional Python dependencies
   pip:
-    name:
-      - "{{ netbox_napalm_packages if netbox_napalm_enabled else [] }}"
-      - "{{ django-auth-ldap if netbox_ldap_enabled else [] }}"
-      - "{{ django-storages if netbox_config.STORAGE_BACKEND else [] }}"
-      - "{{ apache-libcloud if netbox_config.STORAGE_BACKEND == 'storages.backends.apache_libcloud.LibCloudStorage' else [] }}"
-      - "{{ django-storages[azure] if netbox_config.STORAGE_BACKEND == 'storages.backends.azure_storage.AzureStorage' else [] }}"
-      - "{{ django-storages[dropbox] if netbox_config.STORAGE_BACKEND == 'storages.backends.dropbox.DropBoxStorage' else [] }}"
-      - "{{ django-storages[google] if netbox_config.STORAGE_BACKEND == 'storages.backends.gcloud.GoogleCloudStorage' else [] }}"
+    name: "{{ item }}"
     state: present
-  vars:
-    ansible_python_interpreter: "{{ netbox_python_binary }}"
-  environment:
-    PATH: "/usr/local/bin:{{ _path }}"
+    virtualenv: "{{ netbox_virtualenv_path }}"
   become: True
   become_user: "{{ netbox_user }}"
   retries: 2
   register: _netbox_pip_additional_install
-  until: _netbox_pip_additional_install is succeeded  
-  when: (netbox_napalm_enabled) or
-        (netbox_ldap_enabled) or
-        (netbox_config.STORAGE_BACKEND)
+  until: _netbox_pip_additional_install is succeeded
+  when: (_netbox_python_deps | length) > 0
+  loop: "{{ _netbox_python_deps }}"
 
 - name: Generate NetBox configuration file
   template:

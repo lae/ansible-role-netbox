@@ -49,3 +49,15 @@
       - "'REPORTS_ROOT' in netbox_config"
       - "'SCRIPTS_ROOT' in netbox_config"
     msg: "Please ensure MEDIA_ROOT/REPORTS_ROOT/SCRIPTS_ROOT are defined in netbox_config."
+
+- block:
+  - name: Identify selected storage module
+    set_fact:
+      _netbox_storages_module: "{{ netbox_config.STORAGE_BACKEND | regex_search('(?<=storages\\.backends\\.).*(?=\\.)') }}"
+
+  - name: Ensure storage module is a valid option
+    assert:
+      that:
+        - _netbox_storages_module in _netbox_storages_map
+      msg: "Please ensure your STORAGE_BACKEND is correct."
+  when: "'STORAGE_BACKEND' in netbox_config"
