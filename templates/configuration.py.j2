@@ -27,18 +27,23 @@ DATABASE = {
 }
 
 REDIS = {
-    'HOST': '{{ netbox_redis_host }}',
-    'PORT': '{{ netbox_redis_port }}',
-    'PASSWORD': '{{ netbox_redis_password }}',
-    'DATABASE': '{{ netbox_redis_database }}',
-    'CACHE_DATABASE': '{{ netbox_redis_cache_database }}',
-    'DEFAULT_TIMEOUT': '{{ netbox_redis_default_timeout }}',
-    'SSL': {{ netbox_redis_ssl_enabled }},
+    'webhooks': {
+        'HOST': '{{ netbox_redis_host }}',
+        'PORT': {{ netbox_redis_port }},
+        'PASSWORD': '{{ netbox_redis_password }}',
+        'DATABASE': {{ netbox_redis_database }},
+        'DEFAULT_TIMEOUT': {{ netbox_redis_default_timeout }},
+        'SSL': {{ netbox_redis_ssl_enabled }},
+    },
+    'caching': {
+        'HOST': '{{ netbox_redis_cache_host }}',
+        'PORT': {{ netbox_redis_cache_port }},
+        'PASSWORD': '{{ netbox_redis_cache_password }}',
+        'DATABASE': {{ netbox_redis_cache_database }},
+        'DEFAULT_TIMEOUT': {{ netbox_redis_cache_default_timeout }},
+        'SSL': {{ netbox_redis_cache_ssl_enabled }},
+    }
 }
-
-{% if netbox_webhooks_enabled %}
-WEBHOOKS_ENABLED = True
-{% endif %}
 
 {% if netbox_metrics_enabled %}
 METRICS_ENABLED = True
