@@ -38,15 +38,18 @@
   register: _netbox_virtualenv_setup
   until: _netbox_virtualenv_setup is succeeded
 
-- name: Install django-rq
+- name: Install selected optional Python dependencies
   pip:
-    name: "django-rq"
+    name: "{{ item }}"
+    state: present
     virtualenv: "{{ netbox_virtualenv_path }}"
   become: True
   become_user: "{{ netbox_user }}"
   retries: 2
-  register: _netbox_django_rq_install
-  until: _netbox_django_rq_install is succeeded
+  register: _netbox_pip_additional_install
+  until: _netbox_pip_additional_install is succeeded
+  when: (_netbox_python_deps | length) > 0
+  loop: "{{ _netbox_python_deps }}"
 
 - name: Generate NetBox configuration file
   template:
@@ -61,43 +64,20 @@
   notify:
     - reload netbox.service
 
-- block:
-  - name: Install django-auth-ldap if LDAP is enabled
-    pip:
-      name: django-auth-ldap
-      virtualenv: "{{ netbox_virtualenv_path }}"
-    become: True
-    become_user: "{{ netbox_user }}"
-    retries: 2
-    register: _netbox_django_auth_ldap_install
-    until: _netbox_django_auth_ldap_install is succeeded
-
-  - name: Generate LDAP configuration for NetBox if enabled
-    template:
-      src: "{{ netbox_ldap_config_template }}"
-      dest: "{{ netbox_shared_path }}/ldap_config.py"
-      owner: "{{ netbox_user }}"
-      group: "{{ netbox_group }}"
-      mode: 0640
-      validate: "{{ netbox_virtualenv_path }}/bin/python -c \"import py_compile,os; f=r'%s';\
-                 c='/tmp/' + os.path.basename(os.path.dirname(f)) + '-' + os.path.basename(f) + 'c';\
-                 py_compile.compile(f, c); os.remove(c)\""
-    notify:
-      - reload netbox.service
+- name: Generate LDAP configuration for NetBox if enabled
+  template:
+    src: "{{ netbox_ldap_config_template }}"
+    dest: "{{ netbox_shared_path }}/ldap_config.py"
+    owner: "{{ netbox_user }}"
+    group: "{{ netbox_group }}"
+    mode: 0640
+    validate: "{{ netbox_virtualenv_path }}/bin/python -c \"import py_compile,os; f=r'%s';\
+                c='/tmp/' + os.path.basename(os.path.dirname(f)) + '-' + os.path.basename(f) + 'c';\
+                py_compile.compile(f, c); os.remove(c)\""
+  notify:
+    - reload netbox.service
   when:
     - netbox_ldap_enabled
-
-- name: Install napalm if NAPALM integration is enabled
-  pip:
-    name: "{{ netbox_napalm_packages }}"
-    virtualenv: "{{ netbox_virtualenv_path }}"
-  when:
-    - netbox_napalm_enabled
-  become: True
-  become_user: "{{ netbox_user }}"
-  retries: 2
-  register: _netbox_napalm_install
-  until: _netbox_napalm_install is succeeded
 
 - name: Symlink NetBox configuration file into the active NetBox release
   file:

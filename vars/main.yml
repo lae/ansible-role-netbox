@@ -3,6 +3,15 @@
 netbox_config_path: "{{ netbox_current_path }}/netbox/netbox"
 netbox_virtualenv_path: "{{ netbox_current_path }}/venv-py3"
 
+_netbox_storages_map:
+  s3boto3: boto3
+  apache_libcloud: "apache-libcloud"
+  azure_storage: "django-storages[azure]"
+  dropbox: "django-storages[dropbox]"
+  gcloud: "django-storages[google]"
+  ftp: []
+  sftpstorage: []
+
 netbox_superuser_script: |
   from django.contrib.auth.models import User
   from base64 import b64decode
