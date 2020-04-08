@@ -16,7 +16,8 @@ image:https://img.shields.io/travis/{gh-name}/master.svg?style=for-the-badge[Bui
 image:https://img.shields.io/badge/role-{role}-blue?style=for-the-badge[Ansible Galaxy Role,link=https://galaxy.ansible.com/{role-author}/{role-name}]
 endif::env-github[]
 
-Deploys and configures DigitalOcean's https://github.com/digitalocean/netbox[NetBox].
+Deploys and configures https://github.com/netbox-community/netbox[NetBox], an
+IP address management (IPAM) and data center infrastructure management (DCIM) tool.
 
 This role will deploy NetBox within its own virtualenv either by release
 tarball or via git using uWSGI as the application server.
@@ -103,7 +104,7 @@ exclusive.
 [source,yaml,subs="attributes"]
 ----
 netbox_stable_version: {netbox-version}
-netbox_stable_uri: "https://github.com/digitalocean/netbox/archive/v{{ netbox_stable_version }}.tar.gz"
+netbox_stable_uri: "https://github.com/netbox-community/netbox/archive/v{{ netbox_stable_version }}.tar.gz"
 ----
 
 These can be configured to pin a version (e.g. increment to trigger an upgrade)
@@ -113,7 +114,7 @@ modify something in a release or are deploying locally behind a firewall.
 [source,yaml]
 ----
 netbox_git_version: develop
-netbox_git_uri: "https://github.com/digitalocean/netbox.git"
+netbox_git_uri: "https://github.com/netbox-community/netbox.git"
 ----
 
 `netbox_git_version` can be any valid ref within a git repository.
