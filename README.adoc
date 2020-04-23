@@ -174,7 +174,9 @@ netbox_redis_cache_default_timeout: "{{ netbox_redis_default_timeout }}"
 netbox_redis_cache_ssl_enabled: "{{ netbox_redis_ssl_enabled }}"
 ----
 
-This populates the `REDIS` config dictionary in `configuration.py`. Utilize the second set of variables if you wish to seperate your cache database from your webhooks database.
+This populates the `REDIS` config dictionary in `configuration.py`. Utilize the
+second set of variables if you wish to seperate your cache database from your
+webhooks database.
 
 [source,yaml]
 ----
@@ -227,6 +229,7 @@ to upload for use within NetBox. These should be lists of dictionaries with a
 
 [source,yaml]
 ----
+## Example
 netbox_scripts:
   - src: netbox_scripts/migrate_application.py
     name: migrate_application
@@ -285,8 +288,9 @@ netbox_requests_log: "file:{{ netbox_shared_path }}/requests.log"
 
 These define where logs will be stored. You can use external logging facilities
 instead of local files if you wish,
-http://uwsgi-docs.readthedocs.io/en/latest/Logging.html#pluggable-loggers[as long as uWSGI supports it].
-Application log correlates to `logger` and requests log to `req-logger`.
+http://uwsgi-docs.readthedocs.io/en/latest/Logging.html#pluggable-loggers[as
+long as uWSGI supports it].  Application log correlates to `logger` and
+requests log to `req-logger`.
 
 [source,yaml]
 netbox_load_initial_data: false
@@ -317,15 +321,24 @@ to be able to use NAPALM. Add extra NAPALM python libraries by listing them in
 `netbox_napalm_packages` (e.g. `napalm-eos`).
 
 [source,yaml]
-netbox_metrics_enabled: true
+netbox_metrics_enabled: false
 
-Toggle `netbox_metrics_enabled` to `true` to enable application metrics (via https://github.com/korfuri/django-prometheus[django-prometheus]). This adds relevant pieces of configuration for proper metrics handling. (https://netbox.readthedocs.io/en/stable/additional-features/prometheus-metrics/[more info]).
+Toggle `netbox_metrics_enabled` to `true` to enable application metrics (via
+https://github.com/korfuri/django-prometheus[django-prometheus]). This adds
+relevant pieces of configuration for proper metrics handling.
+(https://netbox.readthedocs.io/en/stable/additional-features/prometheus-metrics/[more
+info]).
 
 [source,yaml]
+----
 netbox_metrics_dir: netbox_metrics
 netbox_metrics_path: "/run/{{ netbox_metrics_dir }}"
+----
 
-The directory name where the metrics files are stored can be set with `netbox_metrics_dir`. However, `netbox_metrics_path` must remain the default (seen above) in order to work with `systemd` and the `RuntimeDirectory` parameter (which only points to `/run`).
+The directory name where the metrics files are stored can be set with
+`netbox_metrics_dir`. However, `netbox_metrics_path` must remain the default
+(seen above) in order to work with `systemd` and the `RuntimeDirectory`
+parameter (which only points to `/run`).
 
 [source,yaml]
 netbox_keep_uwsgi_updated: false
