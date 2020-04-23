@@ -50,6 +50,8 @@
   until: _netbox_pip_additional_install is succeeded
   when: (_netbox_python_deps | length) > 0
   loop: "{{ _netbox_python_deps }}"
+  notify:
+    - restart netbox.service
 
 - name: Generate NetBox configuration file
   template:

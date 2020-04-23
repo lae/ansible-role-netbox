@@ -53,6 +53,7 @@ netbox_config:
 
 netbox_scripts: []
 netbox_reports: []
+netbox_plugins: []
 
 netbox_user: netbox
 netbox_group: netbox
