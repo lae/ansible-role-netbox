@@ -104,4 +104,3 @@
 - name: Restore Default Python Interpreter
   set_fact:
      ansible_python_interpreter: "{{ _netbox_global_python if _netbox_global_python is defined else 'auto_legacy' }}"
-  when: ansible_python_interpreter is defined
