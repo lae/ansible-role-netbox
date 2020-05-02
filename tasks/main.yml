@@ -100,3 +100,7 @@
     name: netbox-rqworker.service
     state: started
     enabled: yes
+
+- name: Restore Default Python Interpreter
+  set_fact:
+     ansible_python_interpreter: "{{ _netbox_global_python if _netbox_global_python is defined else 'auto_legacy' }}"
