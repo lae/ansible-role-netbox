@@ -310,11 +310,6 @@ long as uWSGI supports it].  Application log correlates to `logger` and
 requests log to `req-logger`.
 
 [source,yaml]
-netbox_load_initial_data: false
-
-To load the initial data shipped by NetBox, set this to `true`.
-
-[source,yaml]
 ----
 netbox_ldap_enabled: false
 netbox_ldap_config_template: netbox_ldap_config.py.j2

@@ -142,14 +142,5 @@
       app_path: "{{ netbox_current_path }}/netbox"
       virtualenv: "{{ netbox_virtualenv_path }}"
 
-  - name: Populate NetBox with initial data
-    django_manage:
-      command: loaddata
-      fixtures: initial_data
-      app_path: "{{ netbox_current_path }}/netbox"
-      virtualenv: "{{ netbox_virtualenv_path }}"
-    when:
-      - netbox_load_initial_data
-
   become: True
   become_user: "{{ netbox_user }}"
