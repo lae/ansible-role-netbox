@@ -1,5 +1,7 @@
 ---
 netbox_socket: "0.0.0.0:8080"
+netbox_pip_packages:
+  - netbox-topology-views
 netbox_config:
   ALLOWED_HOSTS:
     - "{{ inventory_hostname }}"
@@ -11,6 +13,8 @@ netbox_config:
   NAPALM_ARGS:
     use_keys: true
     key_file: '/srv/netbox/.ssh/id_rsa'
+  PLUGINS:
+    - netbox_topology_views
 netbox_scripts:
   - src: scripts/nothing.py
     name: nothing

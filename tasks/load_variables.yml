@@ -34,7 +34,7 @@
       - "{{ 'django-auth-ldap' if netbox_ldap_enabled else [] }}"
       - "{{ 'django-storages' if _netbox_storages_module is defined else [] }}"
       - "{{ _netbox_storages_map[_netbox_storages_module] if _netbox_storages_module is defined else [] }}"
-      - "{{ netbox_plugins }}"
+      - "{{ netbox_pip_packages }}"
 
 - name: Flatten that list of dependencies
   set_fact:

@@ -244,18 +244,20 @@ directory to `{{ netbox_config.SCRIPTS_ROOT }}/migrate_application.py` and
 
 [source,yaml]
 ----
-netbox_plugins: []
+netbox_pip_packages: []
 
 ## Example:
-netbox_plugins:
+netbox_pip_packages:
   - https://github.com/steffann/netbox-example-plugin.git
   - netbox-topology-views
 ----
 
-This is a list of plugins to install via `pip` within NetBox' virtualenv. You
-can specify any valid artifact that `pip` understands to install a plugin. Be
-sure to include plugin configurations within the `netbox_config` role variable.
-Read https://netbox.readthedocs.io/en/stable/plugins/[Plugins] for more info.
+This is a list of extra packages to install via `pip` within NetBox'
+virtualenv. You can specify any valid artifact that `pip` understands.
+
+If you list any plugins here, be sure to include the appropriate plugin
+configurations within the `netbox_config` role variable.  Read
+https://netbox.readthedocs.io/en/stable/plugins/[Plugins] for more info.
 
 [source,yaml]
 ----
