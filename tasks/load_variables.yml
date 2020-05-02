@@ -51,7 +51,7 @@
     _path: "{{ _path_exec.stdout }}"
   check_mode: false
 
-- name: Capture Default Python Interpreter
+- name: Capture the current Python interpreter
   set_fact:
      _netbox_global_python: "{{ ansible_python_interpreter }}"
   when: ansible_python_interpreter is defined
