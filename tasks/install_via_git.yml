@@ -24,6 +24,15 @@
   changed_when: False
   failed_when: "_netbox_git_contains_issue_2239_fix.rc not in [0, 1]"
 
+- name: Check existence of commit 3590ed3, renaming webhooks to tasks
+  shell: 'set -o pipefail; git log --format=%H "{{ netbox_git_version }}" | grep ^3590ed378d161dd724fad2dc73ff56da746352f8'
+  args:
+    chdir: "{{ netbox_git_repo_path }}"
+    executable: /bin/bash
+  register: _netbox_git_contains_tasks_rename
+  changed_when: False
+  failed_when: "_netbox_git_contains_tasks_rename.rc not in [0, 1]"
+
 - name: Archive and extract snapshot of git repository
   shell: 'set -o pipefail; git archive "{{ netbox_git_version }}" | tar -x -C "{{ netbox_git_deploy_path }}"'
   args:

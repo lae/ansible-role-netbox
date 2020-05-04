@@ -1,6 +1,6 @@
+{{ ansible_managed | comment }}
 import json
 import os
-{{ ansible_managed | comment }}
 
 {% if netbox_metrics_enabled %}
 if "prometheus_multiproc_dir" in os.environ:
@@ -30,7 +30,13 @@ DATABASE = {
 }
 
 REDIS = {
+{# https://github.com/netbox-community/netbox/pull/4366 #}
+{% if netbox_stable and netbox_stable_version is version('2.7.11', '>=') or
+      netbox_git and _netbox_git_contains_tasks_rename %}
+    'tasks': {
+{% else %}
     'webhooks': {
+{% endif %}
         'HOST': '{{ netbox_redis_host }}',
         'PORT': {{ netbox_redis_port }},
         'PASSWORD': '{{ netbox_redis_password }}',
