@@ -372,6 +372,21 @@ Toggle `netbox_install_epel` to `false` if you do not want this role to install
 the Fedora EPEL for you. This can be useful for enterprise environments where
 the system's repositories are managed/mirrored by the enterprise.
 
+[source,yaml]
+----
+netbox_packages: []
+netbox_python_packages: []
+netbox_python_binary: /usr/bin/python{{ some version }}
+netbox_ldap_packages: []
+----
+
+These variables are dynamically generated based on the target distribution. You
+can check the defaults for these underneath the `vars/` directory. You can use
+these variables to target an unsupported operating system (although feel free
+to open a PR to add in support!) or to specify a custom Python interpreter
+(such as PyPy) to be used for deployment. Although, please note that support by
+this role may be limited for alternative Python installations.
+
 == Example Playbook
 
 The following installs PostgreSQL and creates a user with @geerlingguy's robust
