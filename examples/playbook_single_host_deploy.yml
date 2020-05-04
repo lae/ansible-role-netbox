@@ -51,7 +51,7 @@
       - name: Install the PostgreSQL yum repository
         yum:
           name: "https://download.postgresql.org/pub/repos/yum/reporpms/EL-{{ ansible_distribution_major_version }}-x86_64/pgdg-redhat-repo-latest.noarch.rpm"
-      when: "ansible_os_family == 'RedHat'"
+      when: "ansible_os_family == 'RedHat' and ansible_distribution_major_version =='7'"
 
 # You can use this playbook as-is to setup a full NetBox server, just change
 # the FQDN below. It'll accept HTTP requests on specified FQDN.
