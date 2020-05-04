@@ -34,6 +34,7 @@
       - "{{ 'django-auth-ldap' if netbox_ldap_enabled else [] }}"
       - "{{ 'django-storages' if _netbox_storages_module is defined else [] }}"
       - "{{ _netbox_storages_map[_netbox_storages_module] if _netbox_storages_module is defined else [] }}"
+      - "{{ netbox_pip_packages }}"
 
 - name: Flatten that list of dependencies
   set_fact:
@@ -49,3 +50,8 @@
   set_fact:
     _path: "{{ _path_exec.stdout }}"
   check_mode: false
+
+- name: Capture the current Python interpreter
+  set_fact:
+     _netbox_global_python: "{{ ansible_python_interpreter }}"
+  when: ansible_python_interpreter is defined
