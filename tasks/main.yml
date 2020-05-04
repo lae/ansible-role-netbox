@@ -21,10 +21,13 @@
 - name: Ensure the installed Python version is newer than 3.6.0 for NetBox 2.8+
   assert:
     that:
-      - "ansible_python_version | version_compare('3.6.0', '>=')"
-    msg: "NetBox 2.8.0+ requires Python 3.6+. Please either specify an older NetBox version or upgrade to a newer distribution that provides Python 3.6+."
+      - "ansible_python_version is version('3.6.0', '>=')"
+    msg: >
+      NetBox 2.8.0+ requires Python 3.6+. Please either specify an older NetBox
+      version, upgrade to a newer distribution that provides Python 3.6+, or
+      set netbox_python_binary to an appropriate Python 3.6+ binary.
   when:
-    - (netbox_stable and netbox_stable_version | version_compare('2.8.0', '>=') or netbox_git
+    - netbox_stable and netbox_stable_version is version('2.8.0', '>=') or netbox_git
 
 - name: Create NetBox user group
   group:
