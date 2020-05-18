@@ -81,6 +81,9 @@ netbox_pip_packages: []
 netbox_pip_constraints:
   # Blacklist pynacl 1.3.0 due to https://github.com/pyca/pynacl/issues/479
   - 'pynacl!=1.3.0'
+  # Blacklist django-rq 2.3.1 due to https://github.com/rq/django-rq/issues/421
+  # https://github.com/netbox-community/netbox/issues/4633
+  - 'django-rq!=2.3.1'
 
 netbox_keep_uwsgi_updated: false
 netbox_uwsgi_options: {}
