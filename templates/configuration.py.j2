@@ -8,7 +8,8 @@ if "prometheus_multiproc_dir" in os.environ:
         import prometheus_client
         import uwsgi
         prometheus_client.values.ValueClass = prometheus_client.values.MultiProcessValue(
-            _pidFunc=uwsgi.worker_id)
+            uwsgi.worker_id
+        )
     except ImportError:
         pass  # not running in uwsgi
 {% endif %}
