@@ -4,6 +4,11 @@ netbox_config:
   ALLOWED_HOSTS:
     - 127.0.0.1
     - localhost
+  ALLOWED_URL_SCHEMES:
+    - https
+    - http
+    - ftp
+    - mailto
   ADMINS:
     -
       - Hank Hill
@@ -38,6 +43,9 @@ netbox_config:
   EXEMPT_VIEW_PERMISSIONS:
     - dcim.site
     - ipam.prefix
+  INTERNAL_IPS:
+    - 127.0.0.1
+    - ::1
   LOGGING:
     version: 1
     disable_existing_loggers: False
