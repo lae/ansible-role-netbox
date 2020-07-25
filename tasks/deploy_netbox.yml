@@ -32,7 +32,7 @@
     extra_args: "-c {{ netbox_current_path }}/constraints.txt"
     virtualenv: "{{ netbox_virtualenv_path }}"
     virtualenv_command: "{{ netbox_python_binary }} -m venv"
-  become: True
+  become: true
   become_user: "{{ netbox_user }}"
   retries: 2
   register: _netbox_virtualenv_setup
@@ -43,7 +43,7 @@
     name: "{{ item }}"
     state: present
     virtualenv: "{{ netbox_virtualenv_path }}"
-  become: True
+  become: true
   become_user: "{{ netbox_user }}"
   retries: 2
   register: _netbox_pip_additional_install
@@ -116,31 +116,31 @@
   loop: "{{ netbox_reports }}"
 
 - block:
-  - name: Run database migrations for NetBox
-    django_manage:
-      command: migrate
-      app_path: "{{ netbox_current_path }}/netbox"
-      virtualenv: "{{ netbox_virtualenv_path }}"
+    - name: Run database migrations for NetBox
+      django_manage:
+        command: migrate
+        app_path: "{{ netbox_current_path }}/netbox"
+        virtualenv: "{{ netbox_virtualenv_path }}"
 
-  - name: Create a super user for NetBox
-    shell: "printf '{{ netbox_superuser_script }}' |\
-            {{ netbox_virtualenv_path }}/bin/python {{ netbox_current_path }}/netbox/manage.py shell"
-    register: _netbox_superuser_result
-    changed_when: "'changed' in _netbox_superuser_result.stdout"
-    when:
-      - not netbox_ldap_enabled
+    - name: Create a super user for NetBox
+      shell: "printf '{{ netbox_superuser_script }}' |\
+              {{ netbox_virtualenv_path }}/bin/python {{ netbox_current_path }}/netbox/manage.py shell"
+      register: _netbox_superuser_result
+      changed_when: "'changed' in _netbox_superuser_result.stdout"
+      when:
+        - not netbox_ldap_enabled
 
-  - name: Generate static assets for NetBox
-    django_manage:
-      command: collectstatic
-      app_path: "{{ netbox_current_path }}/netbox"
-      virtualenv: "{{ netbox_virtualenv_path }}"
+    - name: Generate static assets for NetBox
+      django_manage:
+        command: collectstatic
+        app_path: "{{ netbox_current_path }}/netbox"
+        virtualenv: "{{ netbox_virtualenv_path }}"
 
-  - name: Clear expired user sessions in NetBox
-    django_manage:
-      command: clearsessions
-      app_path: "{{ netbox_current_path }}/netbox"
-      virtualenv: "{{ netbox_virtualenv_path }}"
+    - name: Clear expired user sessions in NetBox
+      django_manage:
+        command: clearsessions
+        app_path: "{{ netbox_current_path }}/netbox"
+        virtualenv: "{{ netbox_virtualenv_path }}"
 
-  become: True
+  become: true
   become_user: "{{ netbox_user }}"

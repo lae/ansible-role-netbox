@@ -1,6 +1,6 @@
 ---
 - hosts: all
-  become: yes
+  become: true
   roles:
     - geerlingguy.postgresql
     - davidwittman.redis
@@ -33,24 +33,24 @@
         - rhel-*-extras-rpms
       when: "ansible_distribution == 'Red Hat Enterprise Linux'"
     - block:
-      - name: Set PostgreSQL facts to use PG10 for RedHat distributions
-        set_fact:
-          postgresql_version: 10
-          postgresql_packages:
-            - postgresql10
-            - postgresql10-server
-            - postgresql10-contrib
-            - postgresql10-libs
-          postgresql_data_dir: /var/lib/pgsql/10/data
-          postgresql_bin_path: /usr/pgsql-10/bin
-          postgresql_config_path: /var/lib/pgsql/10/data
-          postgresql_daemon: postgresql-10
-      - name: Install the EPEL yum repository
-        yum:
-          name: epel-release
-      - name: Install the PostgreSQL yum repository
-        yum:
-          name: "https://download.postgresql.org/pub/repos/yum/reporpms/EL-{{ ansible_distribution_major_version }}-x86_64/pgdg-redhat-repo-latest.noarch.rpm"
+        - name: Set PostgreSQL facts to use PG10 for RedHat distributions
+          set_fact:
+            postgresql_version: 10
+            postgresql_packages:
+              - postgresql10
+              - postgresql10-server
+              - postgresql10-contrib
+              - postgresql10-libs
+            postgresql_data_dir: /var/lib/pgsql/10/data
+            postgresql_bin_path: /usr/pgsql-10/bin
+            postgresql_config_path: /var/lib/pgsql/10/data
+            postgresql_daemon: postgresql-10
+        - name: Install the EPEL yum repository
+          yum:
+            name: epel-release
+        - name: Install the PostgreSQL yum repository
+          yum:
+            name: "https://download.postgresql.org/pub/repos/yum/reporpms/EL-{{ ansible_distribution_major_version }}-x86_64/pgdg-redhat-repo-latest.noarch.rpm"
       when: "ansible_os_family == 'RedHat' and ansible_distribution_major_version =='7'"
 
 # You can use this playbook as-is to setup a full NetBox server, just change

@@ -53,5 +53,5 @@
 
 - name: Capture the current Python interpreter
   set_fact:
-     _netbox_global_python: "{{ ansible_python_interpreter }}"
+    _netbox_global_python: "{{ ansible_python_interpreter }}"
   when: ansible_python_interpreter is defined

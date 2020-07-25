@@ -3,7 +3,7 @@
   dnf:
     name: "{{ _netbox_dnf_packages | flatten }}"
     state: present
-    update_cache: yes
+    update_cache: true
   vars:
     _netbox_dnf_packages:
       - "{{ 'epel-release' if netbox_install_epel else [] }}"
@@ -12,5 +12,3 @@
       - "{{ netbox_ldap_packages if netbox_ldap_enabled else [] }}"
       - "{{ 'git' if netbox_git else [] }}"
       - "{{ 'acl' if ('SUDO_USER' in ansible_env and ansible_env.SUDO_USER != 'root') else [] }}"
-
-

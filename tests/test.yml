@@ -1,27 +1,27 @@
 ---
 - hosts: netbox
-  become: True
+  become: true
   tasks:
     - block:
-        - name: uWSGI/NetBox service status
+        - name: uWSGI/NetBox service status  # noqa 303 305
           shell: "systemctl status netbox.service"
-          changed_when: False
-        - name: uWSGI/NetBox service journal
+          changed_when: false
+        - name: uWSGI/NetBox service journal  # noqa 305
           shell: "journalctl --no-pager -xu netbox.service"
-          changed_when: False
-        - name: uWSGI configuration
+          changed_when: false
+        - name: uWSGI configuration  # noqa 305
           shell: cat /srv/netbox/shared/uwsgi.ini
-          changed_when: False
-        - name: NetBox rq-worker service status
+          changed_when: false
+        - name: NetBox rq-worker service status  # noqa 303 305
           shell: "systemctl status netbox-rqworker.service"
-          changed_when: False
-        - name: NetBox application log
+          changed_when: false
+        - name: NetBox application log  # noqa 305
           shell: cat /srv/netbox/shared/application.log
-          changed_when: False
-        - name: NetBox configuration
+          changed_when: false
+        - name: NetBox configuration  # noqa 305
           shell: cat /srv/netbox/shared/configuration.py
-          changed_when: False
-      ignore_errors: yes
+          changed_when: false
+      ignore_errors: true
     - name: Ensure that NetBox returns a successful HTTP response
       uri:
         url: "http://{{ inventory_hostname }}:8080"

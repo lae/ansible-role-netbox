@@ -5,7 +5,7 @@
     dest: "{{ netbox_git_repo_path }}"
     version: "{{ netbox_git_version }}"
   register: _netbox_git_repo
-  become: True
+  become: true
   become_user: "{{ netbox_user }}"
 
 - name: Create git deployment directory for NetBox
@@ -21,7 +21,7 @@
     chdir: "{{ netbox_git_repo_path }}"
     executable: /bin/bash
   register: _netbox_git_contains_issue_2239_fix
-  changed_when: False
+  changed_when: false
   failed_when: "_netbox_git_contains_issue_2239_fix.rc not in [0, 1]"
 
 - name: Check existence of commit 3590ed3, renaming webhooks to tasks
@@ -30,7 +30,7 @@
     chdir: "{{ netbox_git_repo_path }}"
     executable: /bin/bash
   register: _netbox_git_contains_tasks_rename
-  changed_when: False
+  changed_when: false
   failed_when: "_netbox_git_contains_tasks_rename.rc not in [0, 1]"
 
 - name: Archive and extract snapshot of git repository
@@ -42,7 +42,7 @@
     - reload netbox.service
   when:
     - _netbox_git_repo is changed
-  become: True
+  become: true
   become_user: "{{ netbox_user }}"
 
 - name: Symlink git repository to current NetBox directory

@@ -9,7 +9,7 @@
   yum:
     name: "{{ _netbox_yum_packages | flatten }}"
     state: present
-    update_cache: yes
+    update_cache: true
   vars:
     _netbox_yum_packages:
       - "{{ netbox_python_packages }}"

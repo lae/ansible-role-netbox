@@ -5,9 +5,11 @@ driver:
   name: vagrant
   provider:
     name: virtualbox
-lint:
-  name: yamllint
-  enabled: false
+lint: |
+  set -e
+  yamllint .
+  ansible-lint
+  flake8
 platforms:
   - name: debian-9
     box: generic/debian9
@@ -21,5 +23,6 @@ scenario:
   name: default
 verifier:
   name: testinfra
-  lint:
-    name: flake8
+  lint: |
+    set -e
+    flake8
