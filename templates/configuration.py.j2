@@ -59,7 +59,7 @@ REDIS = {
 METRICS_ENABLED = True
 {% endif %}
 
-{% for setting, value in netbox_config.items() %}
+{% for setting, value in _netbox_config.items() %}
 {% if value in [True, False] %}
 {{ setting }} = {{ 'True' if value else 'False' }}
 {% elif value is string or value is number %}
