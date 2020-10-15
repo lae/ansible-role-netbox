@@ -28,6 +28,15 @@ DATABASE = {
     'HOST': '{{ netbox_database_socket }}',
 {% endif %}
     'CONN_MAX_AGE': {{ netbox_database_conn_age }},
+{% if netbox_database_options is defined and netbox_database_options|length > 0 %}
+    'OPTIONS': {
+        {% for setting, value in netbox_database_options.items() %}
+        {% if value is string or value is number %}
+        "{{ setting }}": {{ value | to_nice_json }},
+        {% endif %}
+        {% endfor %}
+    },
+{% endif %}
 }
 
 {% if netbox_stable and netbox_stable_version is version('2.9.4', '>=') or
