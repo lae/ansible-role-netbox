@@ -163,6 +163,16 @@ set `netbox_database_conn_age` to your preferred maximum connection age, in seco
 
 [source,yaml]
 ----
+# Example usage, default is empty dict
+netbox_database_options:
+  sslmode: require
+  isolation_level: 3
+----
+
+If you need to set any other PostgreSQL parameter key words you can do so here. For cases like https://docs.djangoproject.com/en/3.1/ref/databases/#isolation-level[isolation levels] the numerical value must be used instead of the constant: `psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE` vs `3`. Only add things here if you really know what you're doing.
+
+[source,yaml]
+----
 netbox_redis_host: 127.0.0.1
 netbox_redis_port: 6379
 netbox_redis_password: ''
