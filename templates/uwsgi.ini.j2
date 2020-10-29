@@ -8,8 +8,8 @@ processes={{ netbox_processes }}
 module=netbox.wsgi
 virtualenv={{ netbox_virtualenv_path }}
 chdir={{ netbox_current_path }}/netbox
-{% if netbox_config.BASE_PATH is defined %}
-{% set _base_path = netbox_config.BASE_PATH.strip('/') ~ '/' %}
+{% if _netbox_config.BASE_PATH is defined %}
+{% set _base_path = _netbox_config.BASE_PATH.strip('/') ~ '/' %}
 {% else %}
 {% set _base_path = '' %}
 {% endif %}

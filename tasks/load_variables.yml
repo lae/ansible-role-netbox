@@ -27,6 +27,10 @@
     netbox_ldap_packages: "{{ _netbox_ldap_packages | list }}"
   when: netbox_ldap_packages is not defined
 
+- name: Define _netbox_config
+  set_fact:
+    _netbox_config: "{{ netbox_config }}"
+
 - name: Generate list of optional Python dependencies
   set_fact:
     _netbox_python_deps:

@@ -8,16 +8,16 @@
   loop:
     - "{{ netbox_releases_path }}"
     - "{{ netbox_shared_path }}"
-    - "{{ netbox_config.MEDIA_ROOT }}"
-    - "{{ netbox_config.MEDIA_ROOT }}/image-attachments"
-    - "{{ netbox_config.REPORTS_ROOT }}"
-    - "{{ netbox_config.SCRIPTS_ROOT }}"
+    - "{{ _netbox_config.MEDIA_ROOT }}"
+    - "{{ _netbox_config.MEDIA_ROOT }}/image-attachments"
+    - "{{ _netbox_config.REPORTS_ROOT }}"
+    - "{{ _netbox_config.SCRIPTS_ROOT }}"
 
 - include_tasks: "install_via_{{ 'git' if netbox_git else 'stable' }}.yml"
 
 - import_tasks: generate_secret_key.yml
   when:
-    - netbox_config.SECRET_KEY is not defined
+    - _netbox_config.SECRET_KEY is not defined
 
 - name: Drop pip constraints file
   template:
@@ -102,7 +102,7 @@
 - name: Copy NetBox scripts into SCRIPTS_ROOT
   copy:
     src: "{{ item.src }}"
-    dest: "{{ netbox_config.SCRIPTS_ROOT }}/{{ item.name }}.py"
+    dest: "{{ _netbox_config.SCRIPTS_ROOT }}/{{ item.name }}.py"
     owner: "{{ netbox_user }}"
     group: "{{ netbox_group }}"
   loop: "{{ netbox_scripts }}"
@@ -110,7 +110,7 @@
 - name: Copy NetBox reports into REPORTS_ROOT
   copy:
     src: "{{ item.src }}"
-    dest: "{{ netbox_config.REPORTS_ROOT }}/{{ item.name }}.py"
+    dest: "{{ _netbox_config.REPORTS_ROOT }}/{{ item.name }}.py"
     owner: "{{ netbox_user }}"
     group: "{{ netbox_group }}"
   loop: "{{ netbox_reports }}"
