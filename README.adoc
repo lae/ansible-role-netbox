@@ -318,7 +318,8 @@ netbox_ldap_config_template: netbox_ldap_config.py.j2
 Toggle `netbox_ldap_enabled` to `true` to configure LDAP authentication for
 NetBox. `netbox_ldap_config_template` should be the path to your template - by
 default, Ansible will search your playbook's `templates/` directory for this.
-You can find an example in `examples/`.
+You can find an example in `examples/`. You will also need to set
+`netbox_config.REMOTE_AUTH_BACKEND` to `netbox.authentication.LDAPBackend`.
 
 [source,yaml]
 ----
