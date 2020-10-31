@@ -17,9 +17,9 @@ netbox_config:
       - Dale Gribble
       - dgribble@example.com
   # note that the array is nested above
-  BANNER_BOTTOM: '*BANNER_TOP'
   BANNER_LOGIN: ''
   BANNER_TOP: &BANNER_TOP 'Your banner text'
+  BANNER_BOTTOM: *BANNER_TOP
   # you probably won't need this, but you can reference other variables like above
   BASE_PATH: netbox/
   CACHE_TIMEOUT: 900
