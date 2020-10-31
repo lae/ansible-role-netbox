@@ -17,9 +17,9 @@ netbox_config:
       - Dale Gribble
       - dgribble@example.com
   # note that the array is nested above
-  BANNER_BOTTOM: *BANNER_TOP
   BANNER_LOGIN: ''
   BANNER_TOP: &BANNER_TOP 'Your banner text'
+  BANNER_BOTTOM: *BANNER_TOP
   # you probably won't need this, but you can reference other variables like above
   BASE_PATH: netbox/
   CACHE_TIMEOUT: 900
@@ -32,6 +32,7 @@ netbox_config:
   DATETIME_FORMAT: 'N j, Y g:i a'
   DEBUG: yes
   # yes, no, false, true, False, True are all valid booleans in Ansible - they will be inserted correctly in configuration.py
+  DOCS_ROOT: docs/
   ENFORCE_GLOBAL_UNIQUE: False
   EMAIL:
     SERVER: localhost
@@ -43,6 +44,8 @@ netbox_config:
   EXEMPT_VIEW_PERMISSIONS:
     - dcim.site
     - ipam.prefix
+  HTTP_PROXIES:
+    http: http://localhost:3128
   INTERNAL_IPS:
     - 127.0.0.1
     - ::1
@@ -70,6 +73,8 @@ netbox_config:
     keepalive: 60
   PAGINATE_COUNT: 100
   PREFER_IPV4: False
+  RACK_ELEVATION_DEFAULT_UNIT_HEIGHT: 22
+  RACK_ELEVATION_DEFAULT_UNIT_WIDTH: 220
   REPORTS_ROOT: /srv/netbox_reports
   SESSION_FILE_PATH: "{{ netbox_shared_path }}/sessions"
   # quotes aren't necessary as you can see - but in my opinion quotes make this more readable
