@@ -1,3 +1,4 @@
+---
 galaxy_info:
   author: Musee Ullah
   description: Installs and configures NetBox, a DCIM suite, in a production setting.

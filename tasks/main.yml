@@ -44,7 +44,7 @@
     name: "{{ netbox_database }}"
     login_user: "{{ netbox_database_user }}"
     login_unix_socket: "{{ netbox_database_socket }}"
-  become: True
+  become: true
   become_user: "{{ netbox_database_user }}"
   when:
     - netbox_database_socket is defined
@@ -109,7 +109,7 @@
   systemd:
     name: "{{ item }}"
     state: started
-    enabled: yes
+    enabled: true
   loop:
     - netbox.socket
     - netbox.service
@@ -118,11 +118,11 @@
   systemd:
     name: netbox-rqworker.service
     state: started
-    enabled: yes
+    enabled: true
 
 - name: Restore the previous Ansible Python interpreter
   set_fact:
-     ansible_python_interpreter: "{{ _netbox_global_python if _netbox_global_python is defined else 'auto_legacy' }}"
+    ansible_python_interpreter: "{{ _netbox_global_python if _netbox_global_python is defined else 'auto_legacy' }}"
 
 - name: Recheck the previous Python interpreter's version
   setup:

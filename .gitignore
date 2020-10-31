@@ -3,3 +3,4 @@
 .history
 *.retry
 *.code-workspace
+*.sw?

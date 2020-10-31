@@ -6,7 +6,7 @@
     creates: "{{ netbox_stable_path }}"
     owner: "{{ netbox_user }}"
     group: "{{ netbox_group }}"
-    remote_src: True
+    remote_src: true
 
 - name: Symlink stable release to current NetBox directory
   file:

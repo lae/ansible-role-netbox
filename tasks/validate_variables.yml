@@ -58,13 +58,13 @@
     msg: "Please ensure that your script/report module names start with a lowercase letter and contain only lowercase letters, numbers, and underscores."
 
 - block:
-  - name: Identify selected storage module
-    set_fact:
-      _netbox_storages_module: "{{ netbox_config.STORAGE_BACKEND | regex_search('(?<=storages\\.backends\\.).*(?=\\.)') }}"
+    - name: Identify selected storage module
+      set_fact:
+        _netbox_storages_module: "{{ netbox_config.STORAGE_BACKEND | regex_search('(?<=storages\\.backends\\.).*(?=\\.)') }}"
 
-  - name: Ensure storage module is a valid option
-    assert:
-      that:
-        - _netbox_storages_module in _netbox_storages_map
-      msg: "Please ensure your STORAGE_BACKEND is correct."
+    - name: Ensure storage module is a valid option
+      assert:
+        that:
+          - _netbox_storages_module in _netbox_storages_map
+        msg: "Please ensure your STORAGE_BACKEND is correct."
   when: "'STORAGE_BACKEND' in netbox_config"

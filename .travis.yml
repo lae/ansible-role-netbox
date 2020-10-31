@@ -37,6 +37,7 @@ before_script:
 - cd tests/
 script:
 - ansible-lint ../ || true
+- yamllint ../ || true
 - ansible-playbook -i inventory deploy.yml --syntax-check
 - ansible-playbook -i inventory deploy.yml
 - 'ANSIBLE_STDOUT_CALLBACK=debug ANSIBLE_DISPLAY_SKIPPED_HOSTS=no ANSIBLE_DISPLAY_OK_HOSTS=no

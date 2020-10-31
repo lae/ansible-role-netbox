@@ -4,7 +4,7 @@
     name: "{{ _netbox_apt_packages | flatten }}"
     state: present
     cache_valid_time: 3600
-    update_cache: yes
+    update_cache: true
   vars:
     _netbox_apt_packages:
       - "{{ netbox_python_packages }}"

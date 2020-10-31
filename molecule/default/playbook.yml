@@ -18,7 +18,7 @@
     netbox_database_socket: "{{ postgresql_unix_socket_directories[0] }}"
     # webhooks
     netbox_webhooks_enabled: true
-    #db
+    # db
     postgresql_users:
       - name: "{{ netbox_database_user }}"
         role_attr_flags: CREATEDB,NOSUPERUSER
