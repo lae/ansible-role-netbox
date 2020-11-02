@@ -27,12 +27,11 @@
 # python3 psycopg2/selinux packages are not available on EPEL.
 - name: Install psycopg2/selinux via pip on Red Hat-based distros
   pip:
-    name: "{{ item }}"
+    name:
+      - psycopg2-binary
+      - selinux
     state: present
   vars:
     ansible_python_interpreter: "{{ netbox_python_binary }}"
   environment:
     PATH: "/usr/local/bin:{{ _path }}"
-  with_items:
-    - psycopg2-binary
-    - selinux
