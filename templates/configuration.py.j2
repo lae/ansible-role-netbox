@@ -22,9 +22,9 @@ DATABASE = {
     'HOST':  '{{ netbox_database_host }}',
     'PORT': '{{ netbox_database_port }}',
 {% else %}
-    {% if netbox_database_password is defined %}
+{%      if netbox_database_password is defined %}
     'PASSWORD': '{{ netbox_database_password }}',
-    {% endif %}
+{%      endif %}
     'HOST': '{{ netbox_database_socket }}',
 {% endif %}
     'CONN_MAX_AGE': {{ netbox_database_conn_age }},
@@ -67,13 +67,13 @@ METRICS_ENABLED = True
 {% endif %}
 
 {% for setting, value in _netbox_config.items() %}
-{% if value in [True, False] %}
+{%      if value in [True, False] %}
 {{ setting }} = {{ 'True' if value else 'False' }}
-{% elif value is string or value is number %}
+{%      elif value is string or value is number %}
 {{ setting }} = {{ value | to_nice_json }}
-{% else %}
+{%      else %}
 {{ setting }} = json.loads(r'''{{ value | to_json }}''')
-{% endif %}
+{%      endif %}
 {% endfor %}
 
 # vim: ft=python
