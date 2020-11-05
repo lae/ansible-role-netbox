@@ -22,18 +22,25 @@ DATABASE = {
     'HOST':  '{{ netbox_database_host }}',
     'PORT': '{{ netbox_database_port }}',
 {% else %}
-    {% if netbox_database_password is defined %}
+{%      if netbox_database_password is defined %}
     'PASSWORD': '{{ netbox_database_password }}',
-    {% endif %}
+{%      endif %}
     'HOST': '{{ netbox_database_socket }}',
 {% endif %}
     'CONN_MAX_AGE': {{ netbox_database_conn_age }},
 }
 
+{% if netbox_stable and netbox_stable_version is version('2.9.4', '>=') or
+      netbox_git and _netbox_git_contains_rq_timeout.rc == 0 %}
+{% set _default_timeout = "RQ_DEFAULT_TIMEOUT" %}
+{% else %}
+{% set _default_timeout = "DEFAULT_TIMEOUT" %}
+{% endif %}
+
 REDIS = {
 {# https://github.com/netbox-community/netbox/pull/4366 #}
 {% if netbox_stable and netbox_stable_version is version('2.7.11', '>=') or
-      netbox_git and _netbox_git_contains_tasks_rename %}
+      netbox_git and _netbox_git_contains_tasks_rename.rc == 0 %}
     'tasks': {
 {% else %}
     'webhooks': {
@@ -42,7 +49,7 @@ REDIS = {
         'PORT': {{ netbox_redis_port }},
         'PASSWORD': '{{ netbox_redis_password }}',
         'DATABASE': {{ netbox_redis_database }},
-        'DEFAULT_TIMEOUT': {{ netbox_redis_default_timeout }},
+        '{{ _default_timeout }}': {{ netbox_redis_default_timeout }},
         'SSL': {{ netbox_redis_ssl_enabled }},
     },
     'caching': {
@@ -50,7 +57,7 @@ REDIS = {
         'PORT': {{ netbox_redis_cache_port }},
         'PASSWORD': '{{ netbox_redis_cache_password }}',
         'DATABASE': {{ netbox_redis_cache_database }},
-        'DEFAULT_TIMEOUT': {{ netbox_redis_cache_default_timeout }},
+        '{{ _default_timeout }}': {{ netbox_redis_default_timeout }},
         'SSL': {{ netbox_redis_cache_ssl_enabled }},
     }
 }
@@ -60,13 +67,13 @@ METRICS_ENABLED = True
 {% endif %}
 
 {% for setting, value in _netbox_config.items() %}
-{% if value in [True, False] %}
+{%      if value in [True, False] %}
 {{ setting }} = {{ 'True' if value else 'False' }}
-{% elif value is string or value is number %}
+{%      elif value is string or value is number %}
 {{ setting }} = {{ value | to_nice_json }}
-{% else %}
+{%      else %}
 {{ setting }} = json.loads(r'''{{ value | to_json }}''')
-{% endif %}
+{%      endif %}
 {% endfor %}
 
 # vim: ft=python
