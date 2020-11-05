@@ -40,7 +40,7 @@ DATABASE = {
 REDIS = {
 {# https://github.com/netbox-community/netbox/pull/4366 #}
 {% if netbox_stable and netbox_stable_version is version('2.7.11', '>=') or
-      netbox_git and _netbox_git_contains_tasks_rename %}
+      netbox_git and _netbox_git_contains_tasks_rename.rc == 0 %}
     'tasks': {
 {% else %}
     'webhooks': {
