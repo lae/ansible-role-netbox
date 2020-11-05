@@ -30,6 +30,13 @@ DATABASE = {
     'CONN_MAX_AGE': {{ netbox_database_conn_age }},
 }
 
+{% if netbox_stable and netbox_stable_version is version('2.9.4', '>=') or
+      netbox_git and _netbox_git_contains_rq_timeout.rc == 0 %}
+{% set _default_timeout = "RQ_DEFAULT_TIMEOUT" %}
+{% else %}
+{% set _default_timeout = "DEFAULT_TIMEOUT" %}
+{% endif %}
+
 REDIS = {
 {# https://github.com/netbox-community/netbox/pull/4366 #}
 {% if netbox_stable and netbox_stable_version is version('2.7.11', '>=') or
@@ -42,7 +49,7 @@ REDIS = {
         'PORT': {{ netbox_redis_port }},
         'PASSWORD': '{{ netbox_redis_password }}',
         'DATABASE': {{ netbox_redis_database }},
-        'RQ_DEFAULT_TIMEOUT': {{ netbox_redis_default_timeout }},
+        '{{ _default_timeout }}': {{ netbox_redis_default_timeout }},
         'SSL': {{ netbox_redis_ssl_enabled }},
     },
     'caching': {
@@ -50,7 +57,7 @@ REDIS = {
         'PORT': {{ netbox_redis_cache_port }},
         'PASSWORD': '{{ netbox_redis_cache_password }}',
         'DATABASE': {{ netbox_redis_cache_database }},
-        'RQ_DEFAULT_TIMEOUT': {{ netbox_redis_cache_default_timeout }},
+        '{{ _default_timeout }}': {{ netbox_redis_default_timeout }},
         'SSL': {{ netbox_redis_cache_ssl_enabled }},
     }
 }
