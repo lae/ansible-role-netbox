@@ -12,7 +12,7 @@ services:
 addons:
   postgresql: "9.6"
 env:
-- ANSIBLE_VERSION='~=2.9.0'
+- ANSIBLE_VERSION='~=2.10.0'
 matrix:
   fast_finish: true
 # FIXME: Ansible 2.10.x going through major restructuring.
@@ -42,8 +42,8 @@ script:
 - ansible-playbook -i inventory deploy.yml
 - 'ANSIBLE_STDOUT_CALLBACK=debug ANSIBLE_DISPLAY_SKIPPED_HOSTS=no ANSIBLE_DISPLAY_OK_HOSTS=no
   unbuffer ansible-playbook -vvi inventory deploy.yml &>play.log; printf "Idempotence: ";
-  grep -A1 "PLAY RECAP" play.log | grep -qP "changed=0 .*failed=0 .*"
-  && (echo "PASS"; exit 0) || (echo "FAIL"; cat play.log; exit 1)'
+  sed -ne "/PLAY RECAP/,/^$/{/PLAY RECAP/d;/^$/d;p}" /tmp/h | grep -vqP "changed=0 .*failed=0 .*"
+  && (echo "FAIL"; cat play.log; exit 1) || (echo "PASS"; exit 0)'
 - ANSIBLE_STDOUT_CALLBACK=debug ansible-playbook -i inventory -v test.yml
 notifications:
   webhooks:
