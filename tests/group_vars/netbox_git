@@ -1,2 +1,3 @@
 ---
 netbox_git: true
+netbox_git_version: develop-2.10
