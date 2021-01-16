@@ -39,7 +39,7 @@ script:
 - ansible-playbook -i inventory deploy.yml
 - 'ANSIBLE_STDOUT_CALLBACK=debug ANSIBLE_DISPLAY_SKIPPED_HOSTS=no ANSIBLE_DISPLAY_OK_HOSTS=no
   unbuffer ansible-playbook -vvi inventory deploy.yml &>play.log; printf "Idempotence: ";
-  sed -ne "/PLAY RECAP/,/^$/{/PLAY RECAP/d;/^$/d;p}" /tmp/h | grep -vqP "changed=0 .*failed=0 .*"
+  sed -ne "/PLAY RECAP/,/^$/{/PLAY RECAP/d;/^$/d;p}" play.log | grep -vqP "changed=0 .*failed=0 .*"
   && (echo "FAIL"; cat play.log; exit 1) || (echo "PASS"; exit 0)'
 - ANSIBLE_STDOUT_CALLBACK=debug ansible-playbook -i inventory -v test.yml
 notifications:
