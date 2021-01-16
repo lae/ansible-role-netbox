@@ -12,7 +12,7 @@ matrix:
   fast_finish: true
 # FIXME: Ansible 2.10.x going through major restructuring.
 # https://groups.google.com/forum/#!msg/ansible-project/eXsoOKEd0Mk/XTgbnPWbCAAJ
-#  include:
+  include:
 #    - python: '3.6'
 #      env: ANSIBLE_GIT_VERSION='devel' # 2.10.x development branch
     - env: ANSIBLE_VERSION='~=2.10.0'
