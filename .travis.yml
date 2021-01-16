@@ -22,7 +22,7 @@ install:
   else pip install "ansible${ANSIBLE_VERSION}"; fi;
   pip install --pre ansible-lint
 - ansible --version
-- ansible-galaxy install lae.travis-lxc,v0.10.0
+- ansible-galaxy install lae.travis-lxc,v0.10.1
 - ansible-playbook tests/install.yml -i tests/inventory
 - git archive --format tar.gz HEAD > lae.netbox.tar.gz && ansible-galaxy install
   lae.netbox.tar.gz,$(git rev-parse HEAD),lae.netbox && rm lae.netbox.tar.gz
