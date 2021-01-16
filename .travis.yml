@@ -1,7 +1,4 @@
 language: python
-python:
-  - "2.7"
-  - "3.6"
 sudo: required
 dist: bionic
 cache:
@@ -11,8 +8,6 @@ services:
 - postgresql
 addons:
   postgresql: "9.6"
-env:
-- ANSIBLE_VERSION='~=2.10.0'
 matrix:
   fast_finish: true
 # FIXME: Ansible 2.10.x going through major restructuring.
@@ -20,12 +15,14 @@ matrix:
 #  include:
 #    - python: '3.6'
 #      env: ANSIBLE_GIT_VERSION='devel' # 2.10.x development branch
+    - env: ANSIBLE_VERSION='~=2.10.0'
+    - env: ANSIBLE_VERSION='~=2.9.0'
 install:
 - if [ "$ANSIBLE_GIT_VERSION" ]; then pip install "https://github.com/ansible/ansible/archive/${ANSIBLE_GIT_VERSION}.tar.gz";
   else pip install "ansible${ANSIBLE_VERSION}"; fi;
   pip install --pre ansible-lint
 - ansible --version
-- ansible-galaxy install lae.travis-lxc,v0.9.0
+- ansible-galaxy install lae.travis-lxc,v0.10.0
 - ansible-playbook tests/install.yml -i tests/inventory
 - git archive --format tar.gz HEAD > lae.netbox.tar.gz && ansible-galaxy install
   lae.netbox.tar.gz,$(git rev-parse HEAD),lae.netbox && rm lae.netbox.tar.gz
