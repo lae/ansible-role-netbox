@@ -169,7 +169,11 @@ netbox_database_options:
   isolation_level: 3
 ----
 
-If you need to set any other PostgreSQL parameter key words you can do so here. For cases like https://docs.djangoproject.com/en/3.1/ref/databases/#isolation-level[isolation levels] the numerical value must be used instead of the constant: `psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE` vs `3`. Only add things here if you really know what you're doing.
+If you need to set any other PostgreSQL parameter key words you can do
+so here. For cases like https://docs.djangoproject.com/en/3.1/ref/databases/#isolation-level[isolation levels] the numerical value must be used
+instead of the constant:
+`psycopg2.extensions.ISOLATION_LEVEL_SERIALIZABLE` vs `3`.
+Only add things here if you really know what you're doing.
 
 [source,yaml]
 ----
