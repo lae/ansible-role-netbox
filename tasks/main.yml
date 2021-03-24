@@ -67,6 +67,7 @@
   pip:
     name: uwsgi
     state: "{{ 'latest' if netbox_keep_uwsgi_updated else 'present' }}"
+    umask: "0022"
   environment:
     PATH: "/usr/local/bin:{{ _path }}"
   notify:
