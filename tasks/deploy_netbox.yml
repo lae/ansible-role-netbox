@@ -128,7 +128,7 @@
       register: _netbox_superuser_result
       changed_when: "'changed' in _netbox_superuser_result.stdout"
       when:
-        - (not netbox_ldap_enabled) or (superuser_enabled)
+        - (not netbox_ldap_enabled) or (netbox_superuser_enabled)
 
     - name: Create a super user token for NetBox
       shell: "printf '{{ netbox_superuser_token }}' |\
@@ -137,7 +137,7 @@
       changed_when: "'changed' in _netbox_superuser_token.stdout"
       when:
         - netbox_superuser_create_token
-        - (not netbox_ldap_enabled) or (superuser_enabled)
+        - (not netbox_ldap_enabled) or (netbox_superuser_enabled)
 
     - name: Generate static assets for NetBox
       django_manage:
