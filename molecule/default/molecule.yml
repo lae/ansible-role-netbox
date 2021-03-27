@@ -2,17 +2,22 @@
 dependency:
   name: galaxy
 driver:
-  name: vagrant
+  name: docker
   provider:
-    name: virtualbox
+    name: centos8
 lint: |
   set -e
   yamllint .
   ansible-lint
   flake8
 platforms:
-  - name: debian-9
-    box: generic/debian9
+  - name: centos8
+    image: geerlingguy/docker-centos8-ansible:latest
+    command: /sbin/init
+    privileged: True
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    pre_build_image: true
 provisioner:
   name: ansible
   log: true
