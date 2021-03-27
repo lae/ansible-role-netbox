@@ -137,7 +137,7 @@
       changed_when: "'changed' in _netbox_superuser_token.stdout"
       when:
         - not netbox_ldap_enabled
-        - netbox_superuser_token_enabled
+        - netbox_superuser_create_token
 
     - name: Generate static assets for NetBox
       django_manage:

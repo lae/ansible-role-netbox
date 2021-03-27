@@ -8,7 +8,7 @@
     netbox_stable: true
     netbox_socket: "0.0.0.0:80"
     netbox_superuser_password: netbox
-    netbox_superuser_token_enabled: true
+    netbox_superuser_create_token: true
     netbox_config:
       ALLOWED_HOSTS:
         - "{{ inventory_hostname }}"

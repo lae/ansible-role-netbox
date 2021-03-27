@@ -23,6 +23,7 @@ netbox_reports:
     name: nothing
 netbox_napalm_enabled: true
 netbox_superuser_password: netbox
+netbox_superuser_token: true
 netbox_database: "netbox_{{ inventory_hostname_short }}"
 netbox_database_host: 10.0.3.1
 netbox_database_password:

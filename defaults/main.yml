@@ -13,7 +13,7 @@ netbox_install_epel: true
 netbox_superuser_username: admin
 # netbox_superuser_password: changeme
 netbox_superuser_email: admin@localhost
-netbox_superuser_token_enabled: false
+netbox_superuser_create_token: false
 
 netbox_database: netbox
 netbox_database_user: netbox
