@@ -129,6 +129,7 @@ netbox_git_uri: "https://github.com/netbox-community/netbox.git"
 netbox_superuser_username: admin
 #netbox_superuser_password: changeme
 netbox_superuser_email: admin@localhost
+superuser_enabled: false
 netbox_superuser_token: false
 ----
 
@@ -136,7 +137,7 @@ It is *required* to set the superuser password. This role will create a new
 superuser if the user does not exist, or will modify an existing user if they're
 not a superuser/have a different email or password. (Yes, you can use this to
 reset your superuser password if you forget it.) it is possible to set a random
-generate API-token for the superuser.
+generate API-token for the superuser. You can create a superuser and configure LDAP.
 
 
 [source,yaml]
