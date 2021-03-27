@@ -130,6 +130,15 @@
       when:
         - not netbox_ldap_enabled
 
+    - name: Create a super user token for NetBox
+      shell: "printf '{{ netbox_superuser_token }}' |\
+              {{ netbox_virtualenv_path }}/bin/python {{ netbox_current_path }}/netbox/manage.py shell"
+      register: _netbox_superuser_token
+      changed_when: "'changed' in _netbox_superuser_token.stdout"
+      when:
+        - not netbox_ldap_enabled
+        - netbox_superuser_token_enabled
+
     - name: Generate static assets for NetBox
       django_manage:
         command: collectstatic

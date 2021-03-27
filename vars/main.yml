@@ -29,3 +29,11 @@ netbox_superuser_script: |
           user.set_password(password)
           user.save()
           print("changed")
+
+netbox_superuser_token: |
+    from users.models import Token
+    from django.contrib.auth.models import User
+    user = User.objects.get(username="{{ netbox_superuser_username }}")
+    token = Token.objects.create(user=user)
+    print("api-token: " + token.key)
+    print("changed")
