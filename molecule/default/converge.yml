@@ -3,9 +3,12 @@
   hosts: all
   become: true
   vars:
+    redis_version: 6.2.1
+    netbox_stable_version: 2.10.8
     netbox_stable: true
     netbox_socket: "0.0.0.0:80"
     netbox_superuser_password: netbox
+    netbox_superuser_create_token: true
     netbox_config:
       ALLOWED_HOSTS:
         - "{{ inventory_hostname }}"
