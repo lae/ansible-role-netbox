@@ -126,21 +126,21 @@ netbox_git_uri: "https://github.com/netbox-community/netbox.git"
 
 [source,yaml]
 ----
+netbox_superuser_enabled: true
 netbox_superuser_username: admin
 #netbox_superuser_password: changeme
 netbox_superuser_email: admin@localhost
-netbox_superuser_enabled: false
 netbox_superuser_create_token: false
-
-
 ----
 
-It is *required* to set the superuser password. This role will create a new
-superuser if the user does not exist, or will modify an existing user if they're
-not a superuser/have a different email or password. (Yes, you can use this to
-reset your superuser password if you forget it.) it is possible to set a random
-generate API-token for the superuser. You can create a superuser and configure LDAP.
-
+These variables are used to configure a local superuser account. Disable this
+if you do not want to create one (when using LDAP for example - though having a
+local superuser may still be beneficial in that case). When enabled, it is
+*required* to set the superuser password. This role will create a new superuser
+if the user does not exist, or will modify an existing user if they're not a
+superuser/have a different email or password. (Yes, you can use this to reset
+your superuser password if you forget it.) `netbox_superuser_create_token` can
+be used to generate a random API token for the superuser, if needed.
 
 [source,yaml]
 ----
@@ -344,6 +344,9 @@ NetBox. `netbox_ldap_config_template` should be the path to your template - by
 default, Ansible will search your playbook's `templates/` directory for this.
 You can find an example in `examples/`. You will also need to set
 `netbox_config.REMOTE_AUTH_BACKEND` to `netbox.authentication.LDAPBackend`.
+
+TIP: By default, a local (non-LDAP) superuser will still be created by this
+role. If this is undesirable, consider toggling `netbox_superuser_enabled`.
 
 [source,yaml]
 ----
