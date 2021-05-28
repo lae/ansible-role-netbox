@@ -482,3 +482,21 @@ installing NetBox on to authenticate with it over TCP:
 ----
 
 See the `examples/` directory for more.
+
+== Troubleshooting
+
+=== uWSGI resetting TCP connections
+When `netbox_protocol` is set to `http`, uWSGI might exhibit strange behaviour
+and reset TCP connections seemingly at random. This can manifest in a
+"connection reset by peer" error, for example when working with the API using
+https://github.com/netbox-community/pynetbox[pynetbox]. If you are affected by
+this, try switching `netbox_protocol` to `uwsgi` and using a loadbalancer, or
+adjusting your `netbox_uwsgi_options` as follows. See https://github.com/lae/ansible-role-netbox/issues/130#issuecomment-847571006[this GitHub issue]
+for a related discussion
+[source,yaml,subs="attributes"]
+----
+netbox_uwsgi_options:
+  http-keepalive: "true"
+  http-auto-chunked: "true"
+  add-header: "Connection: Close"
+----
