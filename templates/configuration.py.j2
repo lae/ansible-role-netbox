@@ -54,19 +54,39 @@ REDIS = {
 {% else %}
     'webhooks': {
 {% endif %}
+{% if netbox_redis_sentinels|length == 0 %}
         'HOST': '{{ netbox_redis_host }}',
         'PORT': {{ netbox_redis_port }},
+        '{{ _default_timeout }}': {{ netbox_redis_default_timeout }},
+{% else %}
+        'SENTINELS': [
+{% for sentinel in netbox_redis_sentinels %}
+            ('{{ sentinel.host }}', {{ sentinel.port }}),
+{% endfor %}
+        ],
+        'SENTINEL_SERVICE': '{{ netbox_redis_sentinel_service }}',
+        'SENTINEL_TIMEOUT': {{ netbox_redis_default_timeout }},
+{% endif %}
         'PASSWORD': '{{ netbox_redis_password }}',
         'DATABASE': {{ netbox_redis_database }},
-        '{{ _default_timeout }}': {{ netbox_redis_default_timeout }},
         'SSL': {{ netbox_redis_ssl_enabled }},
     },
     'caching': {
+{% if netbox_redis_cache_sentinels|length == 0 %}
         'HOST': '{{ netbox_redis_cache_host }}',
         'PORT': {{ netbox_redis_cache_port }},
+        '{{ _default_timeout }}': {{ netbox_redis_default_timeout }},
+{% else %}
+        'SENTINELS': [
+{% for sentinel in netbox_redis_cache_sentinels %}
+            ('{{ sentinel.host }}', {{ sentinel.port }}),
+{% endfor %}
+        ],
+        'SENTINEL_SERVICE': '{{ netbox_redis_cache_sentinel_service }}',
+        'SENTINEL_TIMEOUT': {{ netbox_redis_default_timeout }},
+{% endif %}
         'PASSWORD': '{{ netbox_redis_cache_password }}',
         'DATABASE': {{ netbox_redis_cache_database }},
-        '{{ _default_timeout }}': {{ netbox_redis_default_timeout }},
         'SSL': {{ netbox_redis_cache_ssl_enabled }},
     }
 }
