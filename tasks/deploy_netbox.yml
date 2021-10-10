@@ -151,5 +151,11 @@
         app_path: "{{ netbox_current_path }}/netbox"
         virtualenv: "{{ netbox_virtualenv_path }}"
 
+    - name: Daily Housekeeping Cron Job
+      ansible.builtin.cron:
+        name: "daily netbox housekeeping"
+        special_time: daily
+        job: "{{ netbox_virtualenv_path }}/bin/python {{ netbox_current_path }}/netbox/manage.py housekeeping"
+
   become: true
   become_user: "{{ netbox_user }}"
