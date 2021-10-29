@@ -18,7 +18,7 @@
 # Can't quite check the effective version of a git installation this early since
 # the repo isn't checked out, but most users will be on develop in the first
 # place so this dumb check should be good enough.
-- name: Ensure the installed Python version is newer than 3.6.0 for NetBox 2.8+
+- name: Ensure the installed Python version is newer than 3.6.0 for NetBox 3.x+
   assert:
     that:
       - "ansible_python_version is version('3.7.0', '>=')"
