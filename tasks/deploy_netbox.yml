@@ -38,6 +38,14 @@
   register: _netbox_virtualenv_setup
   until: _netbox_virtualenv_setup is succeeded
 
+- name: Upgrade pip to latest version
+  pip:
+    name: pip
+    state: latest
+    virtualenv: "{{ netbox_virtualenv_path }}"
+  become: true
+  become_user: "{{ netbox_user }}"
+
 - name: Install selected optional Python dependencies
   pip:
     name: "{{ item }}"
