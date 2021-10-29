@@ -60,6 +60,7 @@
   loop: "{{ _netbox_python_deps }}"
   notify:
     - restart netbox.service
+    - restart netbox-rqworker.service
 
 - name: Generate NetBox configuration file
   template:
@@ -73,6 +74,7 @@
                py_compile.compile(f, c); os.remove(c)\""
   notify:
     - reload netbox.service
+    - restart netbox-rqworker.service
 
 - name: Generate LDAP configuration for NetBox if enabled
   template:
