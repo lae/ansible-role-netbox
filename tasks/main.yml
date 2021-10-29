@@ -23,7 +23,7 @@
     that:
       - "ansible_python_version is version('3.7.0', '>=')"
     msg: >
-      NetBox 2.8.0+ requires Python 3.7+. Please either specify an older NetBox
+      NetBox 3.0+ requires Python 3.7+. Please either specify an older NetBox
       version, upgrade to a newer distribution that provides Python 3.6+, or
       set netbox_python_binary to an appropriate Python 3.7+ binary.
   when:
