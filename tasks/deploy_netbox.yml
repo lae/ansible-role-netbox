@@ -121,6 +121,9 @@
         command: migrate
         app_path: "{{ netbox_current_path }}/netbox"
         virtualenv: "{{ netbox_virtualenv_path }}"
+      retries: 2
+      register: _netbox_db_migration
+      until: _netbox_db_migration is success
 
     - name: Trace missing cable paths for NetBox
       django_manage:
