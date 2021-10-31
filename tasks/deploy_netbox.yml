@@ -127,7 +127,9 @@
         command: "trace_paths --no-input"
         app_path: "{{ netbox_current_path }}/netbox"
         virtualenv: "{{ netbox_virtualenv_path }}"
-      when: "netbox_stable_version is version('2.10.0', '>=')"
+      when:
+        - netbox_stable and netbox_stable_version is version('2.10.0', '>=')
+          or netbox_git and _netbox_git_contains_trace_paths.rc == 0
 
     - name: Create a super user for NetBox
       shell: "printf '{{ netbox_superuser_script }}' |\
