@@ -122,6 +122,13 @@
         app_path: "{{ netbox_current_path }}/netbox"
         virtualenv: "{{ netbox_virtualenv_path }}"
 
+    - name: Trace missing cable paths for NetBox
+      django_manage:
+        command: "trace_paths --no-input"
+        app_path: "{{ netbox_current_path }}/netbox"
+        virtualenv: "{{ netbox_virtualenv_path }}"
+      when: "netbox_stable_version is version('2.10.0', '>=')"
+
     - name: Create a super user for NetBox
       shell: "printf '{{ netbox_superuser_script }}' |\
               {{ netbox_virtualenv_path }}/bin/python {{ netbox_current_path }}/netbox/manage.py shell"
@@ -150,6 +157,19 @@
         command: clearsessions
         app_path: "{{ netbox_current_path }}/netbox"
         virtualenv: "{{ netbox_virtualenv_path }}"
+
+    - name: Clear stale content types in NetBox
+      django_manage:
+        command: "remove_stale_contenttypes --no-input"
+        app_path: "{{ netbox_current_path }}/netbox"
+        virtualenv: "{{ netbox_virtualenv_path }}"
+
+    - name: Clear cached data in NetBox
+      django_manage:
+        command: "invalidate all"
+        app_path: "{{ netbox_current_path }}/netbox"
+        virtualenv: "{{ netbox_virtualenv_path }}"
+
 
   become: true
   become_user: "{{ netbox_user }}"
