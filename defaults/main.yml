@@ -75,7 +75,7 @@ netbox_shared_path: "{{ netbox_home }}/shared"
 
 netbox_socket: "127.0.0.1:8000"
 netbox_protocol: http
-netbox_processes: "{{ ansible_processor_vcpus }}"
+netbox_processes: "{{ ansible_processor_vcpus | default(1) }}"
 netbox_application_log: "file:{{ netbox_shared_path }}/application.log"
 netbox_requests_log: "file:{{ netbox_shared_path }}/requests.log"
 
