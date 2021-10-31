@@ -1,0 +1,24 @@
+---
+ansible_python_interpreter: /usr/bin/python3
+
+netbox_stable: true
+netbox_socket: "0.0.0.0:80"
+netbox_superuser_password: netbox
+netbox_config:
+  ALLOWED_HOSTS:
+    - "{{ inventory_hostname }}"
+    # The following should not be used in production, probably.
+    # This playbook gets used by Vagrant where we don't know the actual hostname.
+    - "*"
+  MEDIA_ROOT: "{{ netbox_shared_path }}/media"
+  REPORTS_ROOT: "{{ netbox_shared_path }}/reports"
+  SCRIPTS_ROOT: "{{ netbox_shared_path }}/scripts"
+netbox_database_socket: "{{ postgresql_unix_socket_directories[0] }}"
+netbox_keep_uwsgi_updated: true
+postgres_users_no_log: False
+postgresql_users:
+  - name: "{{ netbox_database_user }}"
+    role_attr_flags: CREATEDB,NOSUPERUSER
+redis_bind: 127.0.0.1
+redis_version: 6.0.9
+redis_checksum: sha256:dc2bdcf81c620e9f09cfd12e85d3bc631c897b2db7a55218fd8a65eaa37f86dd

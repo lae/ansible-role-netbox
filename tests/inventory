@@ -1,18 +1,5 @@
 [netbox:children]
-netbox_stable
-netbox_stable_2_7
 netbox_git
-
-[netbox_stable]
-debian-buster-stable
-ubuntu-bionic-stable
-centos-7-stable
-
-# The following distributions don't have Python 3.6 in standard repos, so pin
-# them to the last supported stable NetBox release (2.7.12)
-[netbox_stable_2_7]
-debian-stretch-stable
-ubuntu-xenial-stable
 
 [netbox_git]
 debian-buster-git
