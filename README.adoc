@@ -2,7 +2,7 @@
 :role-name: netbox
 :role: {role-author}.{role-name}
 :gh-name: {role-author}/ansible-role-{role-name}
-:netbox-version: 2.9.9
+:netbox-version: 2.10.10
 = {role}
 :toc:
 :toc-placement: preamble
@@ -189,6 +189,7 @@ netbox_redis_password: ''
 netbox_redis_database: 0
 netbox_redis_default_timeout: 300
 netbox_redis_ssl_enabled: false
+netbox_redis_insecure_skip_tls_verify: false
 
 netbox_redis_cache_host: "{{ netbox_redis_host }}"
 netbox_redis_cache_port: "{{ netbox_redis_port }}"
@@ -196,6 +197,7 @@ netbox_redis_cache_database: 1
 netbox_redis_cache_password: "{{ netbox_redis_password }}"
 netbox_redis_cache_default_timeout: "{{ netbox_redis_default_timeout }}"
 netbox_redis_cache_ssl_enabled: "{{ netbox_redis_ssl_enabled }}"
+netbox_redis_cache_insecure_skip_tls_verify: "{{ netbox_redis_insecure_skip_tls_verify }}"
 ----
 
 This populates the `REDIS` config dictionary in `configuration.py`. Use the

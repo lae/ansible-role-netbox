@@ -70,6 +70,7 @@ REDIS = {
         'PASSWORD': '{{ netbox_redis_password }}',
         'DATABASE': {{ netbox_redis_database }},
         'SSL': {{ netbox_redis_ssl_enabled }},
+        'INSECURE_SKIP_TLS_VERIFY': {{ netbox_redis_insecure_skip_tls_verify }},
     },
     'caching': {
 {% if netbox_redis_cache_sentinels|length == 0 %}
@@ -88,6 +89,7 @@ REDIS = {
         'PASSWORD': '{{ netbox_redis_cache_password }}',
         'DATABASE': {{ netbox_redis_cache_database }},
         'SSL': {{ netbox_redis_cache_ssl_enabled }},
+        'INSECURE_SKIP_TLS_VERIFY': {{ netbox_redis_cache_insecure_skip_tls_verify }},
     }
 }
 

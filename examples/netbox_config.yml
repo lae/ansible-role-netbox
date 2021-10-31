@@ -63,6 +63,7 @@ netbox_config:
   LOGIN_REQUIRED: true
   LOGIN_TIMEOUT: 1209600
   MAINTENANCE_MODE: false
+  MAPS_URL: https://maps.google.com/?q=
   MAX_PAGE_SIZE: 500
   MEDIA_ROOT: /srv/netbox_media
   METRICS_ENABLED: true
