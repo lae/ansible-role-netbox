@@ -1,6 +1,7 @@
 ---
 _netbox_packages:
   - gcc
+  - rust
   - postgresql-devel
   - libxml2-devel
   - libxslt-devel
@@ -9,9 +10,10 @@ _netbox_packages:
   - graphviz
   - openssl-devel
 _netbox_python_packages:
-  - python36
-  - python36-devel
-  - python36-setuptools
-_netbox_python_binary: /usr/bin/python3.6
+  - rh-python38
+  - rh-python38-python-devel
+  - rh-python38-python-setuptools
+  - rh-python38-python-psycopg2
+_netbox_python_binary: /opt/rh/rh-python38/root/usr/bin/python3.6
 _netbox_ldap_packages:
   - openldap-devel

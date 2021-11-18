@@ -9,12 +9,12 @@ _netbox_packages:
   - graphviz
   - openssl-devel
 _netbox_python_packages:
-  - python36
-  - python36-devel
-  - python3-setuptools
-  - python3-psycopg2
+  - python38
+  - python38-devel
+  - python38-setuptools
+  - python38-psycopg2
   - python3-libselinux
-  - python3-pip
-_netbox_python_binary: /usr/bin/python3.6
+  - python38-pip
+_netbox_python_binary: /usr/bin/python3.8
 _netbox_ldap_packages:
   - openldap-devel
