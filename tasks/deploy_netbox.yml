@@ -46,7 +46,7 @@
     virtualenv_command: "{{ netbox_python_binary }} -m venv"
   become: true
   become_user: "{{ netbox_user }}"
-- name: Create NetBox virtualenv and install needed Python dependencies
+- name: Install needed Python dependencies in virtualenv
   pip:
     requirements: "{{ netbox_current_path }}/requirements.txt"
     extra_args: "-c {{ netbox_current_path }}/constraints.txt"
@@ -58,7 +58,7 @@
   register: _netbox_virtualenv_setup
   until: _netbox_virtualenv_setup is succeeded
 
-- name: Install selected optional Python dependencies
+- name: Install selected optional Python dependencies in virtualenv
   pip:
     name: "{{ item }}"
     state: present
