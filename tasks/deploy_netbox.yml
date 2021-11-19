@@ -106,6 +106,15 @@
   when:
     - netbox_ldap_enabled
 
+- name: Creates a cron file under /etc/cron.d
+  when: "netbox_stable and netbox_stable_version is version('3.0.0', '>=') or netbox_git"
+  cron:
+    name: Netbox daily housekeeping
+    special_time: daily
+    user: netbox
+    job: "{{ netbox_virtualenv_path }}/bin/python {{ netbox_current_path }}/netbox/manage.py housekeeping"
+    cron_file: netbox
+    
 - name: Reset python interpreter to netbox_python_binary on RHEL7
   when: "ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'"
   set_fact:
