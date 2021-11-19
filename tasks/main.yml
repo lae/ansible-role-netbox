@@ -79,6 +79,8 @@
     name: uwsgi
     state: "{{ 'latest' if netbox_keep_uwsgi_updated else 'present' }}"
     umask: "0022"
+    virtualenv: "{{ netbox_virtualenv_path }}"
+    virtualenv_command: "{{ netbox_python_binary }} -m venv"
   environment:
     PATH: "/usr/local/bin:{{ _path }}"
   notify:
@@ -86,6 +88,10 @@
   retries: 2
   register: _netbox_uwsgi_install
   until: _netbox_uwsgi_install is succeeded
+
+- name: Restore the previous Ansible Python interpreter
+  set_fact:
+    ansible_python_interpreter: "{{ _netbox_global_python if _netbox_global_python is defined else 'auto_legacy' }}"
 
 - name: Configure uWSGI NetBox application
   template:
@@ -119,6 +125,7 @@
 
 - name: Start and enable NetBox' socket and service
   systemd:
+    daemon_reload: true
     name: "{{ item }}"
     state: started
     enabled: true
@@ -131,10 +138,6 @@
     name: netbox-rqworker.service
     state: started
     enabled: true
-
-- name: Restore the previous Ansible Python interpreter
-  set_fact:
-    ansible_python_interpreter: "{{ _netbox_global_python if _netbox_global_python is defined else 'auto_legacy' }}"
 
 - name: Recheck the previous Python interpreter's version
   setup:

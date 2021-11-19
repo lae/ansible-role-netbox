@@ -9,11 +9,17 @@ _netbox_packages:
   - libjpeg-devel
   - graphviz
   - openssl-devel
+  - uwsgi
+  - hiredis
 _netbox_python_packages:
   - rh-python38
   - rh-python38-python-devel
   - rh-python38-python-setuptools
   - rh-python38-python-psycopg2
+  - libselinux-python3
+_netbox_pip_packages:
+  - selinux
+  - hiredis
 _netbox_python_binary: /opt/rh/rh-python38/root/usr/bin/python3.8
 _netbox_ldap_packages:
   - openldap-devel
