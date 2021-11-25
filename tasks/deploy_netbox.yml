@@ -169,12 +169,5 @@
         app_path: "{{ netbox_current_path }}/netbox"
         virtualenv: "{{ netbox_virtualenv_path }}"
 
-    - name: Clear cached data in NetBox
-      django_manage:
-        command: "invalidate all"
-        app_path: "{{ netbox_current_path }}/netbox"
-        virtualenv: "{{ netbox_virtualenv_path }}"
-
-
   become: true
   become_user: "{{ netbox_user }}"
