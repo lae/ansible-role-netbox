@@ -124,6 +124,7 @@
       retries: 2
       register: _netbox_db_migration
       until: _netbox_db_migration is success
+      when: deploy_stage == "terraform"
 
     - name: Trace missing cable paths for NetBox
       django_manage:
@@ -133,6 +134,7 @@
       when:
         - netbox_stable and netbox_stable_version is version('2.10.0', '>=')
           or netbox_git and _netbox_git_contains_trace_paths.rc == 0
+        - deploy_stage == "terraform"
 
     - name: Create a super user for NetBox
       shell: "printf '{{ netbox_superuser_script }}' |\
@@ -162,19 +164,14 @@
         command: clearsessions
         app_path: "{{ netbox_current_path }}/netbox"
         virtualenv: "{{ netbox_virtualenv_path }}"
+      when: deploy_stage == "terraform"
 
     - name: Clear stale content types in NetBox
       django_manage:
         command: "remove_stale_contenttypes --no-input"
         app_path: "{{ netbox_current_path }}/netbox"
         virtualenv: "{{ netbox_virtualenv_path }}"
-
-    - name: Clear cached data in NetBox
-      django_manage:
-        command: "invalidate all"
-        app_path: "{{ netbox_current_path }}/netbox"
-        virtualenv: "{{ netbox_virtualenv_path }}"
-
+      when: deploy_stage == "terraform"
 
   become: true
   become_user: "{{ netbox_user }}"
