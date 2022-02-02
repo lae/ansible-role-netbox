@@ -158,7 +158,7 @@
       changed_when: "'changed' in _netbox_superuser_result.stdout"
       when:
         - netbox_superuser_enabled
-        - deploy_stage == "packer"
+        - deploy_stage == "terraform"
 
     - name: Create a super user token for NetBox
       shell: "printf '{{ netbox_superuser_token }}' |\
@@ -168,7 +168,7 @@
       when:
         - netbox_superuser_create_token
         - netbox_superuser_enabled
-        - deploy_stage == "packer"
+        - deploy_stage == "terraform"
 
     - name: Generate static assets for NetBox
       django_manage:
