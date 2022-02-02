@@ -4,7 +4,7 @@
   when: deploy_stage == "packer"
 
 - import_tasks: load_variables.yml
-  when: deploy_stage == "packer"
+  when: (deploy_stage == "packer") or (deploy_stage == "terraform")
 
 - include_tasks: "install_packages_{{ ansible_pkg_mgr }}.yml"
   when: deploy_stage == "packer"
@@ -48,7 +48,6 @@
   when: deploy_stage == "packer"
 
 - import_tasks: deploy_netbox.yml
-  when: deploy_stage == "packer"
 
 - name: Install uWSGI via pip
   pip:
@@ -62,6 +61,7 @@
   retries: 2
   register: _netbox_uwsgi_install
   until: _netbox_uwsgi_install is succeeded
+  when: deploy_stage == "packer"
 
 - name: Configure uWSGI NetBox application
   template:
@@ -71,6 +71,7 @@
     group: "{{ netbox_group }}"
   notify:
     - reload netbox.service
+  when: deploy_stage == "packer"
 
 - name: Install NetBox socket unit file
   template:
@@ -78,6 +79,7 @@
     dest: /lib/systemd/system/netbox.socket
   notify:
     - restart netbox.socket
+  when: deploy_stage == "packer"
 
 - name: Install NetBox service unit file
   template:
@@ -85,6 +87,7 @@
     dest: /lib/systemd/system/netbox.service
   notify:
     - restart netbox.service
+  when: deploy_stage == "packer"
 
 - name: Install NetBox-rqworker service unit file
   template:
@@ -92,6 +95,7 @@
     dest: /lib/systemd/system/netbox-rqworker.service
   notify:
     - restart netbox-rqworker.service
+  when: deploy_stage == "packer"
 
 - name: Start and enable NetBox' socket and service
   systemd:
@@ -101,18 +105,22 @@
   loop:
     - netbox.socket
     - netbox.service
+  when: deploy_stage == "packer"
 
 - name: Start and enable netbox-rqworker.service
   systemd:
     name: netbox-rqworker.service
     state: started
     enabled: true
+  when: deploy_stage == "packer"
 
 - name: Restore the previous Ansible Python interpreter
   set_fact:
     ansible_python_interpreter: "{{ _netbox_global_python if _netbox_global_python is defined else 'auto_legacy' }}"
+  when: deploy_stage == "packer"
 
 - name: Recheck the previous Python interpreter's version
   setup:
     gather_subset: min
     filter: ansible_python_version
+  when: deploy_stage == "packer"

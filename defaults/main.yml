@@ -8,7 +8,7 @@ netbox_git: false
 netbox_git_version: develop
 netbox_git_uri: "https://github.com/netbox-community/netbox.git"
 
-netbox_install_epel: true
+netbox_install_epel: false
 
 netbox_superuser_enabled: true
 netbox_superuser_username: admin
@@ -22,7 +22,7 @@ netbox_database_user: netbox
 # netbox_database_host: localhost
 netbox_database_port: 5432
 # netbox_database_socket: /var/run/postgresql
-netbox_database_conn_age: 0
+netbox_database_conn_age: 300
 netbox_database_options: {}
 
 netbox_redis_host: 127.0.0.1
@@ -65,7 +65,7 @@ netbox_reports: []
 
 netbox_user: netbox
 netbox_group: netbox
-netbox_home: /srv/netbox
+netbox_home: /apps/cityfibre-netbox
 netbox_releases_path: "{{ netbox_home }}/releases"
 netbox_git_repo_path: "{{ netbox_releases_path }}/git-repo"
 netbox_git_deploy_path: "{{ netbox_releases_path }}/git-deploy"
