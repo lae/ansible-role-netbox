@@ -1,5 +1,6 @@
 ---
 - name: Create NetBox application directories
+  when: deploy_stage == "packer"
   file:
     path: "{{ item }}"
     state: directory
@@ -12,7 +13,7 @@
     - "{{ _netbox_config.MEDIA_ROOT }}"
     - "{{ _netbox_config.REPORTS_ROOT }}"
     - "{{ _netbox_config.SCRIPTS_ROOT }}"
-   when: deploy_stage == "packer"
+
 
 
 - include_tasks: "install_via_{{ 'git' if netbox_git else 'stable' }}.yml"
