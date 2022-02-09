@@ -75,7 +75,7 @@
                py_compile.compile(f, c); os.remove(c)\""
   notify:
     - reload netbox.service
-  when: deploy_stage == "packer"
+  when: deploy_stage == "terraform"
 
 - name: Generate LDAP configuration for NetBox if enabled
   template:
