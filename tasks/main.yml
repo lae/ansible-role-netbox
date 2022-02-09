@@ -4,7 +4,6 @@
   when: deploy_stage == "packer"
 
 - import_tasks: load_variables.yml
-  when: deploy_stage == "packer"
 
 - include_tasks: "install_packages_{{ ansible_pkg_mgr }}.yml"
   when: deploy_stage == "packer"

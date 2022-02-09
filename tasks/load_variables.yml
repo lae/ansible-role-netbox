@@ -10,21 +10,25 @@
 - name: Define netbox_packages
   set_fact:
     netbox_packages: "{{ _netbox_packages | list }}"
+  when: deploy_stage == "packer"
   when: netbox_packages is not defined
 
 - name: Define netbox_python_packages
   set_fact:
     netbox_python_packages: "{{ _netbox_python_packages | list }}"
+  when: deploy_stage == "packer"
   when: netbox_python_packages is not defined
 
 - name: Define netbox_python_binary
   set_fact:
     netbox_python_binary: "{{ _netbox_python_binary }}"
+  when: deploy_stage == "packer"
   when: netbox_python_binary is not defined
 
 - name: Define netbox_ldap_packages
   set_fact:
     netbox_ldap_packages: "{{ _netbox_ldap_packages | list }}"
+  when: deploy_stage == "packer"
   when: netbox_ldap_packages is not defined
 
 - name: Define _netbox_config
@@ -40,23 +44,28 @@
       - "{{ 'django-storages' if _netbox_storages_module is defined else [] }}"
       - "{{ _netbox_storages_map[_netbox_storages_module] if _netbox_storages_module is defined else [] }}"
       - "{{ netbox_pip_packages }}"
+  when: deploy_stage == "packer"
 
 - name: Flatten that list of dependencies
   set_fact:
     _netbox_python_deps: "{{ _netbox_python_deps | flatten }}"
+  when: deploy_stage == "packer"
 
 - name: Identify current execution PATH
   shell: "echo $PATH"
   register: _path_exec
   changed_when: false
   check_mode: false
+  when: deploy_stage == "packer"
 
 - name: Set a fact for current execution PATH
   set_fact:
     _path: "{{ _path_exec.stdout }}"
   check_mode: false
+  when: deploy_stage == "packer"
 
 - name: Capture the current Python interpreter
   set_fact:
     _netbox_global_python: "{{ ansible_python_interpreter }}"
+  when: deploy_stage == "packer"
   when: ansible_python_interpreter is defined
