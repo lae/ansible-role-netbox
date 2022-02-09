@@ -9,6 +9,15 @@
   loop:
     - "{{ netbox_releases_path }}"
     - "{{ netbox_shared_path }}"
+
+- name: Create NetBox application directories
+  when: deploy_stage == "terraform"
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ netbox_user }}"
+    group: "{{ netbox_group }}"
+  loop:
     - "{{ _netbox_config.MEDIA_ROOT }}"
     - "{{ _netbox_config.MEDIA_ROOT }}"
     - "{{ _netbox_config.REPORTS_ROOT }}"
@@ -22,7 +31,7 @@
 - import_tasks: generate_secret_key.yml
   when:
     - _netbox_config.SECRET_KEY is not defined
-    - deploy_stage == "packer"
+    - deploy_stage == "terraform"
 
 - name: Drop pip constraints file
   template:
@@ -113,23 +122,23 @@
     - reload netbox.service
   when: deploy_stage == "packer"
 
-- name: Copy NetBox scripts into SCRIPTS_ROOT
-  copy:
-    src: "{{ item.src }}"
-    dest: "{{ _netbox_config.SCRIPTS_ROOT }}/{{ item.name }}.py"
-    owner: "{{ netbox_user }}"
-    group: "{{ netbox_group }}"
-  loop: "{{ netbox_scripts }}"
-  when: deploy_stage == "packer"
+#- name: Copy NetBox scripts into SCRIPTS_ROOT
+#  copy:
+#    src: "{{ item.src }}"
+#    dest: "{{ _netbox_config.SCRIPTS_ROOT }}/{{ item.name }}.py"
+#    owner: "{{ netbox_user }}"
+#    group: "{{ netbox_group }}"
+#  loop: "{{ netbox_scripts }}"
+#  when: deploy_stage == "packer"
 
-- name: Copy NetBox reports into REPORTS_ROOT
-  copy:
-    src: "{{ item.src }}"
-    dest: "{{ _netbox_config.REPORTS_ROOT }}/{{ item.name }}.py"
-    owner: "{{ netbox_user }}"
-    group: "{{ netbox_group }}"
-  loop: "{{ netbox_reports }}"
-  when: deploy_stage == "packer"
+#- name: Copy NetBox reports into REPORTS_ROOT
+#  copy:
+#    src: "{{ item.src }}"
+#    dest: "{{ _netbox_config.REPORTS_ROOT }}/{{ item.name }}.py"
+#    owner: "{{ netbox_user }}"
+#    group: "{{ netbox_group }}"
+#  loop: "{{ netbox_reports }}"
+#  when: deploy_stage == "packer"
 
 - block:
     - name: Run database migrations for NetBox
