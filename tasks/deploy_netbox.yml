@@ -109,7 +109,7 @@
     owner: "{{ netbox_user }}"
     group: "{{ netbox_group }}"
     state: link
-  when: deploy_stage == "packer"
+  when: deploy_stage == "terraform"
 
 - name: Symlink/Remove NetBox LDAP configuration file into/from the active NetBox release
   file:
