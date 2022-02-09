@@ -56,8 +56,9 @@
   register: _netbox_pip_additional_install
   until: _netbox_pip_additional_install is succeeded
   when:
-    - (_netbox_python_deps | length) > 0
     - deploy_stage == "packer"
+    - (_netbox_python_deps | length) > 0
+
   loop: "{{ _netbox_python_deps }}"
   notify:
     - restart netbox.service
@@ -175,7 +176,7 @@
         command: collectstatic
         app_path: "{{ netbox_current_path }}/netbox"
         virtualenv: "{{ netbox_virtualenv_path }}"
-      when: deploy_stage == "packer"
+      when: deploy_stage == "terraform"
 
     - name: Clear expired user sessions in NetBox
       django_manage:
