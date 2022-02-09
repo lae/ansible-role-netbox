@@ -10,26 +10,30 @@
 - name: Define netbox_packages
   set_fact:
     netbox_packages: "{{ _netbox_packages | list }}"
-  when: deploy_stage == "packer"
-  when: netbox_packages is not defined
+  when:
+    - deploy_stage == "packer"
+    - netbox_packages is not defined
 
 - name: Define netbox_python_packages
   set_fact:
     netbox_python_packages: "{{ _netbox_python_packages | list }}"
-  when: deploy_stage == "packer"
-  when: netbox_python_packages is not defined
+  when:
+    - deploy_stage == "packer"
+    - netbox_python_packages is not defined
 
 - name: Define netbox_python_binary
   set_fact:
     netbox_python_binary: "{{ _netbox_python_binary }}"
-  when: deploy_stage == "packer"
-  when: netbox_python_binary is not defined
+  when:
+    - deploy_stage == "packer"
+    - netbox_python_binary is not defined
 
 - name: Define netbox_ldap_packages
   set_fact:
     netbox_ldap_packages: "{{ _netbox_ldap_packages | list }}"
-  when: deploy_stage == "packer"
-  when: netbox_ldap_packages is not defined
+  when:
+    - deploy_stage == "packer"
+    - netbox_ldap_packages is not defined
 
 - name: Define _netbox_config
   set_fact:
@@ -67,5 +71,6 @@
 - name: Capture the current Python interpreter
   set_fact:
     _netbox_global_python: "{{ ansible_python_interpreter }}"
-  when: deploy_stage == "packer"
-  when: ansible_python_interpreter is defined
+  when:
+    - deploy_stage == "packer"
+    - ansible_python_interpreter is defined
