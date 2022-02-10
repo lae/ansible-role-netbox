@@ -6,65 +6,65 @@
       - not (netbox_stable and netbox_git)
     msg: "Please choose either the stable or git scenario."
 
-- name: A database host/password or socket must be specified
-  assert:
-    that:
-      - netbox_database_socket is defined or
-        (netbox_database_host is defined and netbox_database_password is defined)
-      - not (netbox_database_socket is defined and netbox_database_host is defined)
-    msg: "Please define either a socket (local) or host/password (TCP)."
+#- name: A database host/password or socket must be specified
+#  assert:
+#    that:
+#      - netbox_database_socket is defined or
+#        (netbox_database_host is defined and netbox_database_password is defined)
+#      - not (netbox_database_socket is defined and netbox_database_host is defined)
+#    msg: "Please define either a socket (local) or host/password (TCP)."
 
-- name: A super user password for NetBox must be specified
-  assert:
-    that:
-      - netbox_superuser_password is defined
-    msg: "Please set an admin password with netbox_superuser_password."
+#- name: A super user password for NetBox must be specified
+#  assert:
+#    that:
+#      - netbox_superuser_password is defined
+#    msg: "Please set an admin password with netbox_superuser_password."
 
-- name: The netbox_config variable should not configure PostgreSQL/Redis
-  assert:
-    that:
-      - "'DATABASE' not in netbox_config"
-      - "'REDIS' not in netbox_config"
-    msg: "Please remove the DATABASE and/or REDIS keys in netbox_config and use their dedicated role variables instead."
+#- name: The netbox_config variable should not configure PostgreSQL/Redis
+#  assert:
+#    that:
+#      - "'DATABASE' not in netbox_config"
+#      - "'REDIS' not in netbox_config"
+#    msg: "Please remove the DATABASE and/or REDIS keys in netbox_config and use their dedicated role variables instead."
 
-- name: netbox_config must specify a list of ALLOWED_HOSTS
-  assert:
-    that:
-      - "'ALLOWED_HOSTS' in netbox_config"
-      - netbox_config.ALLOWED_HOSTS is iterable
-    msg: "Please define ALLOWED_HOSTS in netbox_config."
+#- name: netbox_config must specify a list of ALLOWED_HOSTS
+#  assert:
+#    that:
+#      - "'ALLOWED_HOSTS' in netbox_config"
+#      - netbox_config.ALLOWED_HOSTS is iterable
+#    msg: "Please define ALLOWED_HOSTS in netbox_config."
 
-- name: NAPALM credentials must be specified in netbox_config if NAPALM is enabled
-  assert:
-    that:
-      - "'NAPALM_USERNAME' in netbox_config"
-      - "'NAPALM_PASSWORD' in netbox_config"
-    msg: "Please define NAPALM_USERNAME and NAPALM_PASSWORD in netbox_config to use NAPALM."
-  when: "netbox_napalm_enabled | bool"
+#- name: NAPALM credentials must be specified in netbox_config if NAPALM is enabled
+#  assert:
+#    that:
+#      - "'NAPALM_USERNAME' in netbox_config"
+#      - "'NAPALM_PASSWORD' in netbox_config"
+#    msg: "Please define NAPALM_USERNAME and NAPALM_PASSWORD in netbox_config to use NAPALM."
+#  when: "netbox_napalm_enabled | bool"
 
-- name: NetBox user content directories must be specified
-  assert:
-    that:
-      - "'MEDIA_ROOT' in netbox_config"
-      - "'REPORTS_ROOT' in netbox_config"
-      - "'SCRIPTS_ROOT' in netbox_config"
-    msg: "Please ensure MEDIA_ROOT/REPORTS_ROOT/SCRIPTS_ROOT are defined in netbox_config."
+#- name: NetBox user content directories must be specified
+#  assert:
+#    that:
+#      - "'MEDIA_ROOT' in netbox_config"
+#      - "'REPORTS_ROOT' in netbox_config"
+#      - "'SCRIPTS_ROOT' in netbox_config"
+#    msg: "Please ensure MEDIA_ROOT/REPORTS_ROOT/SCRIPTS_ROOT are defined in netbox_config."
 
-- name: Script/Report module names should follow PEP8
-  assert:
-    that:
-      - "(netbox_scripts | map(attribute='name') | map('regex_search', '^[a-z][a-z0-9_]*$') | select('string') | list | length) == (netbox_scripts | length)"
-      - "(netbox_reports | map(attribute='name') | map('regex_search', '^[a-z][a-z0-9_]*$') | select('string') | list | length) == (netbox_reports | length)"
-    msg: "Please ensure that your script/report module names start with a lowercase letter and contain only lowercase letters, numbers, and underscores."
+#- name: Script/Report module names should follow PEP8
+#  assert:
+#    that:
+#      - "(netbox_scripts | map(attribute='name') | map('regex_search', '^[a-z][a-z0-9_]*$') | select('string') | list | length) == (netbox_scripts | length)"
+#      - "(netbox_reports | map(attribute='name') | map('regex_search', '^[a-z][a-z0-9_]*$') | select('string') | list | length) == (netbox_reports | length)"
+#    msg: "Please ensure that your script/report module names start with a lowercase letter and contain only lowercase letters, numbers, and underscores."
 
-- block:
-    - name: Identify selected storage module
-      set_fact:
-        _netbox_storages_module: "{{ netbox_config.STORAGE_BACKEND | regex_search('(?<=storages\\.backends\\.).*(?=\\.)') }}"
-
-    - name: Ensure storage module is a valid option
-      assert:
-        that:
-          - _netbox_storages_module in _netbox_storages_map
-        msg: "Please ensure your STORAGE_BACKEND is correct."
-  when: "'STORAGE_BACKEND' in netbox_config"
+#- block:
+#    - name: Identify selected storage module
+#      set_fact:
+#        _netbox_storages_module: "{{ netbox_config.STORAGE_BACKEND | regex_search('(?<=storages\\.backends\\.).*(?=\\.)') }}"
+#
+#    - name: Ensure storage module is a valid option
+#      assert:
+#        that:
+#          - _netbox_storages_module in _netbox_storages_map
+#        msg: "Please ensure your STORAGE_BACKEND is correct."
+#  when: "'STORAGE_BACKEND' in netbox_config"
