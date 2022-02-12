@@ -14,6 +14,7 @@ galaxy_info:
       versions:
         - buster
         - stretch
+        - bullseye
     - name: EL
       versions:
         - 7
