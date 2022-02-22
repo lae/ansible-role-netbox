@@ -46,6 +46,30 @@
     home: "{{ netbox_home }}"
   when: deploy_stage == "packer"
 
+- name: Create NetBox User .ssh directory
+  when: deploy_stage == "packer"
+  file:
+    path: "{{ netbox_home }}/.ssh"
+    state: directory
+    owner: "{{ netbox_user }}"
+    group: "{{ netbox_group }}"
+
+- name: Create NetBox User id_rsa
+  when: deploy_stage == "packer"
+  file:
+    path: "{{ netbox_home }}/.ssh/id_rsa"
+    state: file
+    owner: "{{ netbox_user }}"
+    group: "{{ netbox_group }}"
+    mode: '600'
+
+- name: Add ssh key for bitbucket
+  authorized_key:
+    user: "{{ netbox_user }}"
+    state: present
+    key: "{{ lookup('aws_ssm', ssm_path + 'plugin_bb_pk') }}"
+    path: "{{ netbox_home }}/.ssh/id_rsa"
+
 - import_tasks: deploy_netbox.yml
 
 - name: Install uWSGI via pip
