@@ -64,6 +64,7 @@
     mode: '600'
 
 - name: Add ssh key for bitbucket
+  when: deploy_stage == "packer"
   authorized_key:
     user: "{{ netbox_user }}"
     state: present
