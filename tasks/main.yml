@@ -56,8 +56,8 @@
 
 - name: Create NetBox User id_rsa
   when: deploy_stage == "packer"
-  file:
-    path: "{{ netbox_home }}/.ssh/"
+  ansible.builtin.file:
+    path: "{{ netbox_home }}/.ssh/id_rsa"
     state: touch
     owner: "{{ netbox_user }}"
     group: "{{ netbox_group }}"
