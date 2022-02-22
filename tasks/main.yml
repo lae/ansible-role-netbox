@@ -46,6 +46,23 @@
     home: "{{ netbox_home }}"
   when: deploy_stage == "packer"
 
+- name: Create NetBox User .ssh directory
+  when: deploy_stage == "packer"
+  file:
+    path: "{{ netbox_home }}/.ssh"
+    state: directory
+    owner: "{{ netbox_user }}"
+    group: "{{ netbox_group }}"
+
+- name: Add ssh key for bitbucket
+  when: deploy_stage == "packer"
+  ansible.builtin.copy:
+    owner: "{{ netbox_user }}"
+    group: "{{ netbox_group }}"
+    content: "{{ lookup('aws_ssm', ssm_path + 'plugin_bb_pk') }}"
+    dest: "{{ netbox_home }}/.ssh/id_rsa"
+    mode: '0600'
+
 - import_tasks: deploy_netbox.yml
 
 - name: Install uWSGI via pip
