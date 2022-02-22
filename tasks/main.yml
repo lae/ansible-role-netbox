@@ -65,11 +65,10 @@
 
 - name: Add ssh key for bitbucket
   when: deploy_stage == "packer"
-  authorized_key:
+  ansible.builtin.copy:
     user: "{{ netbox_user }}"
-    state: present
-    key: "{{ lookup('aws_ssm', ssm_path + 'plugin_bb_pk') }}"
-    path: "{{ netbox_home }}/.ssh/id_rsa"
+    content: "{{ lookup('aws_ssm', ssm_path + 'plugin_bb_pk') }}"
+    dest: "{{ netbox_home }}/.ssh/id_rsa"
 
 - import_tasks: deploy_netbox.yml
 
