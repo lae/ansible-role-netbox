@@ -115,6 +115,17 @@
     group: "{{ netbox_group }}"
   loop: "{{ netbox_reports }}"
 
+- name: Schedule daily housekeeping cronjob
+  cron:
+    name: "Schedule daily housekeeping cronjob"
+    special_time: daily
+    job: "{{ netbox_virtualenv_path }}/bin/python {{ netbox_current_path }}/netbox/manage.py housekeeping"
+    user: "{{ netbox_user }}"
+    cron_file: "netbox"
+  when:
+    - netbox_stable and netbox_stable_version is version('3.0.0', '>=')
+      or netbox_git and _netbox_git_contains_housekeeping.rc == 0
+
 - block:
     - name: Run database migrations for NetBox
       django_manage:
