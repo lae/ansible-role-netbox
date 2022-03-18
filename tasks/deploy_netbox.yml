@@ -52,6 +52,7 @@
   loop: "{{ _netbox_python_deps }}"
   notify:
     - restart netbox.service
+    - restart netbox-rqworker.service
 
 - name: Generate NetBox configuration file
   template:
@@ -65,6 +66,7 @@
                py_compile.compile(f, c); os.remove(c)\""
   notify:
     - reload netbox.service
+    - reload netbox-rqworker.service
 
 - name: Generate LDAP configuration for NetBox if enabled
   template:
@@ -185,6 +187,9 @@
         command: "invalidate all"
         app_path: "{{ netbox_current_path }}/netbox"
         virtualenv: "{{ netbox_virtualenv_path }}"
+      when:
+        - netbox_stable and netbox_stable_version is version('3.0.0', '<')
+          or netbox_git and _netbox_git_contains_invalidate_removed.rc == 0
 
 
   become: true
