@@ -6,6 +6,7 @@
     owner: "{{ netbox_user }}"
     group: "{{ netbox_group }}"
   loop:
+    - "{{ netbox_home }}"
     - "{{ netbox_releases_path }}"
     - "{{ netbox_shared_path }}"
     - "{{ _netbox_config.MEDIA_ROOT }}"
