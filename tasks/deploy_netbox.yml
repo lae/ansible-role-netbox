@@ -27,12 +27,25 @@
     owner: "{{ netbox_user }}"
     group: "{{ netbox_group }}"
 
-- name: Create NetBox virtualenv and install needed Python dependencies
+- name: Create NetBox virtualenv
+  pip:
+    name:
+      - pip
+      - setuptools
+    state: latest
+    virtualenv: "{{ netbox_virtualenv_path }}"
+    virtualenv_command: "{{ netbox_python_binary }} -m venv"
+  become: true
+  become_user: "{{ netbox_user }}"
+  retries: 2
+  register: _netbox_virtualenv_setup
+  until: _netbox_virtualenv_setup is succeeded
+
+- name: Install needed Python dependencies
   pip:
     requirements: "{{ netbox_current_path }}/requirements.txt"
     extra_args: "-c {{ netbox_current_path }}/constraints.txt"
     virtualenv: "{{ netbox_virtualenv_path }}"
-    virtualenv_command: "{{ netbox_python_binary }} -m venv"
   become: true
   become_user: "{{ netbox_user }}"
   retries: 2
