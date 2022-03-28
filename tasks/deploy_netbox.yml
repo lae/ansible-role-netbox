@@ -140,7 +140,7 @@
         chdir: "{{ netbox_current_path }}"
       when:
         - netbox_stable and netbox_stable_version is version('3.1.0', '>=')
-          or netbox_git and _netbox_git_contains_trace_paths.rc == 0
+          or netbox_git
 
     - name: Create a super user for NetBox
       shell: "printf '{{ netbox_superuser_script }}' |\
