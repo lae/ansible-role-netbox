@@ -139,7 +139,7 @@
         cmd: "{{ netbox_virtualenv_path }}/bin/mkdocs build"
         chdir: "{{ netbox_current_path }}"
       when:
-        - netbox_stable and netbox_stable_version is version('3.1.0', '>=')
+        - netbox_stable and netbox_stable_version is version('2.12.0', '>=')
           or netbox_git and _netbox_git_contains_mkdocs.rc == 0
 
     - name: Create a super user for NetBox
