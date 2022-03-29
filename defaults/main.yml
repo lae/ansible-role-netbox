@@ -93,6 +93,9 @@ netbox_pip_constraints:
   # Blacklist django-rq 2.3.1 due to https://github.com/rq/django-rq/issues/421
   # https://github.com/netbox-community/netbox/issues/4633
   - 'django-rq!=2.3.1'
+  # If you're using Netbox 2.11.3 or below, uncomment the below to fix database
+  # migrations. https://github.com/pallets/markupsafe/issues/284
+  # - 'MarkupSafe<2.1.0'
 
 netbox_keep_uwsgi_updated: false
 netbox_uwsgi_options: {}
