@@ -133,7 +133,7 @@
 
 - name: Schedule daily housekeeping cronjob
   cron:
-    name: "Schedule daily housekeeping cronjob"
+    name: "Netbox housekeeping"
     special_time: daily
     job: "{{ netbox_virtualenv_path }}/bin/python {{ netbox_current_path }}/netbox/manage.py housekeeping"
     user: "{{ netbox_user }}"
