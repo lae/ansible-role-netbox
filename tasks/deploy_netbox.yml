@@ -6,6 +6,7 @@
     owner: "{{ netbox_user }}"
     group: "{{ netbox_group }}"
   loop:
+    - "{{ netbox_home }}"
     - "{{ netbox_releases_path }}"
     - "{{ netbox_shared_path }}"
     - "{{ _netbox_config.MEDIA_ROOT }}"
@@ -26,12 +27,25 @@
     owner: "{{ netbox_user }}"
     group: "{{ netbox_group }}"
 
-- name: Create NetBox virtualenv and install needed Python dependencies
+- name: Create NetBox virtualenv
+  pip:
+    name:
+      - pip
+      - setuptools
+    state: latest
+    virtualenv: "{{ netbox_virtualenv_path }}"
+    virtualenv_command: "{{ netbox_python_binary }} -m venv"
+  become: true
+  become_user: "{{ netbox_user }}"
+  retries: 2
+  register: _netbox_virtualenv_setup
+  until: _netbox_virtualenv_setup is succeeded
+
+- name: Install needed Python dependencies
   pip:
     requirements: "{{ netbox_current_path }}/requirements.txt"
     extra_args: "-c {{ netbox_current_path }}/constraints.txt"
     virtualenv: "{{ netbox_virtualenv_path }}"
-    virtualenv_command: "{{ netbox_python_binary }} -m venv"
   become: true
   become_user: "{{ netbox_user }}"
   retries: 2
@@ -52,6 +66,7 @@
   loop: "{{ _netbox_python_deps }}"
   notify:
     - restart netbox.service
+    - restart netbox-rqworker.service
 
 - name: Generate NetBox configuration file
   template:
@@ -65,6 +80,7 @@
                py_compile.compile(f, c); os.remove(c)\""
   notify:
     - reload netbox.service
+    - reload netbox-rqworker.service
 
 - name: Generate LDAP configuration for NetBox if enabled
   template:
@@ -114,6 +130,17 @@
     owner: "{{ netbox_user }}"
     group: "{{ netbox_group }}"
   loop: "{{ netbox_reports }}"
+
+- name: Schedule daily housekeeping cronjob
+  cron:
+    name: "Netbox housekeeping"
+    special_time: daily
+    job: "{{ netbox_virtualenv_path }}/bin/python {{ netbox_current_path }}/netbox/manage.py housekeeping"
+    user: "{{ netbox_user }}"
+    cron_file: "netbox"
+  when:
+    - netbox_stable and netbox_stable_version is version('3.0.0', '>=')
+      or netbox_git and _netbox_git_contains_housekeeping.rc == 0
 
 - block:
     - name: Run database migrations for NetBox
@@ -174,6 +201,9 @@
         command: "invalidate all"
         app_path: "{{ netbox_current_path }}/netbox"
         virtualenv: "{{ netbox_virtualenv_path }}"
+      when:
+        - netbox_stable and netbox_stable_version is version('3.0.0', '<')
+          or netbox_git and _netbox_git_contains_invalidate_removed.rc == 0
 
 
   become: true

@@ -1,7 +1,7 @@
 ---
 # defaults file for lae.netbox
 netbox_stable: false
-netbox_stable_version: 2.10.10
+netbox_stable_version: 3.0.12
 netbox_stable_uri: "https://github.com/netbox-community/netbox/archive/v{{ netbox_stable_version }}.tar.gz"
 
 netbox_git: false
@@ -93,6 +93,9 @@ netbox_pip_constraints:
   # Blacklist django-rq 2.3.1 due to https://github.com/rq/django-rq/issues/421
   # https://github.com/netbox-community/netbox/issues/4633
   - 'django-rq!=2.3.1'
+  # If you're using Netbox 2.11.3 or below, uncomment the below to fix database
+  # migrations. https://github.com/pallets/markupsafe/issues/284
+  # - 'MarkupSafe<2.1.0'
 
 netbox_keep_uwsgi_updated: false
 netbox_uwsgi_options: {}
