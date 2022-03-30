@@ -18,16 +18,18 @@
 # Can't quite check the effective version of a git installation this early since
 # the repo isn't checked out, but most users will be on develop in the first
 # place so this dumb check should be good enough.
-- name: Ensure the installed Python version is newer than 3.6.0 for NetBox 2.8+
+- name: Ensure Python version installed is compatible with this version of Netbox
   assert:
     that:
-      - "ansible_python_version is version('3.6.0', '>=')"
+      - "ansible_python_version is version(item.python_needed, '>=')"
     msg: >
-      NetBox 2.8.0+ requires Python 3.6+. Please either specify an older NetBox
-      version, upgrade to a newer distribution that provides Python 3.6+, or
-      set netbox_python_binary to an appropriate Python 3.6+ binary.
+      NetBox {{ item.netbox_version_min }} requires at least Python {{ item.python_needed }}.
+      Please either specify an older NetBox version, upgrade to a newer
+      distribution that provides Python at least {{ item.python_needed }}, or
+      set netbox_python_binary to an appropriate Python {{ item.python_needed }} binary.
   when:
-    - netbox_stable and netbox_stable_version is version('2.8.0', '>=') or netbox_git
+    - netbox_stable and netbox_stable_version is version(item.netbox_version_min, '>=') or netbox_git
+  loop: "{{ netbox_python_compat_matrix }}"
 
 - name: Create NetBox user group
   group:
