@@ -161,6 +161,14 @@
         - netbox_stable and netbox_stable_version is version('2.10.0', '>=')
           or netbox_git and _netbox_git_contains_trace_paths.rc == 0
 
+    - name: Build the local documentation
+      shell:
+        cmd: "{{ netbox_virtualenv_path }}/bin/mkdocs build"
+        chdir: "{{ netbox_current_path }}"
+      when:
+        - netbox_stable and netbox_stable_version is version('3.0.0', '>=')
+          or netbox_git and _netbox_git_contains_mkdocs.rc == 0
+
     - name: Create a super user for NetBox
       shell: "printf '{{ netbox_superuser_script }}' |\
               {{ netbox_virtualenv_path }}/bin/python {{ netbox_current_path }}/netbox/manage.py shell"
