@@ -41,6 +41,13 @@
     group: "{{ netbox_group }}"
   when: deploy_stage == "packer"
 
+- name: replace download link when netbox has broken dependencies in requirements.txt
+  ansible.builtin.replace:
+    path: /apps/cityfibre-netbox/current/requirements.txt
+    regexp: '(git\+git)'
+    replace: git+https
+  when: deploy_stage == "packer"
+
 - name: Create NetBox virtualenv and install needed Python dependencies
   pip:
     requirements: "{{ netbox_current_path }}/requirements.txt"
