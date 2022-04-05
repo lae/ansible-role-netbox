@@ -44,7 +44,7 @@
 - name: replace download link when netbox has broken dependencies in requirements.txt
   ansible.builtin.replace:
     path: /apps/cityfibre-netbox/current/requirements.txt
-    regexp: '(git\+git)'
+    regexp: '(^git\+git)'
     replace: git+https
   when: deploy_stage == "packer"
 
