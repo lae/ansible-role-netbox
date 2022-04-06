@@ -161,6 +161,7 @@
         app_path: "{{ netbox_current_path }}/netbox"
         virtualenv: "{{ netbox_virtualenv_path }}"
       retries: 2
+      throttle: 1
       register: _netbox_db_migration
       until: _netbox_db_migration is success
 
