@@ -190,6 +190,13 @@
         - netbox_superuser_create_token
         - netbox_superuser_enabled
 
+    - name: Build the local documentation
+      command:
+        chdir: "{{ netbox_current_path }}"
+        cmd: "{{ netbox_virtualenv_path }}/bin/mkdocs build"
+      when:
+        - netbox_stable and netbox_stable_version is version('3.0', '>=')
+
     - name: Generate static assets for NetBox
       django_manage:
         command: "collectstatic --no-input"
@@ -216,12 +223,6 @@
         app_path: "{{ netbox_current_path }}/netbox"
         virtualenv: "{{ netbox_virtualenv_path }}"
 
-    - name: Build the local documentation
-      command:
-        chdir: "{{ netbox_current_path }}"
-        cmd: "{{ netbox_virtualenv_path }}/bin/mkdocs build"
-      when:
-        - netbox_stable and netbox_stable_version is version('3.0', '>=')
 
   become: true
   become_user: "{{ netbox_user }}"
