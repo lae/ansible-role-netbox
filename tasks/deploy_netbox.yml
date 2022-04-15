@@ -211,7 +211,7 @@
         virtualenv: "{{ netbox_virtualenv_path }}"
       when:
         - netbox_stable and netbox_stable_version is version('3.0.0', '<')
-          or netbox_git and _netbox_git_contains_invalidate_removed.rc == 0
+          or netbox_git and _netbox_git_contains_invalidate_removed.rc != 0
 
 
   become: true
