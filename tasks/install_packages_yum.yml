@@ -5,6 +5,13 @@
     state: installed
   when: netbox_install_epel
 
+- name: Install SCL repository (CentOS)
+  yum:
+    name: centos-release-scl
+    state: installed
+    enablerepo: extras
+  when: "ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'"
+
 - name: Install required packages for selected NetBox configuration
   yum:
     name: "{{ _netbox_yum_packages | flatten }}"
