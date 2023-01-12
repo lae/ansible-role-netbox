@@ -59,3 +59,8 @@
   set_fact:
     _netbox_global_python: "{{ ansible_python_interpreter }}"
   when: ansible_python_interpreter is defined
+
+- name: Set the execution uwsgi command
+  set_fact:
+    netbox_uwsgi_cmd: "/usr/bin/env uwsgi"
+  when: "not netbox_uwsgi_in_venv | bool"

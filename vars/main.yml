@@ -2,6 +2,7 @@
 # vars file for lae.netbox
 netbox_config_path: "{{ netbox_current_path }}/netbox/netbox"
 netbox_virtualenv_path: "{{ netbox_current_path }}/venv-py3"
+netbox_uwsgi_cmd: "{{ netbox_virtualenv_path }}/bin/uwsgi"
 
 _netbox_storages_map:
   s3boto3: boto3
@@ -43,3 +44,4 @@ netbox_superuser_token: |
 netbox_python_compat_matrix:
   - { netbox_version_min: '2.8.0', python_needed: '3.6.0' }
   - { netbox_version_min: '3.0.0', python_needed: '3.7.0' }
+  - { netbox_version_min: '3.2.0', python_needed: '3.8.0' }
