@@ -213,6 +213,14 @@
         - netbox_stable and netbox_stable_version is version('3.0.0', '<')
           or netbox_git and _netbox_git_contains_invalidate_removed.rc != 0
 
+    - name: Clear cached data in NetBox 3.2.3+
+      django_manage:
+        command: "clearcache"
+        app_path: "{{ netbox_current_path }}/netbox"
+        virtualenv: "{{ netbox_virtualenv_path }}"
+      when:
+        - netbox_stable and netbox_stable_version is version('3.2.2', '>')
+          or netbox_git and _netbox_git_contains_add_clearcache.rc == 0
 
   become: true
   become_user: "{{ netbox_user }}"

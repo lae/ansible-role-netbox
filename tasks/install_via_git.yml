@@ -78,6 +78,15 @@
   changed_when: False
   failed_when: "_netbox_git_contains_invalidate_removed.rc not in [0, 1]"
 
+- name: Check existence of commit b172ae6, adding the clearcache command
+  shell: 'set -o pipefail; git log --format=%H "{{ netbox_git_version }}" | grep ^b172ae65d24f6dc161c4b609477a4547bb62a50b'
+  args:
+    chdir: "{{ netbox_git_repo_path }}"
+    executable: /bin/bash
+  register: _netbox_git_contains_add_clearcache
+  changed_when: False
+  failed_when: "_netbox_git_contains_add_clearcache.rc not in [0, 1]"
+
 - name: Archive and extract snapshot of git repository
   shell: 'set -o pipefail; git archive "{{ netbox_git_version }}" | tar -x -C "{{ netbox_git_deploy_path }}"'
   args:
