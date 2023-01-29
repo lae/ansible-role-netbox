@@ -169,6 +169,13 @@ set `netbox_database_conn_age` to your preferred maximum connection age, in seco
 
 [source,yaml]
 ----
+netbox_database_maintenance: postgres
+----
+
+If the postgres database is configured to only allow access to specific tables of the DB for the user configured with Netbox, you can set `netbox_database_maintenance` to replace the default database used for connection checking to a different table than the default `postgres`. This is an empty table in every postgres database by default, but some configurations might block access to this table, so a different table (i.e. `netbox_prod`) can be used here instead.
+
+[source,yaml]
+----
 # Example usage, default is empty dict
 netbox_database_options:
   sslmode: require
@@ -501,6 +508,7 @@ installing NetBox on to authenticate with it over TCP:
     netbox_database: netbox_prod
     netbox_database_user: netbox_prod_user
     netbox_database_password: "very_secure_password_for_prod"
+    netbox_database_maintenance: netbox_prod
     redis_bind: 127.0.0.1
     redis_version: 6.0.9
     redis_checksum: sha256:dc2bdcf81c620e9f09cfd12e85d3bc631c897b2db7a55218fd8a65eaa37f86dd
