@@ -85,9 +85,10 @@
     owner: "{{ netbox_user }}"
     group: "{{ netbox_group }}"
     mode: 0640
-    validate: "{{ netbox_virtualenv_path }}/bin/python -c \"import py_compile,os; f=r'%s';\
-               c='/tmp/' + os.path.basename(os.path.dirname(f)) + '-' + os.path.basename(f) + 'c';\
-               py_compile.compile(f, c); os.remove(c)\""
+    validate:
+      "{{ netbox_virtualenv_path }}/bin/python -c \"import py_compile,os; f=r'%s';\
+      c='/tmp/' + os.path.basename(os.path.dirname(f)) + '-' + os.path.basename(f) + 'c';\
+      py_compile.compile(f, c); os.remove(c)\""
   notify:
     - reload netbox.service
 
@@ -98,9 +99,10 @@
     owner: "{{ netbox_user }}"
     group: "{{ netbox_group }}"
     mode: 0640
-    validate: "{{ netbox_virtualenv_path }}/bin/python -c \"import py_compile,os; f=r'%s';\
-                c='/tmp/' + os.path.basename(os.path.dirname(f)) + '-' + os.path.basename(f) + 'c';\
-                py_compile.compile(f, c); os.remove(c)\""
+    validate:
+      "{{ netbox_virtualenv_path }}/bin/python -c \"import py_compile,os; f=r'%s';\
+      c='/tmp/' + os.path.basename(os.path.dirname(f)) + '-' + os.path.basename(f) + 'c';\
+      py_compile.compile(f, c); os.remove(c)\""
   notify:
     - reload netbox.service
   when:
@@ -114,7 +116,7 @@
     user: netbox
     job: "{{ netbox_virtualenv_path }}/bin/python {{ netbox_current_path }}/netbox/manage.py housekeeping"
     cron_file: netbox
-    
+
 - name: Reset python interpreter to netbox_python_binary on RHEL7
   when: "ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'"
   set_fact:
@@ -176,7 +178,7 @@
 
     - name: Create a super user for NetBox
       shell: "printf '{{ netbox_superuser_script }}' |\
-              {{ netbox_virtualenv_path }}/bin/python {{ netbox_current_path }}/netbox/manage.py shell"
+        {{ netbox_virtualenv_path }}/bin/python {{ netbox_current_path }}/netbox/manage.py shell"
       register: _netbox_superuser_result
       changed_when: "'changed' in _netbox_superuser_result.stdout"
       when:
@@ -184,7 +186,7 @@
 
     - name: Create a super user token for NetBox
       shell: "printf '{{ netbox_superuser_token }}' |\
-              {{ netbox_virtualenv_path }}/bin/python {{ netbox_current_path }}/netbox/manage.py shell"
+        {{ netbox_virtualenv_path }}/bin/python {{ netbox_current_path }}/netbox/manage.py shell"
       register: _netbox_superuser_token
       changed_when: "'changed' in _netbox_superuser_token.stdout"
       when:
@@ -216,6 +218,13 @@
         app_path: "{{ netbox_current_path }}/netbox"
         virtualenv: "{{ netbox_virtualenv_path }}"
 
+    - name: Rebuild the search cache (lazily) in NetBox
+      when: "netbox_stable and netbox_stable_versiosn is version('3.4.0', '>=')"
+      django_manage:
+        command: "reindex --lazy"
+        app_path: "{{ netbox_current_path }}/netbox"
+        virtualenv: "{{ netbox_virtualenv_path }}"
+
     - name: Clear cached data in NetBox
       when:
         - netbox_stable and netbox_stable_version is version('2.10.12', '<=')
@@ -223,7 +232,6 @@
         command: "invalidate all"
         app_path: "{{ netbox_current_path }}/netbox"
         virtualenv: "{{ netbox_virtualenv_path }}"
-
 
   become: true
   become_user: "{{ netbox_user }}"
