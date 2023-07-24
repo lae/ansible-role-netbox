@@ -4,3 +4,4 @@
 *.retry
 *.code-workspace
 *.sw?
+.venv
