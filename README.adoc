@@ -239,7 +239,7 @@ webhooks database.
 netbox_rqworker_processes: 1
 ----
 
-Specify how many rqworkers should be started by the systemd service.
+Specify how many request queue workers should be started by the systemd service.
 You can leave this at the default of 1, unless you have a large number of reports,
 scripts and other background tasks.
 
