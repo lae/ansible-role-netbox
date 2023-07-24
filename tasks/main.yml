@@ -106,7 +106,7 @@
 - name: Install NetBox-rqworker service unit file
   template:
     src: netbox-rqworker.service.j2
-    dest: /lib/systemd/system/netbox-rqworker.service
+    dest: /lib/systemd/system/netbox-rqworker@.service
   notify:
     - restart netbox-rqworker.service
 
@@ -121,9 +121,10 @@
 
 - name: Start and enable netbox-rqworker.service
   systemd:
-    name: netbox-rqworker.service
+    name: "netbox-rqworker@{{ item }}.service"
     state: started
     enabled: true
+  with_sequence: count="{{ netbox_rqworker_processes }}"
 
 - name: Restore the previous Ansible Python interpreter
   set_fact:

@@ -1,25 +1,25 @@
 {{ ansible_managed | comment }}
 [Unit]
-Description=NetBox RQ-Worker
-Documentation=http://netbox.readthedocs.io/en/{{ 'latest' if netbox_git else 'stable' }}/installation/3-http-daemon/#supervisord-installation
-After=syslog.target
+Description=NetBox Request Queue Worker %i
+Documentation=https://docs.netbox.dev/
+After=network-online.target
+Wants=network-online.target
 
 [Service]
+Type=simple
+
 WorkingDirectory={{ netbox_shared_path }}
-ExecStart={{ netbox_virtualenv_path }}/bin/python \
-    {{ netbox_current_path }}/netbox/manage.py rqworker   
-ExecReload=/bin/kill -1 $MAINPID
-ExecStop=/bin/kill -2 $MAINPID
+ExecStart={{ netbox_virtualenv_path }}/bin/python {{ netbox_current_path }}/netbox/manage.py rqworker high default low
+
 StandardOutput=journal
 StandardError=journal
 User={{ netbox_user }}
 Group={{ netbox_group }}
 Restart=on-failure
-#SuccessExitStatus=15 17 29 30
-KillSignal=SIGQUIT
-StandardError=syslog
+RestartSec=30
+
 NotifyAccess=all
-PrivateTmp=yes
+PrivateTmp=true
 ProtectSystem=full
 DeviceAllow=/dev/null rw
 DeviceAllow=/dev/urandom r
