@@ -19,11 +19,7 @@
 
 - name: restart netbox-rqworker.service
   systemd:
-    name: netbox-rqworker.service
+    name: "netbox-rqworker@{{ item }}.service"
     state: restarted
     daemon_reload: true
-
-- name: reload netbox-rqworker.service
-  systemd:
-    name: netbox-rqworker.service
-    state: reloaded
+  with_sequence: count="{{ netbox_rqworker_processes }}"

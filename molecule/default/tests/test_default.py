@@ -10,7 +10,8 @@ def test_services(host):
     services = [
         "netbox.socket",
         "netbox.service",
-        "netbox-rqworker.service"
+        "netbox-rqworker@1.service"
+        "netbox-rqworker@2.service"
     ]
     for service in services:
         s = host.service(service)

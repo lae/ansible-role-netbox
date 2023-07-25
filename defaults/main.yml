@@ -100,3 +100,4 @@ netbox_pip_constraints:
 
 netbox_keep_uwsgi_updated: false
 netbox_uwsgi_options: {}
+netbox_rqworker_processes: 1
