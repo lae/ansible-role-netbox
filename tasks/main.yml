@@ -72,6 +72,7 @@
     name: uwsgi
     state: "{{ 'latest' if netbox_keep_uwsgi_updated else 'present' }}"
     umask: "0022"
+    extra_args: "{{ (ansible_distribution_release == 'bookworm') | ternary('--break-system-packages', '') }}"
   environment:
     PATH: "/usr/local/bin:{{ _path }}"
   notify:
