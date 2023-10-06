@@ -435,6 +435,15 @@ Specify extra configuration options to insert into `uwsgi.ini` here. This is
 expected to be a dictionary of key/value pairs, e.g. `buffer-size: 65535`.
 
 [source,yaml]
+netbox_uwsgi_in_venv: false
+
+Toggle `netbox_uwsgi_in_venv` to `true` if you want `uwsgi` to be installed in the same virtual environment as NetBox.
+Otherwise, it will be installed system-wide into the library path of the python version used to created the virtual environment (normal/legacy behavior).
+
+WARNING: There's a possibility that this may become the default in a later version of this role (I think after further cross-platform testing).
+See https://github.com/lae/ansible-role-netbox/issues/144[issue #144] for further details.
+
+[source,yaml]
 netbox_install_epel: true
 
 Toggle `netbox_install_epel` to `false` if you do not want this role to install

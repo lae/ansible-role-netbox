@@ -99,5 +99,6 @@ netbox_pip_constraints:
   # - 'MarkupSafe<2.1.0'
 
 netbox_keep_uwsgi_updated: false
+netbox_uwsgi_in_venv: false
 netbox_uwsgi_options: {}
 netbox_rqworker_processes: 1

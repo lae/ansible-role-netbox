@@ -72,6 +72,7 @@
     name: uwsgi
     state: "{{ 'latest' if netbox_keep_uwsgi_updated else 'present' }}"
     umask: "0022"
+    virtualenv: "{{ omit if not netbox_uwsgi_in_venv else netbox_virtualenv_path }}"
   environment:
     PATH: "/usr/local/bin:{{ _path }}"
   notify:
