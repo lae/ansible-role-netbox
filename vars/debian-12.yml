@@ -18,3 +18,4 @@ _netbox_python_binary: /usr/bin/python3
 _netbox_ldap_packages:
   - libldap2-dev
   - libsasl2-dev
+netbox_uwsgi_in_venv: true
