@@ -221,8 +221,8 @@
       when:
         - netbox_stable and netbox_stable_version is version('3.2.2', '>')
           and netbox_stable_version is version('3.7.0', '<')
-          or netbox_git and _netbox_git_contains_add_clearcache.rc == 0 
-          and _netbox_git_contains_remove_clearcache != 0
+          or netbox_git and ( _netbox_git_contains_add_clearcache.rc == 0
+            and _netbox_git_contains_remove_clearcache.rc != 0 )
 
   become: true
   become_user: "{{ netbox_user }}"
