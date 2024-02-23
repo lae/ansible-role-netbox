@@ -39,6 +39,7 @@ Provided you have Ansible installed and are using defaults:
 [source,bash,subs="attributes"]
 ----
 ansible-galaxy install geerlingguy.postgresql davidwittman.redis {role}
+ansible-galaxy collection install community.postgresql
 ansible-playbook -i your.server.fqdn, ~/.ansible/roles/{role}/examples/playbook_single_host_deploy.yml -K
 ----
 
@@ -50,6 +51,7 @@ You can also use Vagrant, if you prefer, to bring up NetBox at `localhost:8080`:
 [source,bash,subs="attributes"]
 ----
 ansible-galaxy install geerlingguy.postgresql davidwittman.redis {role}
+ansible-galaxy collection install community.postgresql
 cd ~/.ansible/roles/{role}/
 vagrant up
 ----
@@ -70,12 +72,23 @@ endif::[]
 
 === PostgreSQL
 
-This role does not setup a PostgreSQL server (but will create a database if
-needed), so you'll need to setup a PostgreSQL server and create a database user
-separate from this role. Take a look at the _Example Playbook_ section.
+This role does not setup a PostgreSQL server (but will create a database if needed), so you'll need to setup a PostgreSQL server and create a database user separate from this role.
+Take a look at the _Example Playbook_ section.
 
-WARNING: NetBox v2.2.0+ require PostgreSQL 9.4 at the minimum, which may not be
-available in your distribution's repos. You may want to use a role for this.
+In addition, for Ansible 2.10+, you may need to install the `community.postgresql` collection.
+It is recommended to specify this in your playbook's `requirements.yml` file.
+For example:
+
+[source,yaml]
+----
+---
+collections:
+  - name: community.postgresql
+    version: 3.4.0
+----
+
+WARNING: NetBox v2.2.0+ require PostgreSQL 9.4 at the minimum, which may not be available in your distribution's repos.
+You may want to use a role for this.
 
 === Redis
 
