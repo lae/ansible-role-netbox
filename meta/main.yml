@@ -16,9 +16,12 @@ galaxy_info:
         - buster
         - stretch
         - bullseye
+        - bookworm
     - name: EL
       versions:
         - 7
+        - 8
+        - 9
   galaxy_tags:
     - dcim
     - ipam
