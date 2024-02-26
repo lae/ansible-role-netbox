@@ -42,7 +42,7 @@
     home: "{{ netbox_home }}"
 
 - name: Ensure Postgres database exists (via socket)
-  postgresql_db:
+  community.postgresql.postgresql_db:
     name: "{{ netbox_database }}"
     login_user: "{{ netbox_database_user }}"
     login_unix_socket: "{{ netbox_database_socket }}"
@@ -54,7 +54,7 @@
     - netbox_database_host is not defined
 
 - name: Ensure Postgres database exists (via TCP)
-  postgresql_db:
+  community.postgresql.postgresql_db:
     name: "{{ netbox_database }}"
     login_host: "{{ netbox_database_host }}"
     port: "{{ netbox_database_port }}"
