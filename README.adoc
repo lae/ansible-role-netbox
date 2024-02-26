@@ -2,7 +2,7 @@
 :role-name: netbox
 :role: {role-author}.{role-name}
 :gh-name: {role-author}/ansible-role-{role-name}
-:netbox-version: 2.10.10
+:netbox-version: 3.7.3
 = {role}
 :toc:
 :toc-placement: preamble
@@ -12,20 +12,17 @@ ifdef::env-github[]
 endif::[]
 
 ifdef::env-github[]
-image:https://img.shields.io/travis/{gh-name}/master.svg?style=for-the-badge[Build Status,link=https://travis-ci.org/{gh-name}]
 image:https://img.shields.io/badge/role-{role}-blue?style=for-the-badge[Ansible Galaxy Role,link=https://galaxy.ansible.com/{role-author}/{role-name}]
 endif::env-github[]
 
-Deploys and configures https://github.com/netbox-community/netbox[NetBox], an
-IP address management (IPAM) and data center infrastructure management (DCIM) tool.
+Deploys and configures https://github.com/netbox-community/netbox[NetBox], an IP address management (IPAM) and data center infrastructure management (DCIM) tool.
 
-This role will deploy NetBox within its own virtualenv either by release
-tarball or via git using uWSGI as the application server.
+This role will deploy NetBox within its own virtualenv either by release tarball or via git using uWSGI as the application server.
 
-Tested and supported against CentOS 7 / Debian 9,10,11 / Ubuntu 16, 18, 20 and 22.
+Supports CentOS 7,8 / RHEL 9 / Debian 9,10,11,12 / Ubuntu 16, 18, 20 and 22.
 
-Note that this role is slightly opinionated and differs from installation
-instructions from the NetBox documentation. The main differences are:
+Note that this role is slightly opinionated and differs from installation instructions from the NetBox documentation.
+The main differences are:
 
 * Uses distro-provided systemd instead of supervisord
 * Uses uWSGI as an application server instead of gunicorn
