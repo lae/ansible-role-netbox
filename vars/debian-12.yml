@@ -1,0 +1,21 @@
+---
+_netbox_packages:
+  - libxml2-dev
+  - libxslt1-dev
+  - libffi-dev
+  - libjpeg-dev
+  - graphviz
+  - libpq-dev
+  - libssl-dev
+  - systemd-cron
+_netbox_python_packages:
+  - python3.11
+  - python3.11-dev
+  - python3-venv
+  - python3-pip
+  - python3-psycopg2  # used by ansible's postgres modules
+_netbox_python_binary: /usr/bin/python3
+_netbox_ldap_packages:
+  - libldap2-dev
+  - libsasl2-dev
+netbox_uwsgi_in_venv: true

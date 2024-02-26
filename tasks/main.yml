@@ -42,7 +42,7 @@
     home: "{{ netbox_home }}"
 
 - name: Ensure Postgres database exists (via socket)
-  postgresql_db:
+  community.postgresql.postgresql_db:
     name: "{{ netbox_database }}"
     login_user: "{{ netbox_database_user }}"
     login_unix_socket: "{{ netbox_database_socket }}"
@@ -54,7 +54,7 @@
     - netbox_database_host is not defined
 
 - name: Ensure Postgres database exists (via TCP)
-  postgresql_db:
+  community.postgresql.postgresql_db:
     name: "{{ netbox_database }}"
     login_host: "{{ netbox_database_host }}"
     port: "{{ netbox_database_port }}"
@@ -72,6 +72,7 @@
     name: uwsgi
     state: "{{ 'latest' if netbox_keep_uwsgi_updated else 'present' }}"
     umask: "0022"
+    virtualenv: "{{ omit if not netbox_uwsgi_in_venv else netbox_virtualenv_path }}"
   environment:
     PATH: "/usr/local/bin:{{ _path }}"
   notify:
@@ -106,7 +107,7 @@
 - name: Install NetBox-rqworker service unit file
   template:
     src: netbox-rqworker.service.j2
-    dest: /lib/systemd/system/netbox-rqworker.service
+    dest: /lib/systemd/system/netbox-rqworker@.service
   notify:
     - restart netbox-rqworker.service
 
@@ -121,9 +122,10 @@
 
 - name: Start and enable netbox-rqworker.service
   systemd:
-    name: netbox-rqworker.service
+    name: "netbox-rqworker@{{ item }}.service"
     state: started
     enabled: true
+  with_sequence: count="{{ netbox_rqworker_processes }}"
 
 - name: Restore the previous Ansible Python interpreter
   set_fact:

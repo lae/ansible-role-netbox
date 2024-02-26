@@ -27,6 +27,7 @@
         role_attr_flags: CREATEDB,NOSUPERUSER
     ## REDIS server install
     redis_bind: 127.0.0.1
+    netbox_rqworker_processes: 2
   roles:
     - geerlingguy.postgresql
     - davidwittman.redis

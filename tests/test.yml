@@ -13,7 +13,7 @@
           shell: cat /srv/netbox/shared/uwsgi.ini
           changed_when: false
         - name: NetBox rq-worker service status  # noqa 303 305
-          shell: "systemctl status netbox-rqworker.service"
+          shell: "systemctl status netbox-rqworker@1.service"
           changed_when: false
         - name: NetBox application log  # noqa 305
           shell: cat /srv/netbox/shared/application.log
