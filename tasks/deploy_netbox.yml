@@ -20,13 +20,6 @@
   when:
     - _netbox_config.SECRET_KEY is not defined
 
-- name: Drop pip constraints file
-  template:
-    src: pip_constraints.j2
-    dest: "{{ netbox_current_path }}/constraints.txt"
-    owner: "{{ netbox_user }}"
-    group: "{{ netbox_group }}"
-
 - name: Create NetBox virtualenv
   pip:
     name:
@@ -41,10 +34,35 @@
   register: _netbox_virtualenv_setup
   until: _netbox_virtualenv_setup is succeeded
 
+- name: Create constraints files
+  ansible.builtin.template:
+    src: pip_constraints.j2
+    dest: "{{ netbox_shared_path }}/constraints.txt"
+    owner: "{{ netbox_user }}"
+    group: "{{ netbox_group }}"
+
+- name: Copy requirements.txt from netbox current path to shared path
+  ansible.builtin.copy:
+    src: "{{ netbox_current_path }}/requirements.txt"
+    dest: "{{ netbox_shared_path }}/requirements.txt"
+    owner: "{{ netbox_user }}"
+    group: "{{ netbox_group }}"
+    remote_src: true
+  changed_when: false
+
+- name: Override exact version requirements in shared path's requirements.txt if conflicting constraint is specified
+  ansible.builtin.replace:
+    path: "{{ netbox_shared_path }}/requirements.txt"
+    regexp: '^({{ item | regex_replace("(==.*)", "") }})==.*'
+    replace: '\1'
+  loop: "{{ netbox_pip_constraints }}"
+  changed_when: false
+  when: "'==' in item"
+
 - name: Install needed Python dependencies
-  pip:
-    requirements: "{{ netbox_current_path }}/requirements.txt"
-    extra_args: "-c {{ netbox_current_path }}/constraints.txt"
+  ansible.builtin.pip:
+    requirements: "{{ netbox_shared_path }}/requirements.txt"
+    extra_args: "-c {{ netbox_shared_path }}/constraints.txt"
     virtualenv: "{{ netbox_virtualenv_path }}"
   become: true
   become_user: "{{ netbox_user }}"
@@ -53,7 +71,7 @@
   until: _netbox_virtualenv_setup is succeeded
 
 - name: Install selected optional Python dependencies
-  pip:
+  ansible.builtin.pip:
     name: "{{ item }}"
     state: present
     virtualenv: "{{ netbox_virtualenv_path }}"
