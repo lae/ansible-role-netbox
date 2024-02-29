@@ -50,14 +50,14 @@
     remote_src: true
   changed_when: false
 
-- name: Edit requirements.txt in netbox shared path
-  ansible.builtin.replace:                                                                      
-    path: "{{ netbox_shared_path }}/requirements.txt"                                                              
-    regexp: '^({{ item | regex_replace("([<>=!~].*)", "") }})[<>=!~].*'                         
-    replace: '\1'                                                                               
+- name: Override exact version requirements in shared path's requirements.txt if conflicting constraint is specified
+  ansible.builtin.replace:
+    path: "{{ netbox_shared_path }}/requirements.txt"
+    regexp: '^({{ item | regex_replace("(==.*)", "") }})==.*'
+    replace: '\1'
   loop: "{{ netbox_pip_constraints }}"
   changed_when: false
-  when: "'[<>=!~]' in item"
+  when: "'==' in item"
 
 - name: Install needed Python dependencies
   ansible.builtin.pip:
