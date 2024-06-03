@@ -50,7 +50,8 @@ netbox_metrics_enabled: false
 netbox_metrics_dir: netbox_metrics
 netbox_metrics_path: "/run/{{ netbox_metrics_dir }}"
 
-netbox_config:
+netbox_config: {}
+netbox_config_defaults:
   # SECRET_KEY:
   ALLOWED_HOSTS:
     - localhost
