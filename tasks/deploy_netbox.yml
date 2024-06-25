@@ -248,7 +248,7 @@
         app_path: "{{ netbox_current_path }}/netbox"
         virtualenv: "{{ netbox_virtualenv_path }}"
       when:
-        - netbox_stable and netbox_stable_version is version('3.4.5', '>')
+        - netbox_stable and netbox_stable_version is version('3.4.4', '>')
           or netbox_git and _netbox_git_contains_reindex_lazy.rc == 0
 
   become: true
