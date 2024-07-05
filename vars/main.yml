@@ -14,8 +14,9 @@ _netbox_storages_map:
   sftpstorage: []
 
 netbox_superuser_script: |
-  from django.contrib.auth.models import User
+  from django.contrib.auth import get_user_model
   from base64 import b64decode
+  User = get_user_model()
   password = b64decode("{{ netbox_superuser_password | b64encode }}").decode("UTF-8")
   query = User.objects.filter(username="{{ netbox_superuser_username }}")
   if not query.exists():
@@ -33,7 +34,8 @@ netbox_superuser_script: |
 
 netbox_superuser_token: |
     from users.models import Token
-    from django.contrib.auth.models import User
+    from django.contrib.auth import get_user_model
+    User = get_user_model()
     user = User.objects.get(username="{{ netbox_superuser_username }}")
     query = Token.objects.filter(user=user)
     if not query.exists():
@@ -45,3 +47,4 @@ netbox_python_compat_matrix:
   - { netbox_version_min: '2.8.0', python_needed: '3.6.0' }
   - { netbox_version_min: '3.0.0', python_needed: '3.7.0' }
   - { netbox_version_min: '3.2.0', python_needed: '3.8.0' }
+  - { netbox_version_min: '4.0.0', python_needed: '3.10.0' }
