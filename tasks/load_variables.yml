@@ -29,7 +29,7 @@
 
 - name: Define _netbox_config
   set_fact:
-    _netbox_config: "{{ netbox_config }}"
+    _netbox_config: "{{ netbox_config_defaults | combine(netbox_config, recursive=True)  }}"
 
 - name: Generate list of optional Python dependencies
   set_fact:

@@ -42,13 +42,14 @@
     msg: "Please define NAPALM_USERNAME and NAPALM_PASSWORD in netbox_config to use NAPALM."
   when: "netbox_napalm_enabled | bool"
 
-- name: NetBox user content directories must be specified
-  assert:
-    that:
-      - "'MEDIA_ROOT' in netbox_config"
-      - "'REPORTS_ROOT' in netbox_config"
-      - "'SCRIPTS_ROOT' in netbox_config"
-    msg: "Please ensure MEDIA_ROOT/REPORTS_ROOT/SCRIPTS_ROOT are defined in netbox_config."
+# Defaulted using Dictionary inheritance via load_variables:32
+# - name: NetBox user content directories must be specified
+#   assert:
+#     that:
+#       - "'MEDIA_ROOT' in netbox_config"
+#       - "'REPORTS_ROOT' in netbox_config"
+#       - "'SCRIPTS_ROOT' in netbox_config"
+#     msg: "Please ensure MEDIA_ROOT/REPORTS_ROOT/SCRIPTS_ROOT are defined in netbox_config."
 
 - name: Script/Report module names should follow PEP8
   assert:

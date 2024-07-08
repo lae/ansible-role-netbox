@@ -116,6 +116,7 @@
     name: "{{ item }}"
     state: started
     enabled: true
+    daemon_reload: true
   loop:
     - netbox.socket
     - netbox.service
