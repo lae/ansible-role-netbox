@@ -1,6 +1,7 @@
 :role-author: lae
 :role-name: netbox
 :role: {role-author}.{role-name}
+:role-version: 1.0.7
 :gh-name: {role-author}/ansible-role-{role-name}
 :netbox-version: 3.7.3
 = {role}
@@ -11,10 +12,6 @@ ifdef::env-github[]
 :tip-caption: :bulb:
 :warning-caption: :warning:
 endif::[]
-
-ifdef::env-github[]
-image:https://img.shields.io/badge/role-{role}-blue?style=for-the-badge[Ansible Galaxy Role,link=https://galaxy.ansible.com/{role-author}/{role-name}]
-endif::env-github[]
 
 Deploys and configures https://github.com/netbox-community/netbox[NetBox], an IP address management (IPAM) and data center infrastructure management (DCIM) tool.
 
@@ -30,13 +27,23 @@ The main differences are:
 * Hardens the NetBox/uWSGI service (see `templates/netbox.service.j2`)
 * Will hot reload on upgrades and configuration changes
 
+To install this role, add the following to your `requirements.yml`:
+
+[source,yaml,subs="attributes"]
+----
+---
+- name: {role}
+  src: https://github.com/{gh-name}.git
+  version: v{role-version}
+----
+
 == Quickstart
 
 Provided you have Ansible installed and are using defaults:
 
 [source,bash,subs="attributes"]
 ----
-ansible-galaxy install geerlingguy.postgresql davidwittman.redis {role}
+ansible-galaxy install geerlingguy.postgresql davidwittman.redis https://github.com/{gh-name}/archive/refs/tags/v{role-version}.tar.gz,v{role-version},{role}
 ansible-galaxy collection install community.postgresql
 ansible-playbook -i your.server.fqdn, ~/.ansible/roles/{role}/examples/playbook_single_host_deploy.yml -K
 ----
@@ -48,7 +55,7 @@ You can also use Vagrant, if you prefer, to bring up NetBox at `localhost:8080`:
 
 [source,bash,subs="attributes"]
 ----
-ansible-galaxy install geerlingguy.postgresql davidwittman.redis {role}
+ansible-galaxy install geerlingguy.postgresql davidwittman.redis https://github.com/{gh-name}/archive/refs/tags/v{role-version}.tar.gz,{role}
 ansible-galaxy collection install community.postgresql
 cd ~/.ansible/roles/{role}/
 vagrant up
