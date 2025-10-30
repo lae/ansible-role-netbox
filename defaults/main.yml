@@ -97,3 +97,8 @@ netbox_keep_uwsgi_updated: false
 netbox_uwsgi_in_venv: false
 netbox_uwsgi_options: {}
 netbox_rqworker_processes: 1
+
+# Whether to install the legacy housekeeping cron job.
+# NetBox v4.4+ replaces the housekeeping script with NetBox-managed scheduled jobs.
+# Set to false to skip creating the cron entry regardless of version.
+netbox_housekeeping_cron_enabled: true

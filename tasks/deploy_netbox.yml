@@ -200,8 +200,25 @@
     user: "{{ netbox_user }}"
     cron_file: "netbox"
   when:
-    - netbox_stable and netbox_stable_version is version('3.0.0', '>=')
-      or netbox_git and _netbox_git_contains_housekeeping.rc == 0
+    - netbox_housekeeping_cron_enabled | bool
+    - (netbox_stable and netbox_stable_version is version('3.0.0', '>=')
+        and netbox_stable_version is version('4.4.0', '<'))
+      or (netbox_git and _netbox_git_contains_housekeeping.rc == 0)
+
+- name: Remove housekeeping cronjob when not applicable
+  cron:
+    name: "Netbox housekeeping"
+    user: "{{ netbox_user }}"
+    cron_file: "netbox"
+    state: absent
+  when:
+    - not (
+        (netbox_housekeeping_cron_enabled | bool)
+        and (
+          (netbox_stable and netbox_stable_version is version('3.0.0', '>=') and netbox_stable_version is version('4.4.0', '<'))
+          or (netbox_git and _netbox_git_contains_housekeeping.rc == 0)
+        )
+      )
 
 - block:
     - name: Run database migrations for NetBox
