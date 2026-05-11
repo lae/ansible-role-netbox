@@ -401,13 +401,35 @@ If this is undesirable, consider toggling `netbox_superuser_enabled`.
 # netbox_local_settings_file: "{{ playbook_dir }}/files/netbox/local_settings.py"
 ----
 
-If you need to override any settings or extend the functionality in NetBox' `settings.py`
+If you need to override any settings or extend the functionality in NetBox' `settings.py` 
 in a way that is not supported by the `configuration.py` (i.e. the `netbox_config` role variable),
 you can set `netbox_local_settings_file` to a local file path in your playbook to deploy a `local_settings.py` file within NetBox.
 This feature was https://github.com/netbox-community/netbox/issues/16127[introduced in NetBox v4.0.2].
 You may need to use this file for deploying certain NetBox plugins.
 
 NOTE: Commenting or removing this role variable from your playbook will remove `local_settings.py` from your NetBox deployment.
+
+[source,yaml]
+----
+netbox_custom_validators_enabled: true
+netbox_custom_validators_file: 
+  - file: netbox/custom_validators.py
+    action: deploy
+netbox_custom_pipelines_enabled: true
+netbox_custom_pipelines_files: 
+  - file: netbox/custom_pipeline.py
+    action: deploy
+----
+Actions are: +
+`deploy` – copy file from Ansible files directory to shared and symlink to NetBox install (default) +
+`copy` – copy file from Ansible files directory to shared and remove symlinks to NetBox install +
+`remove` – remove file from shared directory and remove symlinks to NetBox install
+
+
+Toggle `netbox_custom_validators_enabled`|`netbox_custom_pipelines_enabled` to `true` to enable management of custom validator|pipeline files for NetBox. 
+`netbox_custom_validators_file`|`netbox_custom_pipelines_files` should be the path to your custom validator|pipeline file - by default, Ansible will search your playbook's `files/` directory for this.
+
+NOTE: The `file` property supports nesting of directories inside `files/`, the copied file uses the basename: eg `files/netbox/custom_validators.py` -> `shared/custom_validators.py`. 
 
 [source,yaml]
 ----

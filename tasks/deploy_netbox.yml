@@ -173,6 +173,90 @@
         group: "{{ netbox_group }}"
         mode: 0640
         state: "{{ 'link' if netbox_local_settings_file is defined else 'absent' }}"
+
+    # custom_validators
+    - name: Copy NetBox custom_validators files to shared 
+      ansible.builtin.copy:
+        src: "{{ item.file }}"
+        dest: "{{ netbox_shared_path ~ '/' ~ (item.file | basename) }}"
+        owner: "{{ netbox_user }}"
+        group: "{{ netbox_group }}"
+        mode: 0640
+      loop: "{{ netbox_custom_validators_files }}"
+      when:
+        - netbox_custom_validators_enabled
+        - netbox_custom_validators_files is defined
+        - item.file is defined
+        - item.file | length > 0
+        - (item.action | default('deploy')) != 'remove'
+
+    - name: Remove NetBox custom_validators files from shared
+      ansible.builtin.file:
+        path: "{{ netbox_shared_path ~ '/' ~ (item.file | basename) }}"
+        state: absent
+      loop: "{{ netbox_custom_validators_files }}"
+      when:
+        - netbox_custom_validators_enabled
+        - netbox_custom_validators_files is defined
+        - item.file is defined
+        - item.file | length > 0
+        - (item.action | default('deploy')) == 'remove'
+
+    - name: Add/Remove NetBox custom_validators symlinks into the active NetBox release 
+      ansible.builtin.file: 
+        src: "{{ netbox_shared_path ~ '/' ~ (item.file | basename) if (item.action | default('deploy')) == 'deploy' and netbox_custom_validators_enabled else omit }}"
+        dest: "{{ netbox_current_path }} ~ '/netbox/' ~ (item.file | basename) }}"
+        owner: "{{ netbox_user }}"
+        group: "{{ netbox_group }}"
+        mode: 0640
+        state: "{{ 'link' if (item.action | default('deploy')) == 'deploy' else 'absent' }}"
+      loop: "{{ netbox_custom_validators_files }}"
+      when:
+        - netbox_custom_validators_files is defined
+        - item.file is defined
+        - item.file | length > 0
+
+    # custom_pipelines for python social auth
+    - name: Copy NetBox custom_pipelines files to shared 
+      ansible.builtin.copy:
+        src: "{{ item.file }}"
+        dest: "{{ netbox_shared_path ~ '/' ~ (item.file | basename) }}"
+        owner: "{{ netbox_user }}"
+        group: "{{ netbox_group }}"
+        mode: 0640
+      loop: "{{ netbox_custom_pipelines_files }}"
+      when:
+        - netbox_custom_pipelines_enabled
+        - netbox_custom_pipelines_files is defined
+        - item.file is defined
+        - item.file | length > 0
+        - (item.action | default('deploy')) != 'remove'
+        
+    - name: Remove NetBox custom_pipelines files from shared
+      ansible.builtin.file:
+        path: "{{ netbox_shared_path ~ '/' ~ (item.file | basename) }}"
+        state: absent
+      loop: "{{ netbox_custom_pipelines_files }}"
+      when:
+        - netbox_custom_pipelines_enabled
+        - netbox_custom_pipelines_files is defined
+        - item.file is defined
+        - item.file | length > 0
+        - (item.action | default('deploy')) == 'remove'
+
+    - name: Add/Remove NetBox custom_pipelines symlinks into the active NetBox release 
+      ansible.builtin.file: 
+        src: "{{ netbox_shared_path ~ '/' ~ (item.file | basename) if (item.action | default('deploy')) == 'deploy' and netbox_custom_pipelines_enabled else omit }}"
+        dest: "{{ netbox_config_path ~ '/' ~ (item.file | basename) }}"
+        owner: "{{ netbox_user }}"
+        group: "{{ netbox_group }}"
+        mode: 0640
+        state: "{{ 'link' if (item.action | default('deploy')) == 'deploy' else 'absent' }}"
+      loop: "{{ netbox_custom_pipelines_files }}"
+      when:
+        - netbox_custom_pipelines_files is defined
+        - item.file is defined
+        - item.file | length > 0
   notify:
     - reload netbox.service
 

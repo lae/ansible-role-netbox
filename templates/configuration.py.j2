@@ -103,6 +103,8 @@ METRICS_ENABLED = True
 {% for setting, value in _netbox_config.items() %}
 {%      if value in [True, False] %}
 {{ setting }} = {{ 'True' if value else 'False' }}
+{%      elif setting == 'CUSTOM_VALIDATORS' %}
+{{ setting }} = {{ value | safe }}
 {%      elif value is string or value is number %}
 {{ setting }} = {{ value | to_nice_json }}
 {%      else %}
